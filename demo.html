@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Yungly Pay App Demo — Try the Teen UPI App Live | Yungly Capital</title>
+  <meta name="description" content="Try the Yungly Pay app demo live in your browser. Explore Ghost Link privacy, instant UPI payments, rewards, and the full teen payment experience. By Yungly Capital.">
+  <meta name="keywords" content="Yungly Pay demo, Yungly app demo, try Yungly Pay, teen UPI app demo India, Yungly Capital app preview">
+  <meta property="og:title" content="Try the Yungly Pay App Demo — Live Preview">
+  <meta property="og:description" content="Explore Yungly Pay's full app experience in your browser. Ghost Link, payments, rewards and more.">
+  <meta property="og:url" content="https://yunglypay.in/demo.html">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://yunglypay.in/demo.html">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Yungly Pay App Demo",
+    "url": "https://yunglypay.in/demo.html",
+    "description": "Interactive live demo of the Yungly Pay teen UPI payment app by Yungly Capital.",
+    "publisher": {"@type": "Organization", "name": "Yungly Pay", "url": "https://yunglypay.in"}
+  }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --white:#FFFFFF; --black:#0A0A0A; --lav:#CBD5F0; --lav-mid:#A8B8E8;
+  --lav-deep:#7B96D4; --lav-dim:#E8EDFB; --lav-border:rgba(203,213,240,0.35);
+  --bg:#F4F6FF; --sub:#6B7599; --sub2:#A0AACB; --credit:#1A7A4A; --debit:#0A0A0A;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sans-serif;}
+
+/* ── SCENE ── */
+.scene{
+  width:100%;height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse 70% 50% at 80% 10%,rgba(203,213,240,0.55) 0%,transparent 60%),
+             radial-gradient(ellipse 50% 40% at 10% 90%,rgba(168,184,232,0.35) 0%,transparent 60%),#DDEAFF;
+  position:relative;
+}
+
+/* ── PHONE ── */
+.phone{
+  width:390px;height:844px;
+  border-radius:52px;
+  background:var(--bg);
+  position:relative;z-index:2;
+  box-shadow:0 0 0 10px rgba(255,255,255,0.85),0 0 0 12px rgba(203,213,240,0.4),
+             0 50px 120px rgba(80,100,160,0.22),0 8px 30px rgba(0,0,0,0.1);
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  animation:phoneIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes phoneIn{from{transform:perspective(1200px) rotateX(12deg) translateY(40px) scale(0.93);opacity:0;}to{transform:none;opacity:1;}}
+
+/* ── PAGES ── */
+.page{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.35s ease,transform 0.35s cubic-bezier(0.23,1,0.32,1);transform:translateX(30px);}
+.page.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.page.slide-left{transform:translateX(-30px);}
+
+/* ── STATUS ── */
+.status{display:flex;justify-content:space-between;align-items:center;padding:16px 28px 0;font-family:'Space Mono',monospace;font-size:12px;color:var(--sub);flex-shrink:0;}
+.batt{width:22px;height:11px;border:1.5px solid var(--sub2);border-radius:3px;position:relative;display:inline-block;vertical-align:middle;margin-left:5px;}
+.batt::after{content:'';width:65%;height:60%;background:var(--black);position:absolute;left:2px;top:50%;transform:translateY(-50%);border-radius:1px;}
+
+/* ── SCROLLABLE CONTENT ── */
+.scroll{overflow-y:auto;flex:1;padding:0 20px 12px;}
+.scroll::-webkit-scrollbar{width:0;}
+
+/* ── TOP NAV ── */
+.top-nav{display:flex;align-items:center;gap:12px;padding:14px 20px 0;flex-shrink:0;}
+.avatar{width:44px;height:44px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;position:relative;cursor:pointer;}
+.avatar::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--lav);opacity:0.6;animation:ring 2.5s ease infinite;}
+@keyframes ring{0%,100%{opacity:0.6;transform:scale(1);}50%{opacity:0.15;transform:scale(1.1);}}
+.search{flex:1;height:44px;border-radius:22px;background:#fff;border:1.5px solid var(--lav-border);display:flex;align-items:center;gap:9px;padding:0 16px;font-size:13px;color:var(--sub2);cursor:pointer;transition:all 0.3s;box-shadow:0 2px 12px rgba(100,120,180,0.07);}
+.search:hover{border-color:var(--lav-mid);}
+.notif{width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;flex-shrink:0;position:relative;transition:all 0.3s;}
+.notif-dot{width:8px;height:8px;background:var(--black);border-radius:50%;position:absolute;top:8px;right:8px;border:2px solid var(--bg);animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+/* ── CARDS ── */
+.main-card{width:100%;height:196px;border-radius:28px;background:var(--black);position:relative;overflow:hidden;cursor:pointer;transition:transform 0.35s cubic-bezier(0.23,1,0.32,1),box-shadow 0.35s;box-shadow:0 20px 50px rgba(10,10,10,0.22);}
+.main-card:hover{transform:rotateY(-3deg) rotateX(3deg) scale(1.015);box-shadow:0 30px 70px rgba(10,10,10,0.3);}
+.card-shimmer{position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,0.05) 50%,transparent 60%);background-size:200% 100%;animation:shimmer 4s ease infinite;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.card-glow{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(203,213,240,0.08),transparent 70%);top:-60px;right:-40px;}
+.card-inner{position:relative;z-index:1;padding:22px 26px;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.card-logo{font-size:20px;font-weight:900;color:#fff;letter-spacing:-0.5px;}
+.card-logo em{font-style:normal;color:var(--lav);}
+.chip{width:34px;height:26px;background:linear-gradient(135deg,rgba(203,213,240,0.55),rgba(203,213,240,0.25));border-radius:6px;border:1px solid rgba(255,255,255,0.15);position:relative;}
+.chip::before,.chip::after{content:'';position:absolute;background:rgba(0,0,0,0.2);}
+.chip::before{width:100%;height:1px;top:50%;}
+.chip::after{width:1px;height:100%;left:50%;}
+.bal-lbl{font-size:10px;color:rgba(203,213,240,0.5);letter-spacing:2px;text-transform:uppercase;}
+.bal-amt{font-size:30px;font-weight:800;color:#fff;letter-spacing:-0.5px;}
+.bal-amt sup{font-size:16px;font-weight:500;color:var(--lav);}
+.card-foot{display:flex;justify-content:space-between;align-items:flex-end;}
+.card-holder{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+.rupay{font-size:10px;color:rgba(203,213,240,0.5);border:1px solid rgba(203,213,240,0.15);border-radius:5px;padding:3px 7px;}
+
+/* ── QUICK ACTIONS ── */
+.qrow{display:flex;gap:10px;margin:16px 0;}
+.qa{flex:1;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.25s;}
+.qa:active{transform:scale(0.95);}
+.qa.main{background:var(--black);color:#fff;box-shadow:0 6px 20px rgba(10,10,10,0.18);}
+.qa.main:hover{box-shadow:0 10px 28px rgba(10,10,10,0.25);transform:translateY(-2px);}
+.qa.alt{background:#fff;color:var(--black);border:1.5px solid var(--lav-border);box-shadow:0 2px 12px rgba(100,120,180,0.07);}
+.qa.alt:hover{border-color:var(--lav-mid);transform:translateY(-2px);}
+
+/* ── SCAN CARD ── */
+.scan-card{border-radius:24px;background:#fff;border:1.5px solid var(--lav-border);padding:18px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 20px rgba(100,120,180,0.07);position:relative;overflow:hidden;}
+.scan-card::before{content:'';position:absolute;right:-40px;top:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(203,213,240,0.4),transparent 70%);}
+.scan-card:hover{border-color:var(--lav-mid);transform:translateY(-2px);}
+.qr-box{width:56px;height:56px;border-radius:14px;background:var(--black);display:grid;grid-template-columns:repeat(5,1fr);gap:2.5px;padding:8px;flex-shrink:0;animation:qrGlow 3s ease infinite;}
+@keyframes qrGlow{0%,100%{box-shadow:0 0 16px rgba(10,10,10,0.15);}50%{box-shadow:0 0 28px rgba(10,10,10,0.25);}}
+.qc{border-radius:1px;}.qc.on{background:#fff;}.qc.off{background:transparent;}
+.scan-txt h3{font-size:16px;font-weight:800;color:var(--black);margin-bottom:3px;}
+.scan-txt p{font-size:12px;color:var(--sub);}
+.scan-arr{margin-left:auto;width:38px;height:38px;border-radius:12px;background:var(--lav-dim);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;transition:all 0.3s;position:relative;z-index:1;}
+.scan-card:hover .scan-arr{background:var(--black);color:#fff;}
+
+/* ── FEATURES ── */
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0;}
+.feat{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;}
+.feat-ico{width:54px;height:54px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:22px;transition:all 0.3s;border:1.5px solid var(--lav-border);}
+.feat:hover .feat-ico{transform:translateY(-4px);}
+.fi-a{background:var(--lav-dim);}.fi-b{background:#F0F0F0;border-color:rgba(0,0,0,0.06);}
+.feat-lbl{font-size:11px;color:var(--sub);font-weight:600;text-align:center;}
+
+/* ── DIVIDER ── */
+.divider{height:1.5px;margin:6px 0 18px;background:linear-gradient(90deg,transparent,var(--lav),var(--lav-mid),var(--lav),transparent);opacity:0.45;}
+
+/* ── SECTION HEADER ── */
+.sec{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.sec-t{font-size:15px;font-weight:700;color:var(--black);}
+.sec-m{font-size:12px;color:var(--sub);cursor:pointer;font-weight:500;}
+.sec-m:hover{color:var(--black);}
+
+/* ── CONTACTS ── */
+.crow{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px;}
+.crow::-webkit-scrollbar{display:none;}
+.cnt{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;flex-shrink:0;}
+.cav{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;transition:all 0.3s;}
+.cnt:hover .cav{transform:scale(1.08);}
+.cv1{background:var(--black);color:#fff;}
+.cv2{background:var(--lav);color:var(--black);}
+.cv3{background:#E0E0E0;color:var(--black);}
+.cv4{background:var(--lav-mid);color:#fff;}
+.cv5{background:#D0D8F0;color:var(--black);}
+.cv-add{background:#fff;color:var(--sub);border:1.5px dashed var(--lav-border);}
+.cnm{font-size:11px;color:var(--sub);text-align:center;}
+
+/* ── REWARDS CARD ── */
+.rew-card{border-radius:24px;background:var(--black);padding:20px;margin:16px 0;position:relative;overflow:hidden;cursor:pointer;transition:all 0.3s;}
+.rew-card:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(10,10,10,0.2);}
+.rew-bg{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(203,213,240,0.06);right:-50px;top:-50px;}
+.rew-in{position:relative;z-index:1;}
+.rew-lbl{font-size:11px;color:var(--lav);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;opacity:0.7;}
+.rew-coins{font-size:38px;font-weight:900;color:#fff;letter-spacing:-1px;}
+.rew-coins span{font-size:16px;font-weight:400;color:rgba(203,213,240,0.45);}
+.rew-bar-bg{background:rgba(255,255,255,0.1);border-radius:6px;height:5px;margin:14px 0 8px;}
+.rew-bar{width:65%;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--lav),var(--lav-mid));animation:barIn 1.2s cubic-bezier(0.16,1,0.3,1) both 0.6s;}
+@keyframes barIn{from{width:0;}to{width:65%;}}
+.rew-hint{font-size:12px;color:rgba(203,213,240,0.4);}
+
+/* ── TX LIST ── */
+.tx{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid rgba(203,213,240,0.25);cursor:pointer;transition:all 0.2s;}
+.tx:last-child{border-bottom:none;}
+.tx:hover{padding-left:4px;}
+.tx-ic{width:46px;height:46px;border-radius:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:19px;}
+.ti1{background:var(--lav-dim);}.ti2{background:#F0F0F0;}.ti3{background:var(--lav-dim);}.ti4{background:#EBEBEB;}
+.tx-nm{font-size:14px;font-weight:600;color:var(--black);margin-bottom:2px;}
+.tx-dt{font-size:11px;color:var(--sub2);font-family:'Space Mono',monospace;}
+.tx-am{font-size:14px;font-weight:700;font-family:'Space Mono',monospace;}
+.cr{color:var(--credit);}.dr{color:var(--black);}
+
+/* ── PROMO ── */
+.promo{border-radius:20px;background:var(--lav-dim);border:1.5px solid var(--lav-border);padding:16px 18px;display:flex;align-items:center;gap:13px;margin:0 0 20px;cursor:pointer;transition:all 0.3s;}
+.promo:hover{border-color:var(--lav-mid);transform:scale(1.01);}
+.promo h4{font-size:14px;font-weight:700;color:var(--black);margin-bottom:2px;}
+.promo p{font-size:12px;color:var(--sub);}
+.promo-badge{margin-left:auto;background:var(--black);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0;}
+
+/* ── BOTTOM NAV ── */
+.bnav{
+  display:flex;align-items:center;
+  background:rgba(244,246,255,0.75);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid rgba(203,213,240,0.45);
+  padding:10px 8px 28px;flex-shrink:0;
+  box-shadow:0 -8px 32px rgba(100,120,180,0.08);
+  gap:2px;
+}
+.ni{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;padding:8px 4px 4px;transition:all 0.25s;
+  position:relative;border-radius:16px;
+}
+.ni:hover{transform:translateY(-2px);}
+.ni-ico-wrap{
+  width:40px;height:40px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.3s;
+  background:transparent;
+}
+.ni.on .ni-ico-wrap{
+  background:rgba(10,10,10,0.07);
+  box-shadow:0 2px 12px rgba(100,120,180,0.13);
+}
+.ni-ico{width:22px;height:22px;transition:all 0.3s;opacity:0.3;}
+.ni.on .ni-ico{opacity:1;}
+.ni-lbl{font-size:10px;color:var(--sub2);letter-spacing:0.2px;font-weight:700;transition:all 0.3s;text-transform:uppercase;}
+.ni.on .ni-lbl{color:var(--black);}
+/* active dot */
+.ni::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--black);position:absolute;bottom:2px;left:50%;transform:translateX(-50%) scale(0);transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1);opacity:0;}
+.ni.on::after{transform:translateX(-50%) scale(1);opacity:1;}
+
+.nc{flex:0 0 76px;display:flex;align-items:center;justify-content:center;}
+.pay-btn{
+  width:58px;height:58px;border-radius:20px;
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  box-shadow:0 6px 20px rgba(10,10,10,0.25),0 2px 6px rgba(10,10,10,0.1);
+  transition:all 0.3s;
+  animation:payP 3s ease infinite;
+  position:relative;
+}
+.pay-btn::before{
+  content:'';position:absolute;inset:-3px;border-radius:23px;
+  background:linear-gradient(135deg,rgba(203,213,240,0.5),transparent,rgba(168,184,232,0.3));
+  border-radius:22px;opacity:0.6;
+}
+@keyframes payP{0%,100%{box-shadow:0 6px 20px rgba(10,10,10,0.25);}50%{box-shadow:0 8px 28px rgba(10,10,10,0.3),0 0 0 5px rgba(203,213,240,0.25);}}
+.pay-btn:hover{transform:scale(1.08) translateY(-3px);}
+.pay-btn svg{position:relative;z-index:1;}
+
+/* ── BACK BTN ── */
+.back-btn{display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 0;color:var(--sub);font-size:14px;font-weight:600;transition:color 0.2s;flex-shrink:0;}
+.back-btn:hover{color:var(--black);}
+
+/* ── PAGE HEADERS ── */
+.pg-head{padding:16px 20px 0;flex-shrink:0;}
+.pg-title{font-size:22px;font-weight:800;color:var(--black);margin-bottom:2px;}
+.pg-sub{font-size:13px;color:var(--sub);}
+
+/* ========== WALLET PAGE ========== */
+.wallet-card{border-radius:24px;background:var(--black);padding:24px;margin:16px 0;position:relative;overflow:hidden;}
+.wc-lbl{font-size:11px;color:rgba(203,213,240,0.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.wc-bal{font-size:42px;font-weight:900;color:#fff;letter-spacing:-2px;}
+.wc-bal sup{font-size:22px;font-weight:500;color:var(--lav);}
+.wc-upi{font-size:12px;color:rgba(203,213,240,0.4);margin-top:6px;font-family:'Space Mono',monospace;}
+.wc-row{display:flex;gap:10px;margin-top:20px;}
+.wc-btn{flex:1;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.wc-btn:active{transform:scale(0.95);}
+.wcb-main{background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.15);}
+.wcb-main:hover{background:rgba(255,255,255,0.18);}
+
+.wallet-sec{margin-bottom:20px;}
+.wallet-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1.5px solid var(--lav-border);border-radius:16px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
+.wallet-item:hover{border-color:var(--lav-mid);transform:translateX(3px);}
+.wi-ico{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.wia{background:var(--lav-dim);}.wib{background:#F0F0F0;}.wic{background:var(--lav-dim);}
+.wi-info{flex:1;}
+.wi-nm{font-size:14px;font-weight:600;color:var(--black);}
+.wi-d{font-size:12px;color:var(--sub);}
+.wi-arr{color:var(--sub2);font-size:18px;}
+
+/* ========== BANK PAGE ========== */
+.bank-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:16px;}
+.bank-ico-big{font-size:64px;margin-bottom:8px;}
+.bank-t{font-size:20px;font-weight:800;color:var(--black);}
+.bank-s{font-size:14px;color:var(--sub);line-height:1.6;max-width:280px;}
+.bank-cta{width:100%;height:52px;border-radius:16px;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:700;cursor:pointer;transition:all 0.3s;margin-top:8px;}
+.bank-cta:hover{box-shadow:0 8px 24px rgba(10,10,10,0.2);transform:translateY(-2px);}
+.bank-banks{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:10px 0;}
+.bank-logo{width:52px;height:52px;border-radius:14px;background:#fff;border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:22px;}
+
+/* ========== REWARDS PAGE ========== */
+.rew-hero{border-radius:24px;background:var(--black);padding:24px;margin:16px 0;text-align:center;position:relative;overflow:hidden;}
+.rew-hero-bg{position:absolute;width:250px;height:250px;border-radius:50%;background:rgba(203,213,240,0.05);top:-80px;left:50%;transform:translateX(-50%);}
+.rew-hero-in{position:relative;z-index:1;}
+.rew-big{font-size:56px;font-weight:900;color:#fff;letter-spacing:-2px;}
+.rew-big span{font-size:24px;color:rgba(203,213,240,0.5);font-weight:400;}
+.rew-p{font-size:13px;color:rgba(203,213,240,0.45);margin-top:4px;}
+.rew-prog-wrap{background:rgba(255,255,255,0.1);border-radius:8px;height:8px;margin:18px 0 10px;}
+.rew-prog{width:65%;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--lav),var(--lav-mid));}
+.rew-prog-lbl{font-size:12px;color:rgba(203,213,240,0.4);text-align:left;}
+
+.rew-deals{margin:16px 0;}
+.deal-item{background:#fff;border:1.5px solid var(--lav-border);border-radius:18px;padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.2s;}
+.deal-item:hover{border-color:var(--lav-mid);transform:translateY(-2px);}
+.deal-ico{width:52px;height:52px;border-radius:14px;background:var(--lav-dim);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.deal-info{flex:1;}
+.deal-t{font-size:14px;font-weight:700;color:var(--black);}
+.deal-s{font-size:12px;color:var(--sub);}
+.deal-coin{font-size:12px;font-weight:700;color:var(--black);background:var(--lav-dim);border-radius:8px;padding:4px 8px;}
+
+/* ========== KEEPER PAGE ========== */
+.keeper-hero{margin:16px 0;border-radius:24px;padding:24px;background:var(--lav-dim);border:1.5px solid var(--lav-border);text-align:center;}
+.keeper-ico{font-size:52px;margin-bottom:12px;}
+.keeper-t{font-size:20px;font-weight:800;color:var(--black);margin-bottom:6px;}
+.keeper-s{font-size:13px;color:var(--sub);line-height:1.6;}
+.keeper-items{margin:16px 0;}
+.ki{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1.5px solid var(--lav-border);border-radius:16px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
+.ki:hover{border-color:var(--lav-mid);transform:translateX(3px);}
+.ki-ico{width:44px;height:44px;border-radius:13px;background:var(--lav-dim);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ki-nm{font-size:14px;font-weight:600;color:var(--black);}
+.ki-d{font-size:12px;color:var(--sub);}
+
+/* ========== GHOST LINK PAGE ========== */
+.ghost-hero{margin:16px 0;}
+.ghost-card{border-radius:28px;background:var(--black);padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.ghost-bg1{position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(203,213,240,0.04);top:-100px;right:-80px;}
+.ghost-bg2{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(168,184,232,0.04);bottom:-60px;left:-40px;}
+.ghost-in{position:relative;z-index:1;}
+.ghost-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.2);border-radius:20px;padding:5px 12px;margin-bottom:16px;}
+.ghost-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--lav);animation:ghostDot 2s ease infinite;}
+@keyframes ghostDot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.ghost-badge span{font-size:11px;color:var(--lav);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+.ghost-t{font-size:26px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;}
+.ghost-t em{font-style:normal;color:var(--lav);}
+.ghost-s{font-size:13px;color:rgba(203,213,240,0.45);line-height:1.6;}
+
+/* GHOST TOGGLE */
+.ghost-toggle-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.06);border-radius:16px;padding:16px;margin:16px 0;}
+.gt-info{flex:1;}
+.gt-t{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;}
+.gt-s{font-size:12px;color:rgba(203,213,240,0.4);}
+.toggle{width:52px;height:28px;border-radius:14px;background:rgba(255,255,255,0.15);position:relative;cursor:pointer;transition:background 0.3s;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);}
+.toggle.on{background:var(--lav);}
+.toggle-ball{width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:2px;left:3px;transition:all 0.3s;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.toggle.on .toggle-ball{left:27px;}
+
+/* GHOST LINK DISPLAY */
+.ghost-link-box{background:rgba(255,255,255,0.05);border:1px solid rgba(203,213,240,0.15);border-radius:16px;padding:16px;margin:12px 0;}
+.gl-lbl{font-size:10px;color:rgba(203,213,240,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.gl-link{font-size:13px;color:var(--lav);font-family:'Space Mono',monospace;word-break:break-all;line-height:1.5;}
+.gl-actions{display:flex;gap:8px;margin-top:12px;}
+.gl-act{flex:1;height:38px;border-radius:10px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.15);display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;color:var(--lav);font-weight:600;cursor:pointer;transition:all 0.2s;}
+.gl-act:hover{background:rgba(203,213,240,0.18);}
+
+/* HOW IT WORKS */
+.how-card{background:#fff;border:1.5px solid var(--lav-border);border-radius:24px;padding:20px;margin:16px 0;}
+.how-t{font-size:15px;font-weight:800;color:var(--black);margin-bottom:16px;}
+.how-step{display:flex;gap:14px;margin-bottom:16px;}
+.how-step:last-child{margin-bottom:0;}
+.how-num{width:32px;height:32px;border-radius:10px;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;}
+.how-info{flex:1;}
+.how-st{font-size:13px;font-weight:700;color:var(--black);margin-bottom:2px;}
+.how-sd{font-size:12px;color:var(--sub);line-height:1.5;}
+
+/* GHOST DEMO */
+.ghost-demo{background:var(--lav-dim);border:1.5px solid var(--lav-border);border-radius:20px;padding:16px;margin:12px 0;}
+.gd-t{font-size:13px;font-weight:700;color:var(--black);margin-bottom:12px;}
+.gd-scenario{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--lav-border);}
+.gd-label{font-size:10px;color:var(--sub2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.gd-val{font-size:13px;color:var(--black);font-weight:600;font-family:'Space Mono',monospace;}
+.gd-vs{text-align:center;font-size:12px;color:var(--sub);margin:8px 0;font-weight:600;}
+.gd-good{background:var(--black);border-radius:14px;padding:14px;margin-top:0;}
+.gd-good .gd-label{color:rgba(203,213,240,0.5);}
+.gd-good .gd-val{color:var(--lav);}
+.gd-protect{font-size:12px;color:rgba(203,213,240,0.5);margin-top:6px;}
+
+/* ── MODAL OVERLAY ── */
+.modal-overlay{position:absolute;inset:0;background:rgba(10,10,10,0.6);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:28px 28px 0 0;width:100%;padding:24px 24px 40px;transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-handle{width:40px;height:4px;background:var(--lav-border);border-radius:2px;margin:0 auto 20px;}
+.modal-t{font-size:20px;font-weight:800;color:var(--black);margin-bottom:6px;}
+.modal-s{font-size:13px;color:var(--sub);margin-bottom:20px;}
+.modal-input{width:100%;height:52px;border-radius:14px;border:1.5px solid var(--lav-border);padding:0 16px;font-size:16px;font-family:'Outfit',sans-serif;color:var(--black);outline:none;transition:border-color 0.2s;}
+.modal-input:focus{border-color:var(--lav-mid);}
+.modal-btn{width:100%;height:52px;border-radius:14px;background:var(--black);color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-top:14px;transition:all 0.25s;border:none;font-family:'Outfit',sans-serif;}
+.modal-btn:hover{box-shadow:0 8px 24px rgba(10,10,10,0.2);transform:translateY(-1px);}
+.modal-cancel{text-align:center;color:var(--sub);font-size:14px;margin-top:12px;cursor:pointer;}
+
+/* ── TOAST ── */
+.toast{position:absolute;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:#fff;padding:12px 20px;border-radius:14px;font-size:13px;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:all 0.3s;z-index:200;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── LOADING ── */
+.loading{position:absolute;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:300;animation:fadeOut 0.4s ease both 1.5s;}
+@keyframes fadeOut{to{opacity:0;pointer-events:none;}}
+.load-logo{font-size:32px;font-weight:900;color:var(--black);}
+.load-logo em{font-style:normal;color:var(--lav-deep);}
+.load-bar-bg{width:120px;height:3px;background:var(--lav-dim);border-radius:3px;overflow:hidden;}
+.load-bar{height:100%;background:linear-gradient(90deg,var(--lav),var(--lav-mid));border-radius:3px;animation:loadBar 1.4s cubic-bezier(0.16,1,0.3,1) both;}
+@keyframes loadBar{from{width:0;}to{width:100%;}}
+
+/* ── SEND MODAL KEYPAD ── */
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+.key{height:52px;border-radius:14px;background:var(--lav-dim);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:var(--black);cursor:pointer;transition:all 0.15s;border:none;font-family:'Outfit',sans-serif;}
+.key:active{transform:scale(0.93);background:var(--lav);}
+.key.del{background:#F0F0F0;}
+.key.zero{grid-column:span 1;}
+.amount-display{font-size:36px;font-weight:900;color:var(--black);text-align:center;padding:12px 0;letter-spacing:-1px;min-height:56px;}
+.amount-display sup{font-size:20px;color:var(--sub);}
+
+/* ghost privacy label */
+.privacy-pill{display:inline-flex;align-items:center;gap:5px;background:var(--lav-dim);border:1px solid var(--lav-border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--lav-deep);font-weight:600;cursor:pointer;transition:all 0.2s;}
+.privacy-pill:hover{background:var(--lav);color:var(--black);}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div style="position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:9999;animation:fadeOut 0.4s ease both 1.5s;pointer-events:none;" id="loader">
+  <div style="font-size:32px;font-weight:900;color:var(--black);">yungly<em style="font-style:normal;color:var(--lav-deep);">.</em></div>
+  <div style="width:120px;height:3px;background:var(--lav-dim);border-radius:3px;overflow:hidden;"><div style="height:100%;background:linear-gradient(90deg,var(--lav),var(--lav-mid));border-radius:3px;animation:loadBar 1.4s cubic-bezier(0.16,1,0.3,1) both;"></div></div>
+  <div style="font-size:12px;color:var(--sub);letter-spacing:1px;">LOADING DEMO...</div>
+</div>
+
+<div class="scene">
+<div class="phone" id="phone">
+
+<!-- ======= HOME PAGE ======= -->
+<div class="page active" id="pg-home">
+  <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
+  <div class="top-nav">
+    <div class="avatar" onclick="nav('pg-profile')">AR</div>
+    <div class="search" onclick="showModal('pay')">🔍&nbsp; Pay any number or UPI</div>
+    <div class="notif" onclick="showToast('No new notifications')">🔔<div class="notif-dot"></div></div>
+  </div>
+  <div class="scroll">
+    <div style="padding:20px 0 0;">
+      <div style="font-size:12px;color:var(--sub2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">Good morning</div>
+      <div style="font-size:26px;font-weight:800;color:var(--black);">Adhil <em style="font-style:normal;color:var(--lav-deep);">Rahman</em></div>
+    </div>
+
+    <!-- CARD -->
+    <div style="margin:20px 0;perspective:900px;">
+      <div class="main-card" id="hcard" onclick="nav('pg-wallet')">
+        <div class="card-shimmer"></div>
+        <div class="card-glow"></div>
+        <div class="card-inner">
+          <div class="card-top" style="display:flex;justify-content:space-between;align-items:flex-start;">
+            <div class="card-logo">Yungly<em>Pay</em></div>
+            <div class="chip"></div>
+          </div>
+          <div>
+            <div class="bal-lbl">Balance</div>
+            <div class="bal-amt"><sup>₹</sup>3,842.00</div>
+          </div>
+          <div class="card-foot">
+            <div class="card-holder">ADHIL RAHMAN</div>
+            <div class="rupay">RuPay Prepaid</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="qrow">
+      <div class="qa main" onclick="showModal('add')">➕ Add</div>
+      <div class="qa alt" onclick="showModal('send')">↗ Send</div>
+      <div class="qa alt" onclick="showModal('req')">↙ Request</div>
+    </div>
+
+    <!-- SCAN -->
+    <div class="scan-card" onclick="showModal('scan')" style="margin-bottom:16px;">
+      <div class="qr-box">
+        <div class="qc on"></div><div class="qc on"></div><div class="qc on"></div><div class="qc off"></div><div class="qc on"></div>
+        <div class="qc on"></div><div class="qc off"></div><div class="qc on"></div><div class="qc off"></div><div class="qc on"></div>
+        <div class="qc on"></div><div class="qc on"></div><div class="qc off"></div><div class="qc on"></div><div class="qc on"></div>
+        <div class="qc off"></div><div class="qc on"></div><div class="qc on"></div><div class="qc off"></div><div class="qc on"></div>
+        <div class="qc on"></div><div class="qc off"></div><div class="qc on"></div><div class="qc on"></div><div class="qc off"></div>
+      </div>
+      <div class="scan-txt">
+        <h3>Scan &amp; Pay</h3>
+        <p>Instant UPI — minimal failures</p>
+      </div>
+      <div class="scan-arr">→</div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="feat-grid">
+      <div class="feat" onclick="showToast('Recharge coming soon!')"><div class="feat-ico fi-a">📱</div><div class="feat-lbl">Recharge</div></div>
+      <div class="feat" onclick="nav('pg-bank')"><div class="feat-ico fi-b">🏦</div><div class="feat-lbl">Bank</div></div>
+      <div class="feat" onclick="showToast('DigiGold launching soon!')"><div class="feat-ico fi-a">🏅</div><div class="feat-lbl">DigiGold</div></div>
+      <div class="feat" onclick="showModal('self')"><div class="feat-ico fi-b">🔄</div><div class="feat-lbl">Transfer</div></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- CONTACTS -->
+    <div style="margin:0 0 20px;">
+      <div class="sec"><div class="sec-t">Recent</div><div class="sec-m" onclick="showToast('All contacts')">See all →</div></div>
+      <div class="crow">
+        <div class="cnt" onclick="showModal('send')"><div class="cav cv1">SR</div><div class="cnm">Suraj</div></div>
+        <div class="cnt" onclick="showModal('send')"><div class="cav cv2">AF</div><div class="cnm">Afzal</div></div>
+        <div class="cnt" onclick="showModal('send')"><div class="cav cv3">MH</div><div class="cnm">Mohammed</div></div>
+        <div class="cnt" onclick="showModal('send')"><div class="cav cv4">RP</div><div class="cnm">Rajesh</div></div>
+        <div class="cnt" onclick="showModal('send')"><div class="cav cv5">KV</div><div class="cnm">Kavya</div></div>
+        <div class="cnt" onclick="showToast('Add contact')"><div class="cav cv-add">＋</div><div class="cnm">Add</div></div>
+      </div>
+    </div>
+
+    <!-- REWARDS CARD -->
+    <div class="rew-card" onclick="nav('pg-rewards')">
+      <div class="rew-bg"></div>
+      <div class="rew-in">
+        <div class="rew-lbl">⚡ Yungly Coins</div>
+        <div class="rew-coins">3,483 <span>coins</span></div>
+        <div class="rew-bar-bg"><div class="rew-bar"></div></div>
+        <div class="rew-hint">517 more coins → ₹100 cashback</div>
+      </div>
+    </div>
+
+    <!-- GHOST LINK PROMO -->
+    <div style="background:var(--black);border-radius:20px;padding:18px;margin:0 0 16px;cursor:pointer;display:flex;align-items:center;gap:14px;" onclick="nav('pg-ghost')">
+      <div style="width:48px;height:48px;border-radius:14px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👻</div>
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:3px;">Ghost Link Privacy</div>
+        <div style="font-size:12px;color:rgba(203,213,240,0.45);">Pay without revealing your real UPI ID</div>
+      </div>
+      <div style="background:var(--lav);color:var(--black);font-size:10px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0;">NEW</div>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div style="margin:0 0 20px;">
+      <div class="sec"><div class="sec-t">Transactions</div><div class="sec-m" onclick="showToast('View all history')">History →</div></div>
+      <div class="tx" onclick="showToast('Amazon Pay — ₹249')"><div class="tx-ic ti1">🛒</div><div style="flex:1;"><div class="tx-nm">Amazon Pay</div><div class="tx-dt">Today · 07:42</div></div><div class="tx-am dr">−₹249</div></div>
+      <div class="tx" onclick="showToast('Received from Suraj')"><div class="tx-ic ti2">👤</div><div style="flex:1;"><div class="tx-nm">Suraj Dagar</div><div class="tx-dt">Yesterday · 23:15</div></div><div class="tx-am cr">+₹500</div></div>
+      <div class="tx" onclick="showToast('Chai Point — ₹48')"><div class="tx-ic ti3">☕</div><div style="flex:1;"><div class="tx-nm">Chai Point</div><div class="tx-dt">Apr 25 · 15:30</div></div><div class="tx-am dr">−₹48</div></div>
+      <div class="tx" onclick="showToast('Google Play — ₹99')"><div class="tx-ic ti4">🎮</div><div style="flex:1;"><div class="tx-nm">Google Play</div><div class="tx-dt">Apr 24 · 20:20</div></div><div class="tx-am dr">−₹99</div></div>
+    </div>
+
+    <div class="promo" onclick="showToast('Invite friends & earn!')">
+      <div style="font-size:28px;">🎯</div>
+      <div><h4>Refer &amp; Earn</h4><p>Get ₹20 for every friend you invite</p></div>
+      <div class="promo-badge">NEW</div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="ni on" onclick="navTab('home')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div><div class="ni-lbl">Home</div></div>
+    <div class="ni" onclick="navTab('wallet')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="3"/><path d="M16 14a1 1 0 100-2 1 1 0 000 2z" fill="currentColor" stroke="none"/><path d="M2 10h20"/></svg></div><div class="ni-lbl">Money</div></div>
+    <div class="nc"><div class="pay-btn" onclick="showModal('pay')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div></div>
+    <div class="ni" onclick="navTab('rewards')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div><div class="ni-lbl">Perks</div></div>
+    <div class="ni" onclick="navTab('keeper')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="ni-lbl">Vault</div></div>
+  </div>
+</div>
+
+<!-- ======= WALLET PAGE ======= -->
+<div class="page" id="pg-wallet">
+  <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
+  <div class="pg-head">
+    <div class="back-btn" onclick="nav('pg-home')">← Back</div>
+    <div class="pg-title">My Wallet</div>
+    <div class="pg-sub">Yungly · Prepaid RuPay</div>
+  </div>
+  <div class="scroll" style="padding-top:4px;">
+    <div class="wallet-card">
+      <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(203,213,240,0.05);top:-60px;right:-40px;"></div>
+      <div style="position:relative;z-index:1;">
+        <div class="wc-lbl">Available Balance</div>
+        <div class="wc-bal"><sup>₹</sup>3,842.00</div>
+        <div class="wc-upi">adhil11@yunglypay</div>
+        <div style="margin-top:10px;display:flex;align-items:center;gap:8px;" onclick="nav('pg-ghost')">
+          <div class="privacy-pill">👻 Ghost Link Active</div>
+        </div>
+        <div class="wc-row">
+          <div class="wc-btn wcb-main" onclick="showModal('add')">➕ Add Money</div>
+          <div class="wc-btn wcb-main" onclick="showModal('send')">↗ Send</div>
+          <div class="wc-btn wcb-main" onclick="showModal('scan')">⚡ Scan</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wallet-sec">
+      <div class="sec"><div class="sec-t">Manage Money</div></div>
+      <div class="wallet-item" onclick="showToast('All Yungly transactions')"><div class="wi-ico wia">💳</div><div class="wi-info"><div class="wi-nm">View Yungly Transactions</div><div class="wi-d">Full history</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="showToast('Saved payment modes')"><div class="wi-ico wib">🏦</div><div class="wi-info"><div class="wi-nm">Saved Payment Modes</div><div class="wi-d">UPI, cards & more</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="showToast('ATM withdrawal settings')"><div class="wi-ico wia">🏧</div><div class="wi-info"><div class="wi-nm">ATM Withdrawals</div><div class="wi-d">Up to ₹10,000/month</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="showToast('Transaction alerts')"><div class="wi-ico wib">🔔</div><div class="wi-info"><div class="wi-nm">Transaction Alerts</div><div class="wi-d">SMS & push notifications</div></div><div class="wi-arr">›</div></div>
+    </div>
+
+    <div class="sec"><div class="sec-t">Wallet Details</div></div>
+    <div class="wallet-item" onclick="nav('pg-ghost')"><div class="wi-ico wia" style="background:var(--black);">👻</div><div class="wi-info"><div class="wi-nm" style="color:var(--black);">Ghost Link Privacy</div><div class="wi-d">Your real UPI ID stays hidden</div></div><div class="wi-arr">›</div></div>
+    <div class="wallet-item" onclick="showToast('Manage beneficiaries')"><div class="wi-ico wib">👥</div><div class="wi-info"><div class="wi-nm">Manage Beneficiaries</div><div class="wi-d">Saved payees</div></div><div class="wi-arr">›</div></div>
+    <div class="wallet-item" onclick="showToast('View invoices')"><div class="wi-ico wia">📄</div><div class="wi-info"><div class="wi-nm">View Invoices</div><div class="wi-d">Download receipts</div></div><div class="wi-arr">›</div></div>
+    <div style="height:20px;"></div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTab('home')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div><div class="ni-lbl">Home</div></div>
+    <div class="ni on" onclick="navTab('wallet')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="3"/><path d="M16 14a1 1 0 100-2 1 1 0 000 2z" fill="currentColor" stroke="none"/><path d="M2 10h20"/></svg></div><div class="ni-lbl">Money</div></div>
+    <div class="nc"><div class="pay-btn" onclick="showModal('pay')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div></div>
+    <div class="ni" onclick="navTab('rewards')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div><div class="ni-lbl">Perks</div></div>
+    <div class="ni" onclick="navTab('keeper')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="ni-lbl">Vault</div></div>
+  </div>
+</div>
+
+<!-- ======= BANK PAGE ======= -->
+<div class="page" id="pg-bank">
+  <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
+  <div class="pg-head">
+    <div class="back-btn" onclick="nav('pg-home')">← Back</div>
+    <div class="pg-title">Bank Account</div>
+    <div class="pg-sub">Link your bank for UPI payments</div>
+  </div>
+  <div class="scroll">
+    <div class="bank-empty">
+      <div class="bank-ico-big">🏦</div>
+      <div class="bank-banks">
+        <div class="bank-logo">🏛</div>
+        <div class="bank-logo">🔵</div>
+        <div class="bank-logo">🟠</div>
+        <div class="bank-logo">🔴</div>
+        <div class="bank-logo">🟣</div>
+      </div>
+      <div class="bank-t">Link Your Bank Account</div>
+      <div class="bank-s">Connect your bank account to make instant UPI payments directly from your balance.</div>
+      <div class="bank-cta" onclick="showToast('Opening bank link flow...')">🔗 &nbsp;Link Bank Account</div>
+      <div style="margin-top:16px;font-size:13px;color:var(--sub2);">— or —</div>
+      <div style="font-size:13px;color:var(--sub);margin-top:8px;">Don't have a bank account?</div>
+      <div style="height:52px;width:100%;border-radius:14px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--black);cursor:pointer;" onclick="showToast('We\'ll notify you when ready!')">Get Notified →</div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTab('home')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div><div class="ni-lbl">Home</div></div>
+    <div class="ni" onclick="navTab('wallet')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="3"/><path d="M16 14a1 1 0 100-2 1 1 0 000 2z" fill="currentColor" stroke="none"/><path d="M2 10h20"/></svg></div><div class="ni-lbl">Money</div></div>
+    <div class="nc"><div class="pay-btn" onclick="showModal('pay')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div></div>
+    <div class="ni" onclick="navTab('rewards')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div><div class="ni-lbl">Perks</div></div>
+    <div class="ni" onclick="navTab('keeper')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="ni-lbl">Vault</div></div>
+  </div>
+</div>
+
+<!-- ======= REWARDS PAGE ======= -->
+<div class="page" id="pg-rewards">
+  <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
+  <div class="pg-head">
+    <div class="back-btn" onclick="nav('pg-home')">← Back</div>
+    <div class="pg-title">Rewards</div>
+    <div class="pg-sub">Your Yungly coins & deals</div>
+  </div>
+  <div class="scroll">
+    <div class="rew-hero">
+      <div class="rew-hero-bg"></div>
+      <div class="rew-hero-in">
+        <div class="rew-big">3,483 <span>coins</span></div>
+        <div class="rew-p">≈ ₹34.83 redeemable value</div>
+        <div class="rew-prog-wrap"><div class="rew-prog"></div></div>
+        <div class="rew-prog-lbl" style="color:rgba(203,213,240,0.4);font-size:12px;">517 more coins to unlock ₹100 cashback</div>
+      </div>
+    </div>
+    <div class="rew-deals">
+      <div class="sec"><div class="sec-t">Live Deals</div></div>
+      <div class="deal-item" onclick="showToast('Claim: Watches @ ₹99')"><div class="deal-ico">⌚</div><div class="deal-info"><div class="deal-t">Watches & more @ ₹99</div><div class="deal-s">Flat 10% + extra 5% off · Shopsy</div></div><div class="deal-coin">50 🪙</div></div>
+      <div class="deal-item" onclick="showToast('Claim: boAt ₹500 off')"><div class="deal-ico">🎧</div><div class="deal-info"><div class="deal-t">Flat ₹500 off</div><div class="deal-s">On boAt neckbands</div></div><div class="deal-coin">30 🪙</div></div>
+      <div class="deal-item" onclick="showToast('Claim: Swiggy 20% off')"><div class="deal-ico">🍕</div><div class="deal-info"><div class="deal-t">20% off on Swiggy</div><div class="deal-s">Min. order ₹199 · Tonight only</div></div><div class="deal-coin">20 🪙</div></div>
+      <div class="deal-item" onclick="showToast('Claim: Google Play credit')"><div class="deal-ico">🎮</div><div class="deal-info"><div class="deal-t">₹50 Google Play Credit</div><div class="deal-s">For mobile games & apps</div></div><div class="deal-coin">100 🪙</div></div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTab('home')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div><div class="ni-lbl">Home</div></div>
+    <div class="ni" onclick="navTab('wallet')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="3"/><path d="M16 14a1 1 0 100-2 1 1 0 000 2z" fill="currentColor" stroke="none"/><path d="M2 10h20"/></svg></div><div class="ni-lbl">Money</div></div>
+    <div class="nc"><div class="pay-btn" onclick="showModal('pay')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div></div>
+    <div class="ni on" onclick="navTab('rewards')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div><div class="ni-lbl">Perks</div></div>
+    <div class="ni" onclick="navTab('keeper')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="ni-lbl">Vault</div></div>
+  </div>
+</div>
+
+<!-- ======= KEEPER PAGE ======= -->
+<div class="page" id="pg-keeper">
+  <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
+  <div class="pg-head">
+    <div class="back-btn" onclick="nav('pg-home')">← Back</div>
+    <div class="pg-title">Keeper</div>
+    <div class="pg-sub">Your financial safety vault</div>
+  </div>
+  <div class="scroll">
+    <div class="keeper-hero">
+      <div class="keeper-ico">🔒</div>
+      <div class="keeper-t">Your Money is Safe</div>
+      <div class="keeper-s">Keeper protects your transactions with smart alerts, limits, and privacy tools.</div>
+    </div>
+    <div class="keeper-items">
+      <div class="ki" onclick="nav('pg-ghost')"><div class="ki-ico" style="background:var(--black);font-size:20px;">👻</div><div><div class="ki-nm">Ghost Link Privacy</div><div class="ki-d">Hide your real UPI ID — Active</div></div></div>
+      <div class="ki" onclick="showToast('Spending limits settings')"><div class="ki-ico">💰</div><div><div class="ki-nm">Spending Limits</div><div class="ki-d">Set daily & monthly caps</div></div></div>
+      <div class="ki" onclick="showToast('Block/unblock UPI IDs')"><div class="ki-ico">🚫</div><div><div class="ki-nm">Blocked UPI IDs</div><div class="ki-d">Manage blocked contacts</div></div></div>
+      <div class="ki" onclick="showToast('Transaction alerts active')"><div class="ki-ico">🔔</div><div><div class="ki-nm">Smart Alerts</div><div class="ki-d">Instant SMS + push alerts</div></div></div>
+      <div class="ki" onclick="showToast('FamX controls')"><div class="ki-ico">🛡️</div><div><div class="ki-nm">Yungly Controls</div><div class="ki-d">Parent visibility settings</div></div></div>
+    </div>
+    <div style="background:var(--lav-dim);border-radius:16px;padding:14px;border:1.5px solid var(--lav-border);">
+      <div style="font-size:13px;font-weight:700;color:var(--black);margin-bottom:8px;">⚠️ Safety Reminders</div>
+      <div style="font-size:12px;color:var(--sub);line-height:1.7;">
+        • Never send money to unknown UPI IDs<br>
+        • Don't click suspicious payment links<br>
+        • Yungly will never ask for your PIN
+      </div>
+    </div>
+    <div style="height:20px;"></div>
+  </div>
+  <div class="bnav">
+    <div class="ni" onclick="navTab('home')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg></div><div class="ni-lbl">Home</div></div>
+    <div class="ni" onclick="navTab('wallet')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="3"/><path d="M16 14a1 1 0 100-2 1 1 0 000 2z" fill="currentColor" stroke="none"/><path d="M2 10h20"/></svg></div><div class="ni-lbl">Money</div></div>
+    <div class="nc"><div class="pay-btn" onclick="showModal('pay')"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div></div>
+    <div class="ni" onclick="navTab('rewards')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div><div class="ni-lbl">Perks</div></div>
+    <div class="ni on" onclick="navTab('keeper')"><div class="ni-ico-wrap"><svg class="ni-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="ni-lbl">Vault</div></div>
+  </div>
+</div>
+
+<!-- ======= 👻 GHOST LINK PAGE ======= -->
+<div class="page" id="pg-ghost">
+  <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
+  <div class="pg-head">
+    <div class="back-btn" onclick="nav('pg-home')">← Back</div>
+  </div>
+  <div class="scroll">
+    <div class="ghost-hero">
+      <!-- HERO CARD -->
+      <div class="ghost-card">
+        <div class="ghost-bg1"></div>
+        <div class="ghost-bg2"></div>
+        <div class="ghost-in">
+          <div class="ghost-badge"><div class="ghost-badge-dot"></div><span>Privacy Feature</span></div>
+          <div class="ghost-t">👻 Ghost<br><em>Link Privacy</em></div>
+          <div class="ghost-s">Share a masked payment link — nobody ever sees your real UPI ID. Not the merchant. Not the stranger. Not anyone.</div>
+        </div>
+      </div>
+
+      <!-- TOGGLE -->
+      <div class="ghost-toggle-row" style="background:#fff;border:1.5px solid var(--lav-border);">
+        <div class="gt-info">
+          <div class="gt-t" style="color:var(--black);">Ghost Mode</div>
+          <div class="gt-s" style="color:var(--sub);">Your UPI identity is masked</div>
+        </div>
+        <div class="toggle on" id="ghostToggle" onclick="toggleGhost()">
+          <div class="toggle-ball"></div>
+        </div>
+      </div>
+
+      <!-- GHOST LINK DISPLAY -->
+      <div class="ghost-link-box" style="background:var(--lav-dim);border:1.5px solid var(--lav-border);">
+        <div class="gl-lbl" style="color:var(--sub2);">Your Ghost Payment Link</div>
+        <div class="gl-link" style="color:var(--lav-deep);" id="ghostLinkText">pay.yunglypay.in/g/adhil-x7k2m</div>
+        <div class="gl-actions">
+          <div class="gl-act" style="background:rgba(123,150,212,0.12);color:var(--lav-deep);border-color:var(--lav-border);" onclick="copyGhostLink()">📋 Copy</div>
+          <div class="gl-act" style="background:rgba(123,150,212,0.12);color:var(--lav-deep);border-color:var(--lav-border);" onclick="shareGhostLink()">📤 Share</div>
+          <div class="gl-act" style="background:rgba(123,150,212,0.12);color:var(--lav-deep);border-color:var(--lav-border);" onclick="refreshGhostLink()">🔄 New</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="how-card">
+      <div class="how-t">How Ghost Link Works</div>
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div class="how-info">
+          <div class="how-st">You share your Ghost Link</div>
+          <div class="how-sd">Instead of your real UPI ID like <code style="background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:11px;">adhil@okicici</code>, you share a masked link.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div class="how-info">
+          <div class="how-st">They pay through the link</div>
+          <div class="how-sd">The payer sees only your Ghost link — your real identity stays completely hidden.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div class="how-info">
+          <div class="how-st">Money lands in your wallet</div>
+          <div class="how-sd">Payment arrives instantly. No exposure, no trace, full privacy.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEMO SCENARIO -->
+    <div class="ghost-demo">
+      <div class="gd-t">🔍 What others see</div>
+      <div class="gd-scenario">
+        <div class="gd-label">Without Ghost Link (Exposed ❌)</div>
+        <div class="gd-val">adhil.rahman.kerala@okicici</div>
+      </div>
+      <div class="gd-vs">↓ Ghost Link protects you ↓</div>
+      <div class="gd-scenario" style="background:var(--black);">
+        <div class="gd-label" style="color:rgba(203,213,240,0.4);">With Ghost Link (Protected ✅)</div>
+        <div class="gd-val" style="color:var(--lav);">pay.yunglypay.in/g/adhil-x7k2m</div>
+        <div class="gd-protect" style="color:rgba(203,213,240,0.4);font-size:12px;margin-top:6px;">Your real name & bank hidden 👻</div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div style="background:#fff;border-radius:20px;padding:18px;border:1.5px solid var(--lav-border);margin:12px 0 24px;">
+      <div style="font-size:15px;font-weight:800;color:var(--black);margin-bottom:14px;">Link Settings</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(203,213,240,0.3);">
+        <div><div style="font-size:13px;font-weight:600;color:var(--black);">Auto-expire link</div><div style="font-size:12px;color:var(--sub);">After 30 days</div></div>
+        <div class="toggle on" onclick="showToast('Expiry setting updated')"><div class="toggle-ball"></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(203,213,240,0.3);">
+        <div><div style="font-size:13px;font-weight:600;color:var(--black);">Payment notifications</div><div style="font-size:12px;color:var(--sub);">When someone pays via link</div></div>
+        <div class="toggle on" onclick="showToast('Notification setting saved')"><div class="toggle-ball"></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;">
+        <div><div style="font-size:13px;font-weight:600;color:var(--black);">Request amount</div><div style="font-size:12px;color:var(--sub);">Pre-fill amount in link</div></div>
+        <div class="toggle" onclick="showToast('Amount pre-fill toggled')"><div class="toggle-ball"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ======= PROFILE PAGE ======= -->
+<div class="page" id="pg-profile">
+  <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
+  <div class="pg-head">
+    <div class="back-btn" onclick="nav('pg-home')">← Back</div>
+    <div class="pg-title">Profile</div>
+  </div>
+  <div class="scroll">
+    <div style="display:flex;flex-direction:column;align-items:center;padding:24px 0 20px;gap:12px;">
+      <div style="width:80px;height:80px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;color:#fff;position:relative;">
+        AR
+        <div style="position:absolute;bottom:0;right:0;width:24px;height:24px;border-radius:50%;background:var(--lav);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px;cursor:pointer;" onclick="showToast('Edit photo')">✏️</div>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-size:22px;font-weight:800;color:var(--black);">Adhil Rahman</div>
+        <div style="font-size:13px;color:var(--sub);font-family:'Space Mono',monospace;">adhil11@yunglypay</div>
+      </div>
+      <div onclick="nav('pg-ghost')" class="privacy-pill">👻 Ghost Link Active</div>
+    </div>
+    <div style="margin:0 0 20px;">
+      <div class="wallet-item" onclick="showToast('Edit personal info')"><div class="wi-ico wia">👤</div><div class="wi-info"><div class="wi-nm">Personal Info</div><div class="wi-d">Name, phone, email</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="showToast('KYC verified ✓')"><div class="wi-ico wib">✅</div><div class="wi-info"><div class="wi-nm">KYC Status</div><div class="wi-d">Verified</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="nav('pg-ghost')"><div class="wi-ico" style="background:var(--black);width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;">👻</div><div class="wi-info"><div class="wi-nm">Ghost Link Privacy</div><div class="wi-d">Payment privacy settings</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="showToast('Notification preferences')"><div class="wi-ico wia">🔔</div><div class="wi-info"><div class="wi-nm">Notifications</div><div class="wi-d">Alerts & reminders</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="showToast('Help & support')"><div class="wi-ico wib">💬</div><div class="wi-info"><div class="wi-nm">Help & Support</div><div class="wi-d">FAQs & chat support</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="showToast('Logging out...')"><div class="wi-ico" style="background:#FFF0F0;border-color:rgba(255,0,0,0.08);width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;">🚪</div><div class="wi-info"><div class="wi-nm" style="color:#CC2222;">Log Out</div><div class="wi-d">Sign out of Yungly Pay</div></div><div class="wi-arr">›</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======= MODALS ======= -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" id="modal-inner">
+    <div class="modal-handle"></div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+</div><!-- /phone -->
+</div><!-- /scene -->
+
+<script>
+// ── NAV ──
+let currentPage = 'pg-home';
+function nav(id) {
+  const cur = document.getElementById(currentPage);
+  const next = document.getElementById(id);
+  if (!next || id === currentPage) return;
+  cur.classList.add('slide-left');
+  setTimeout(() => { cur.classList.remove('active','slide-left'); }, 300);
+  next.classList.add('active');
+  currentPage = id;
+}
+
+function navTab(tab) {
+  const map = {home:'pg-home',wallet:'pg-wallet',rewards:'pg-rewards',keeper:'pg-keeper'};
+  if (map[tab]) nav(map[tab]);
+  // sync all bottom navs
+  document.querySelectorAll('.bnav').forEach(bnav => {
+    bnav.querySelectorAll('.ni').forEach(ni => ni.classList.remove('on'));
+    const order = ['home','wallet',null,'rewards','keeper'];
+    const items = bnav.querySelectorAll('.ni');
+    order.forEach((t,i) => { if(t===tab && items[i]) items[i].classList.add('on'); });
+  });
+}
+
+// ── MODAL ──
+const modals = {
+  add: {
+    title:'Add Money',sub:'Choose how to top up your wallet',
+    html:`<input class="modal-input" placeholder="Enter amount (₹)" type="number" style="margin-bottom:10px;">
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="showToast('₹100 selected')">₹100</div>
+      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="showToast('₹500 selected')">₹500</div>
+      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="showToast('₹1000 selected')">₹1000</div>
+    </div>
+    <button class="modal-btn" onclick="showToast('Redirecting to payment gateway...');closeModal()">Proceed to Pay</button>`
+  },
+  send: {
+    title:'Send Money', sub:'To UPI ID, phone number or contact',
+    html:`<input class="modal-input" placeholder="UPI ID or phone number" style="margin-bottom:12px;">
+    <div class="amount-display" id="sendAmt"><sup>₹</sup>0</div>
+    <div class="keypad">
+      ${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="key" onclick="typeAmt('${n}')">${n}</button>`).join('')}
+      <button class="key del" onclick="delAmt()">⌫</button>
+      <button class="key zero" onclick="typeAmt('0')">0</button>
+      <button class="key" onclick="typeAmt('.')">.</button>
+    </div>
+    <button class="modal-btn" style="margin-top:14px;" onclick="showToast('Payment sent! 🎉');closeModal()">Send →</button>`
+  },
+  req: {
+    title:'Request Money', sub:'Send a payment request',
+    html:`<input class="modal-input" placeholder="From: UPI ID or phone" style="margin-bottom:12px;">
+    <input class="modal-input" placeholder="Amount (₹)" type="number" style="margin-bottom:12px;">
+    <input class="modal-input" placeholder="Note (optional)" style="margin-bottom:14px;">
+    <button class="modal-btn" onclick="showToast('Request sent! 📩');closeModal()">Send Request</button>`
+  },
+  pay: {
+    title:'Quick Pay', sub:'Scan, UPI ID or number',
+    html:`<div style="display:flex;gap:10px;margin-bottom:14px;">
+    <div style="flex:1;height:80px;border-radius:16px;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;" onclick="showToast('Opening QR scanner...');closeModal()"><div style="font-size:24px;">📷</div><div style="font-size:12px;color:rgba(203,213,240,0.6);">Scan QR</div></div>
+    <div style="flex:1;height:80px;border-radius:16px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;" onclick="showModal('send')"><div style="font-size:24px;">📱</div><div style="font-size:12px;color:var(--sub);">UPI / Phone</div></div>
+    </div>
+    <div style="text-align:center;color:var(--sub2);font-size:12px;margin:8px 0 12px;">— or pay via Ghost Link —</div>
+    <button class="modal-btn" style="background:var(--lav-dim);color:var(--black);box-shadow:none;" onclick="closeModal();nav('pg-ghost')">👻 Use Ghost Link</button>`
+  },
+  scan: {
+    title:'Scan & Pay', sub:'Point at any UPI QR code',
+    html:`<div style="width:100%;height:200px;border-radius:20px;background:var(--black);display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;overflow:hidden;">
+    <div style="width:160px;height:160px;border:2px solid var(--lav);border-radius:16px;position:relative;animation:scanPulse 2s ease infinite;">
+      <div style="position:absolute;top:-1px;left:-1px;width:30px;height:30px;border-top:3px solid var(--lav);border-left:3px solid var(--lav);border-radius:4px 0 0 0;"></div>
+      <div style="position:absolute;top:-1px;right:-1px;width:30px;height:30px;border-top:3px solid var(--lav);border-right:3px solid var(--lav);border-radius:0 4px 0 0;"></div>
+      <div style="position:absolute;bottom:-1px;left:-1px;width:30px;height:30px;border-bottom:3px solid var(--lav);border-left:3px solid var(--lav);border-radius:0 0 0 4px;"></div>
+      <div style="position:absolute;bottom:-1px;right:-1px;width:30px;height:30px;border-bottom:3px solid var(--lav);border-right:3px solid var(--lav);border-radius:0 0 4px 0;"></div>
+    </div>
+    <div style="position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--lav),transparent);animation:scanLine 2s ease-in-out infinite;"></div>
+    <style>@keyframes scanLine{0%{top:20%;}50%{top:80%;}100%{top:20%;}} @keyframes scanPulse{0%,100%{opacity:1;}50%{opacity:0.6;}}</style>
+    </div>
+    <div style="text-align:center;color:var(--sub);font-size:13px;margin-bottom:16px;">Scanning for QR code...</div>
+    <button class="modal-btn" onclick="showToast('QR detected! Processing...');closeModal()">Demo: Detect QR</button>`
+  },
+  self: {
+    title:'Self Transfer', sub:'Move funds between accounts',
+    html:`<div style="display:flex;flex-direction:column;gap:12px;margin-bottom:14px;">
+    <div style="padding:14px;background:var(--lav-dim);border-radius:14px;border:1.5px solid var(--lav-border);"><div style="font-size:11px;color:var(--sub2);margin-bottom:4px;">FROM</div><div style="font-size:15px;font-weight:700;">Yungly Wallet · ₹3,842</div></div>
+    <div style="text-align:center;font-size:20px;">↓</div>
+    <div style="padding:14px;background:#F0F0F0;border-radius:14px;border:1.5px solid rgba(0,0,0,0.06);"><div style="font-size:11px;color:var(--sub2);margin-bottom:4px;">TO</div><div style="font-size:15px;font-weight:700;">Bank Account · Linked soon</div></div>
+    </div>
+    <input class="modal-input" placeholder="Amount to transfer (₹)" type="number" style="margin-bottom:14px;">
+    <button class="modal-btn" onclick="showToast('Transfer initiated!');closeModal()">Transfer Now</button>`
+  }
+};
+
+let sendAmtVal = '';
+function typeAmt(k) {
+  if(k==='.' && sendAmtVal.includes('.')) return;
+  sendAmtVal += k;
+  const el = document.getElementById('sendAmt');
+  if(el) el.innerHTML = '<sup>₹</sup>' + (sendAmtVal||'0');
+}
+function delAmt() {
+  sendAmtVal = sendAmtVal.slice(0,-1);
+  const el = document.getElementById('sendAmt');
+  if(el) el.innerHTML = '<sup>₹</sup>' + (sendAmtVal||'0');
+}
+
+function showModal(type) {
+  const m = modals[type];
+  if(!m) return;
+  sendAmtVal = '';
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-t">${m.title}</div>
+    <div class="modal-s">${m.sub}</div>
+    ${m.html}
+    <div class="modal-cancel" onclick="closeModal()">Cancel</div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(e) {
+  if(e && e.target !== document.getElementById('modal')) return;
+  document.getElementById('modal').classList.remove('open');
+}
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── GHOST TOGGLE ──
+let ghostOn = true;
+function toggleGhost() {
+  ghostOn = !ghostOn;
+  const tog = document.getElementById('ghostToggle');
+  tog.classList.toggle('on', ghostOn);
+  showToast(ghostOn ? '👻 Ghost Mode activated' : 'Ghost Mode disabled');
+}
+
+// ── GHOST LINK ACTIONS ──
+const ghostLinks = ['pay.yunglypay.in/g/adhil-x7k2m','pay.yunglypay.in/g/ghost-9pq3n','pay.yunglypay.in/g/priv-4rj8k'];
+let glIdx = 0;
+function copyGhostLink() {
+  const txt = document.getElementById('ghostLinkText').textContent;
+  navigator.clipboard?.writeText(txt).catch(()=>{});
+  showToast('🔗 Ghost link copied!');
+}
+function shareGhostLink() { showToast('📤 Share sheet opened'); }
+function refreshGhostLink() {
+  glIdx = (glIdx+1) % ghostLinks.length;
+  document.getElementById('ghostLinkText').textContent = ghostLinks[glIdx];
+  showToast('🔄 New Ghost link generated');
+}
+
+// ── 3D CARD TILT ──
+const hc = document.getElementById('hcard');
+if(hc) {
+  hc.addEventListener('mousemove', e => {
+    const r = hc.getBoundingClientRect();
+    const x = (e.clientX-r.left)/r.width-0.5;
+    const y = (e.clientY-r.top)/r.height-0.5;
+    hc.style.transform = `perspective(700px) rotateY(${x*14}deg) rotateX(${-y*9}deg) scale(1.02)`;
+  });
+  hc.addEventListener('mouseleave', () => { hc.style.transform=''; });
+}
+
+// Hide loader
+setTimeout(() => {
+  const l = document.getElementById('loader');
+  if(l) { l.style.opacity='0'; l.style.pointerEvents='none'; }
+}, 1500);
+</script>
+
+<a href="index.html" style="
+  position:fixed;top:20px;left:50%;transform:translateX(-50%) translateX(-230px);
+  background:rgba(255,255,255,0.95);color:#0A0A0A;
+  padding:8px 16px;border-radius:100px;
+  font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;
+  text-decoration:none;z-index:9999;
+  box-shadow:0 4px 20px rgba(100,120,180,0.18);
+  border:1.5px solid rgba(203,213,240,0.5);
+  letter-spacing:0.3px;
+  transition:all 0.2s;
+  white-space:nowrap;
+" onmouseover="this.style.background='#0A0A0A';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.95)';this.style.color='#0A0A0A'">
+  ← yunglypay.in
+</a>
+
+</body>
+</html>

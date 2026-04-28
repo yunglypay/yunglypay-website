@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /google22538accdd57403a.html
+
+Sitemap: https://yunglypay.in/sitemap.xml
