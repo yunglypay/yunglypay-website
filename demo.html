@@ -399,6 +399,29 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
 .amount-display{font-size:36px;font-weight:900;color:var(--black);text-align:center;padding:12px 0;letter-spacing:-1px;min-height:56px;}
 .amount-display sup{font-size:20px;color:var(--sub);}
 
+/* ── PAYLINK STYLES ── */
+.gl-tabs{display:flex;background:rgba(203,213,240,0.08);border-radius:16px;padding:4px;margin:0 0 18px;gap:4px;}
+.gl-tab{flex:1;text-align:center;padding:9px 6px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;color:rgba(203,213,240,0.5);transition:all 0.2s;}
+.gl-tab.active{background:#fff;color:var(--black);box-shadow:0 2px 8px rgba(0,0,0,0.08);}
+.pl-create-card{background:#fff;border-radius:20px;padding:18px;border:1.5px solid var(--lav-border);margin:0 0 14px;}
+.pl-input{width:100%;background:var(--lav-dim);border:1.5px solid var(--lav-border);border-radius:13px;padding:11px 14px;font-size:14px;font-family:inherit;color:var(--black);outline:none;margin-bottom:10px;box-sizing:border-box;}
+.pl-input:focus{border-color:var(--lav-deep);}
+.pl-input::placeholder{color:rgba(0,0,0,0.3);}
+.pl-row{display:flex;gap:8px;}
+.pl-btn{flex:1;padding:12px;border-radius:13px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;background:var(--black);color:#fff;transition:opacity 0.15s;}
+.pl-btn:active{opacity:0.8;}
+.pl-list-title{font-size:13px;font-weight:700;color:var(--sub2);letter-spacing:0.5px;text-transform:uppercase;margin:4px 0 10px;}
+.pl-item{background:#fff;border-radius:16px;padding:14px 16px;border:1.5px solid var(--lav-border);margin-bottom:10px;}
+.pl-item-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.pl-purpose{font-size:14px;font-weight:700;color:var(--black);}
+.pl-amount{font-size:15px;font-weight:800;color:var(--lav-deep);}
+.pl-link-row{display:flex;align-items:center;gap:6px;background:var(--lav-dim);border-radius:10px;padding:8px 10px;border:1px dashed var(--lav-border);}
+.pl-link-url{font-size:11px;font-family:'Space Mono',monospace;color:var(--lav-deep);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pl-act-row{display:flex;gap:6px;margin-top:8px;}
+.pl-act{flex:1;padding:7px 0;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;background:rgba(123,150,212,0.1);color:var(--lav-deep);transition:background 0.15s;}
+.pl-act:active{background:rgba(123,150,212,0.25);}
+.pl-empty{text-align:center;padding:28px 16px;color:rgba(0,0,0,0.3);font-size:13px;}
+.pl-badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700;background:var(--lav-dim);color:var(--lav-deep);margin-left:6px;}
 /* ghost privacy label */
 .privacy-pill{display:inline-flex;align-items:center;gap:5px;background:var(--lav-dim);border:1px solid var(--lav-border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--lav-deep);font-weight:600;cursor:pointer;transition:all 0.2s;}
 .privacy-pill:hover{background:var(--lav);color:var(--black);}
@@ -709,6 +732,15 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
     <div class="back-btn" onclick="nav('pg-home')">← Back</div>
   </div>
   <div class="scroll">
+
+    <!-- TAB SWITCHER -->
+    <div class="gl-tabs">
+      <div class="gl-tab active" id="tab-ghost" onclick="switchGLTab('ghost')">👻 Ghost Link</div>
+      <div class="gl-tab" id="tab-paylink" onclick="switchGLTab('paylink')">🔗 PayLinks</div>
+    </div>
+
+    <!-- GHOST LINK CONTENT -->
+    <div id="gl-ghost-content">
     <div class="ghost-hero">
       <!-- HERO CARD -->
       <div class="ghost-card">
@@ -801,6 +833,53 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
         <div class="toggle" onclick="showToast('Amount pre-fill toggled')"><div class="toggle-ball"></div></div>
       </div>
     </div>
+    </div><!-- /gl-ghost-content -->
+
+    <!-- PAYLINK CONTENT -->
+    <div id="gl-paylink-content" style="display:none;">
+
+      <!-- HERO CARD -->
+      <div class="ghost-card" style="margin-bottom:16px;">
+        <div class="ghost-bg1"></div>
+        <div class="ghost-bg2"></div>
+        <div class="ghost-in">
+          <div class="ghost-badge"><div class="ghost-badge-dot" style="background:var(--lav);"></div><span>Creator Feature</span></div>
+          <div class="ghost-t">🔗 Ghost<br><em>PayLinks</em></div>
+          <div class="ghost-s">Create a payment link with a fixed amount &amp; purpose. Share it anywhere — payment lands in your wallet. Your UPI ID stays hidden.</div>
+        </div>
+      </div>
+
+      <!-- CREATE PAYLINK CARD -->
+      <div class="pl-create-card">
+        <div style="font-size:15px;font-weight:800;color:var(--black);margin-bottom:12px;">+ Create a PayLink</div>
+        <input class="pl-input" id="pl-purpose" placeholder="What's it for? (e.g. Logo design)" maxlength="40"/>
+        <input class="pl-input" id="pl-amount" placeholder="Amount (₹)" type="number" min="1" max="5000"/>
+        <div class="pl-row">
+          <button class="pl-btn" onclick="createPayLink()">Generate PayLink →</button>
+        </div>
+      </div>
+
+      <!-- CREATED LINK RESULT (hidden until created) -->
+      <div id="pl-result" style="display:none;background:var(--lav-dim);border:1.5px solid var(--lav-border);border-radius:20px;padding:16px;margin-bottom:14px;">
+        <div style="font-size:12px;font-weight:700;color:var(--sub2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">✅ Your PayLink is ready!</div>
+        <div id="pl-result-purpose" style="font-size:14px;font-weight:700;color:var(--black);margin-bottom:4px;"></div>
+        <div id="pl-result-amount" style="font-size:22px;font-weight:900;color:var(--lav-deep);margin-bottom:10px;"></div>
+        <div class="pl-link-row" style="margin-bottom:10px;">
+          <div class="pl-link-url" id="pl-result-url"></div>
+        </div>
+        <div class="pl-row">
+          <button class="pl-act" onclick="copyResultLink()">📋 Copy</button>
+          <button class="pl-act" onclick="shareResultLink()">📤 Share</button>
+        </div>
+      </div>
+
+      <!-- MY PAYLINKS LIST -->
+      <div class="pl-list-title">My PayLinks</div>
+      <div id="pl-list">
+        <div class="pl-empty">No PayLinks yet — create your first one above! 👆</div>
+      </div>
+
+    </div><!-- /gl-paylink-content -->
 
   </div>
 </div>
@@ -1003,6 +1082,89 @@ function refreshGhostLink() {
   glIdx = (glIdx+1) % ghostLinks.length;
   document.getElementById('ghostLinkText').textContent = ghostLinks[glIdx];
   showToast('🔄 New Ghost link generated');
+}
+
+// ── GHOST LINK TABS ──
+function switchGLTab(tab) {
+  document.getElementById('tab-ghost').classList.toggle('active', tab==='ghost');
+  document.getElementById('tab-paylink').classList.toggle('active', tab==='paylink');
+  document.getElementById('gl-ghost-content').style.display = tab==='ghost' ? '' : 'none';
+  document.getElementById('gl-paylink-content').style.display = tab==='paylink' ? '' : 'none';
+}
+
+// ── PAYLINK MVP ──
+const payLinks = [];
+let plResultUrl = '';
+const plHandles = ['x7k2m','9pq3n','4rj8k','m2n8p','v5t1q','r3k9w'];
+function genPlHandle() { return plHandles[Math.floor(Math.random()*plHandles.length)]; }
+
+function createPayLink() {
+  const purpose = document.getElementById('pl-purpose').value.trim();
+  const amtRaw  = document.getElementById('pl-amount').value.trim();
+  if (!purpose) { showToast('⚠️ Add a purpose first'); return; }
+  if (!amtRaw || isNaN(amtRaw) || Number(amtRaw) < 1) { showToast('⚠️ Enter a valid amount'); return; }
+  const amt = Number(amtRaw);
+  if (amt > 5000) { showToast('⚠️ Max ₹5,000 per link'); return; }
+
+  const handle = 'adhil-' + genPlHandle();
+  const url = 'pay.yunglypay.in/p/' + handle;
+  const link = { id: Date.now(), purpose, amt, url, handle, createdAt: new Date() };
+  payLinks.unshift(link);
+
+  // show result
+  plResultUrl = url;
+  document.getElementById('pl-result-purpose').textContent = purpose;
+  document.getElementById('pl-result-amount').textContent = '₹' + amt.toLocaleString('en-IN');
+  document.getElementById('pl-result-url').textContent = url;
+  document.getElementById('pl-result').style.display = '';
+
+  // clear inputs
+  document.getElementById('pl-purpose').value = '';
+  document.getElementById('pl-amount').value = '';
+
+  renderPayLinks();
+  showToast('🔗 PayLink created!');
+}
+
+function copyResultLink() {
+  navigator.clipboard?.writeText('https://' + plResultUrl).catch(()=>{});
+  showToast('📋 PayLink copied!');
+}
+function shareResultLink() { showToast('📤 Share sheet opened'); }
+
+function copyPlLink(url) {
+  navigator.clipboard?.writeText('https://' + url).catch(()=>{});
+  showToast('📋 Link copied!');
+}
+function cancelPlLink(id) {
+  const idx = payLinks.findIndex(p => p.id === id);
+  if (idx > -1) payLinks.splice(idx, 1);
+  renderPayLinks();
+  showToast('🗑 PayLink removed');
+}
+
+function renderPayLinks() {
+  const el = document.getElementById('pl-list');
+  if (!payLinks.length) {
+    el.innerHTML = '<div class="pl-empty">No PayLinks yet — create your first one above! 👆</div>';
+    return;
+  }
+  el.innerHTML = payLinks.map(p => `
+    <div class="pl-item">
+      <div class="pl-item-top">
+        <div class="pl-purpose">${p.purpose}<span class="pl-badge">Active</span></div>
+        <div class="pl-amount">₹${p.amt.toLocaleString('en-IN')}</div>
+      </div>
+      <div class="pl-link-row">
+        <div class="pl-link-url">${p.url}</div>
+      </div>
+      <div class="pl-act-row">
+        <button class="pl-act" onclick="copyPlLink('${p.url}')">📋 Copy</button>
+        <button class="pl-act" onclick="shareResultLink()">📤 Share</button>
+        <button class="pl-act" style="background:rgba(220,38,38,0.08);color:#DC2626;" onclick="cancelPlLink(${p.id})">🗑 Remove</button>
+      </div>
+    </div>
+  `).join('');
 }
 
 // ── 3D CARD TILT ──
