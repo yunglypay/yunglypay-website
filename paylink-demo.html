@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Yungly PayLink — Live Demo</title>
+<meta name="description" content="Yungly PayLink live investor demo — teen creator payment links with guardian controls."/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --black:#0A0A0A; --white:#FFFFFF;
+  --lav:#CBD5F0; --lav-mid:#A8B8E8; --lav-deep:#7B96D4;
+  --lav-dim:#E8EDFB; --lav-border:rgba(203,213,240,0.4);
+  --bg:#F4F6FF; --sub:#6B7599; --sub2:#A0AACB;
+  --green:#1A7A4A; --green-bg:#E8F5EE;
+  --red:#DC2626; --red-bg:#FEE2E2;
+  --warn:#D97706; --warn-bg:#FEF3C7;
+  --font:'Outfit',sans-serif; --mono:'Space Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;font-family:var(--font);background:#DDEAFF;}
+
+/* ─── SCENE (phone wrapper) ─── */
+.scene{
+  width:100%;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;
+  background:radial-gradient(ellipse 70% 50% at 80% 10%,rgba(203,213,240,0.6),transparent 60%),
+             radial-gradient(ellipse 50% 40% at 10% 90%,rgba(168,184,232,0.4),transparent 60%),#DDEAFF;
+  padding:24px 16px;
+}
+.scene-label{
+  font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--lav-deep);background:rgba(255,255,255,0.7);
+  padding:6px 16px;border-radius:100px;border:1px solid var(--lav-border);
+  backdrop-filter:blur(8px);
+}
+
+/* ─── PHONE SHELL ─── */
+.phone{
+  width:390px;height:844px;border-radius:52px;
+  background:var(--bg);position:relative;overflow:hidden;
+  box-shadow:0 0 0 10px rgba(255,255,255,0.9),0 0 0 12px rgba(203,213,240,0.45),
+             0 50px 120px rgba(80,100,160,0.25),0 8px 30px rgba(0,0,0,0.1);
+  display:flex;flex-direction:column;
+  animation:phoneIn 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes phoneIn{from{transform:perspective(1200px) rotateX(10deg) translateY(40px) scale(0.93);opacity:0;}to{transform:none;opacity:1;}}
+
+/* ─── PAGES ─── */
+.page{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.3s,transform 0.3s cubic-bezier(0.23,1,0.32,1);transform:translateX(30px);}
+.page.active{opacity:1;pointer-events:all;transform:translateX(0);}
+.page.slide-left{transform:translateX(-30px);}
+
+/* ─── STATUS BAR ─── */
+.status{display:flex;justify-content:space-between;align-items:center;padding:14px 24px 0;font-family:var(--mono);font-size:12px;color:var(--sub);flex-shrink:0;}
+.batt{width:22px;height:11px;border:1.5px solid var(--sub2);border-radius:3px;position:relative;display:inline-block;vertical-align:middle;margin-left:5px;}
+.batt::after{content:'';width:65%;height:60%;background:var(--black);position:absolute;left:2px;top:50%;transform:translateY(-50%);border-radius:1px;}
+
+/* ─── PAGE HEAD ─── */
+.pg-head{display:flex;align-items:center;gap:10px;padding:12px 20px 8px;flex-shrink:0;}
+.back-btn{font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;padding:6px 12px;border-radius:20px;background:#fff;border:1.5px solid var(--lav-border);}
+.back-btn:hover{color:var(--black);}
+.pg-title{font-size:17px;font-weight:800;color:var(--black);}
+
+/* ─── SCROLL ─── */
+.scroll{overflow-y:auto;flex:1;padding:0 20px 80px;}
+.scroll::-webkit-scrollbar{width:0;}
+
+/* ─── BOTTOM NAV ─── */
+.bnav{position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,0.92);backdrop-filter:blur(16px);border-top:1px solid rgba(203,213,240,0.35);display:flex;padding:10px 10px 20px;gap:0;z-index:50;}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:6px 0;border-radius:14px;transition:all 0.2s;}
+.ni:hover,.ni.on{background:var(--lav-dim);}
+.ni-ico{font-size:20px;}
+.ni-lbl{font-size:10px;font-weight:600;color:var(--sub2);transition:color 0.2s;}
+.ni.on .ni-lbl{color:var(--lav-deep);}
+.ni-fab{width:52px;height:52px;border-radius:18px;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:22px;margin-top:-14px;box-shadow:0 8px 24px rgba(10,10,10,0.25);cursor:pointer;transition:all 0.2s;}
+.ni-fab:hover{transform:scale(1.05);}
+
+/* ─── CARDS ─── */
+.card{background:#fff;border-radius:20px;border:1.5px solid var(--lav-border);padding:18px 20px;margin-bottom:12px;}
+.stat-row{display:flex;gap:10px;margin-bottom:12px;}
+.stat{flex:1;background:var(--lav-dim);border-radius:16px;padding:14px 16px;border:1px solid var(--lav-border);}
+.stat-lbl{font-size:10px;font-weight:700;color:var(--sub2);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;}
+.stat-val{font-size:22px;font-weight:800;color:var(--black);letter-spacing:-0.5px;}
+.stat-sub{font-size:11px;color:var(--sub);margin-top:2px;}
+
+/* ─── WALLET HERO ─── */
+.wallet-card{width:100%;height:180px;border-radius:24px;background:var(--black);position:relative;overflow:hidden;margin-bottom:16px;cursor:pointer;}
+.wc-glow{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(203,213,240,0.1),transparent 70%);top:-60px;right:-40px;}
+.wc-inner{position:relative;z-index:1;padding:20px 22px;height:100%;display:flex;flex-direction:column;justify-content:space-between;}
+.wc-logo{font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.5px;}
+.wc-logo em{font-style:normal;color:var(--lav);}
+.wc-lbl{font-size:10px;color:rgba(203,213,240,0.5);letter-spacing:2px;text-transform:uppercase;}
+.wc-amt{font-size:32px;font-weight:800;color:#fff;letter-spacing:-1px;}
+.wc-amt sup{font-size:16px;font-weight:500;color:var(--lav);}
+.wc-foot{display:flex;justify-content:space-between;align-items:center;}
+.wc-name{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+.wc-badge{font-size:10px;color:rgba(203,213,240,0.6);border:1px solid rgba(203,213,240,0.2);border-radius:5px;padding:2px 7px;}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:var(--font);transition:all 0.15s;}
+.btn-black{background:var(--black);color:#fff;}.btn-black:hover{opacity:0.85;}
+.btn-lav{background:var(--lav-dim);color:var(--lav-deep);border:1.5px solid var(--lav-border);}.btn-lav:hover{background:var(--lav);}
+.btn-full{width:100%;}
+.btn-lg{padding:15px 24px;font-size:15px;border-radius:16px;}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:10px;}
+.btn-green{background:var(--green-bg);color:var(--green);}.btn-green:hover{background:var(--green);color:#fff;}
+.btn-red{background:var(--red-bg);color:var(--red);}.btn-red:hover{background:var(--red);color:#fff;}
+.btn-row{display:flex;gap:8px;}
+
+/* ─── FORMS ─── */
+.form-group{margin-bottom:14px;}
+.form-label{font-size:11px;font-weight:700;color:var(--sub2);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;display:block;}
+.form-input{width:100%;background:var(--lav-dim);border:1.5px solid transparent;border-radius:12px;padding:11px 14px;font-size:14px;font-family:var(--font);color:var(--black);outline:none;transition:border-color 0.15s;}
+.form-input:focus{border-color:var(--lav-deep);background:#fff;}
+.form-input::placeholder{color:var(--sub2);}
+
+/* ─── BADGES ─── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+.badge-active{background:#DCFCE7;color:#15803D;}
+.badge-paid{background:var(--lav-dim);color:var(--lav-deep);}
+.badge-expired{background:#F3F4F6;color:var(--sub);}
+.badge-pending{background:var(--warn-bg);color:var(--warn);}
+
+/* ─── SECTION HEADER ─── */
+.sec{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.sec-t{font-size:15px;font-weight:800;color:var(--black);}
+.sec-m{font-size:12px;color:var(--sub);cursor:pointer;font-weight:600;}
+
+/* ─── TX ITEM ─── */
+.tx-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(203,213,240,0.2);}
+.tx-item:last-child{border-bottom:none;}
+.tx-ico{width:44px;height:44px;border-radius:14px;background:var(--lav-dim);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.tx-info{flex:1;}
+.tx-nm{font-size:13px;font-weight:700;color:var(--black);}
+.tx-dt{font-size:11px;color:var(--sub2);font-family:var(--mono);}
+.tx-am{font-size:14px;font-weight:800;font-family:var(--mono);color:var(--green);}
+
+/* ─── PAYLINK ITEM ─── */
+.pl-item{background:#fff;border-radius:16px;border:1.5px solid var(--lav-border);padding:14px 16px;margin-bottom:10px;}
+.pl-item-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
+.pl-purpose{font-size:14px;font-weight:800;color:var(--black);}
+.pl-amount{font-size:16px;font-weight:900;color:var(--lav-deep);}
+.pl-url{font-size:11px;font-family:var(--mono);color:var(--lav-deep);background:var(--lav-dim);padding:7px 10px;border-radius:10px;border:1px dashed var(--lav-border);margin:8px 0;cursor:pointer;word-break:break-all;}
+.pl-url:hover{background:var(--lav);}
+.pl-actions{display:flex;gap:6px;}
+.pl-act{flex:1;padding:8px 0;border-radius:10px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all 0.15s;}
+.pl-act-copy{background:var(--lav-dim);color:var(--lav-deep);}.pl-act-copy:hover{background:var(--lav);}
+.pl-act-share{background:#F0F0F0;color:var(--black);}.pl-act-share:hover{background:#E0E0E0;}
+.pl-act-del{background:var(--red-bg);color:var(--red);}.pl-act-del:hover{background:var(--red);color:#fff;}
+
+/* ─── MODAL ─── */
+.modal-overlay{position:absolute;inset:0;background:rgba(10,10,10,0.5);z-index:200;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.25s;backdrop-filter:blur(4px);}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:#fff;border-radius:28px 28px 0 0;padding:24px 22px 32px;width:100%;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.23,1,0.32,1);}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-handle{width:36px;height:4px;background:var(--lav);border-radius:2px;margin:0 auto 18px;}
+.modal-title{font-size:18px;font-weight:900;color:var(--black);margin-bottom:4px;}
+.modal-sub{font-size:13px;color:var(--sub);margin-bottom:18px;}
+
+/* ─── TOAST ─── */
+.toast{position:absolute;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--black);color:#fff;padding:10px 20px;border-radius:100px;font-size:13px;font-weight:600;white-space:nowrap;z-index:300;opacity:0;transition:all 0.3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ─── PARENT NOTIF ─── */
+.notif-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:#fff;border-radius:16px;border:1.5px solid var(--lav-border);margin-bottom:10px;}
+.notif-dot-wrap{width:10px;height:10px;border-radius:50%;background:var(--lav-deep);flex-shrink:0;margin-top:4px;animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.notif-text{font-size:13px;color:var(--black);line-height:1.5;}
+.notif-time{font-size:11px;color:var(--sub2);font-family:var(--mono);margin-top:3px;}
+
+/* ─── PROGRESS ─── */
+.progress-bar{height:8px;background:var(--lav-dim);border-radius:4px;overflow:hidden;margin-top:6px;}
+.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--lav-deep),var(--lav-mid));transition:width 0.6s cubic-bezier(0.16,1,0.3,1);}
+
+/* ─── EMPTY ─── */
+.empty{text-align:center;padding:32px 20px;color:var(--sub2);font-size:13px;}
+
+/* ─── ROLE SWITCHER ─── */
+.role-switcher{display:flex;gap:8px;margin-bottom:16px;background:rgba(255,255,255,0.6);border-radius:16px;padding:4px;border:1.5px solid var(--lav-border);}
+.role-btn{flex:1;padding:9px 6px;border-radius:12px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);background:transparent;color:var(--sub);transition:all 0.2s;}
+.role-btn.active{background:var(--black);color:#fff;}
+
+/* ─────────────────────────────────────────
+   PAY PAGE (customer view — full screen)
+───────────────────────────────────────── */
+#pay-page{
+  display:none;width:100%;min-height:100vh;
+  background:linear-gradient(135deg,#0A0A0A 0%,#1a1a2e 100%);
+  font-family:var(--font);
+  align-items:center;justify-content:center;flex-direction:column;
+  padding:40px 20px;
+}
+#pay-page.show{display:flex;}
+
+.pay-card{
+  width:100%;max-width:420px;background:#fff;border-radius:28px;
+  overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.5);
+  animation:payCardIn 0.6s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes payCardIn{from{transform:translateY(30px) scale(0.96);opacity:0;}to{transform:none;opacity:1;}}
+
+.pay-header{background:var(--black);padding:28px 28px 24px;position:relative;overflow:hidden;}
+.pay-header-glow{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(203,213,240,0.12),transparent 70%);top:-60px;right:-40px;}
+.pay-powered{font-size:11px;color:rgba(203,213,240,0.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;position:relative;z-index:1;}
+.pay-creator-name{font-size:26px;font-weight:900;color:#fff;margin-bottom:2px;position:relative;z-index:1;letter-spacing:-0.5px;}
+.pay-handle{font-size:13px;color:rgba(203,213,240,0.5);position:relative;z-index:1;font-family:var(--mono);}
+.pay-privacy-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.2);border-radius:20px;padding:5px 12px;margin-top:12px;position:relative;z-index:1;}
+.pay-privacy-dot{width:6px;height:6px;border-radius:50%;background:var(--lav);animation:blink 2s infinite;}
+.pay-privacy-text{font-size:11px;color:var(--lav);font-weight:600;}
+
+.pay-body{padding:24px 28px;}
+.pay-purpose-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #F0F0F0;}
+.pay-purpose-lbl{font-size:12px;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.pay-purpose-val{font-size:14px;font-weight:700;color:var(--black);}
+.pay-amount-big{text-align:center;padding:20px 0 16px;}
+.pay-amount-big .amount{font-size:52px;font-weight:900;color:var(--black);letter-spacing:-2px;line-height:1;}
+.pay-amount-big .amount sup{font-size:24px;font-weight:600;color:var(--sub);}
+.pay-amount-big .amount-label{font-size:12px;color:var(--sub);margin-top:4px;}
+
+.pay-method-title{font-size:13px;font-weight:700;color:var(--sub);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px;}
+.pay-methods{display:flex;gap:8px;margin-bottom:20px;}
+.pay-method{flex:1;padding:12px 8px;border-radius:14px;border:2px solid var(--lav-border);background:#fff;cursor:pointer;text-align:center;transition:all 0.15s;font-family:var(--font);}
+.pay-method.selected{border-color:var(--black);background:var(--black);color:#fff;}
+.pay-method-icon{font-size:20px;margin-bottom:4px;}
+.pay-method-label{font-size:11px;font-weight:700;}
+.pay-method:not(.selected) .pay-method-label{color:var(--sub);}
+
+.pay-upi-input{width:100%;background:var(--lav-dim);border:1.5px solid var(--lav-border);border-radius:12px;padding:12px 14px;font-size:14px;font-family:var(--font);color:var(--black);outline:none;margin-bottom:14px;}
+.pay-upi-input:focus{border-color:var(--lav-deep);}
+.pay-upi-input::placeholder{color:var(--sub2);}
+
+.pay-btn{width:100%;padding:16px;border-radius:16px;border:none;background:var(--black);color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all 0.2s;letter-spacing:-0.3px;}
+.pay-btn:hover{opacity:0.85;transform:scale(1.01);}
+.pay-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+.pay-footer{padding:14px 28px 24px;text-align:center;}
+.pay-footer p{font-size:11px;color:var(--sub2);line-height:1.6;}
+.pay-footer strong{color:var(--sub);}
+
+/* ─── RECEIPT ─── */
+.receipt-overlay{display:none;position:fixed;inset:0;background:rgba(10,10,10,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
+.receipt-overlay.show{display:flex;}
+.receipt-card{background:#fff;border-radius:28px;padding:32px 28px;width:100%;max-width:360px;text-align:center;animation:payCardIn 0.5s cubic-bezier(0.16,1,0.3,1) both;}
+.receipt-check{width:64px;height:64px;border-radius:50%;background:var(--green-bg);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;}
+.receipt-title{font-size:22px;font-weight:900;color:var(--black);margin-bottom:4px;}
+.receipt-sub{font-size:14px;color:var(--sub);margin-bottom:20px;}
+.receipt-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F0F0;font-size:13px;}
+.receipt-row:last-of-type{border-bottom:none;}
+.receipt-row .label{color:var(--sub);}
+.receipt-row .value{font-weight:700;color:var(--black);}
+.receipt-txid{font-family:var(--mono);font-size:11px;background:var(--lav-dim);color:var(--lav-deep);padding:8px 14px;border-radius:10px;margin:14px 0 20px;}
+.receipt-close-btn{width:100%;padding:14px;border-radius:14px;border:none;background:var(--black);color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:var(--font);}
+
+/* ─── DEMO SWITCHER (outside phone) ─── */
+.demo-switcher{display:flex;gap:8px;background:rgba(255,255,255,0.7);border-radius:16px;padding:5px;border:1.5px solid var(--lav-border);backdrop-filter:blur(8px);}
+.demo-switch-btn{padding:8px 20px;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);background:transparent;color:var(--sub);transition:all 0.2s;}
+.demo-switch-btn.active{background:var(--black);color:#fff;}
+
+@media(max-width:440px){
+  .phone{width:100%;height:100vh;border-radius:0;box-shadow:none;}
+  .scene{padding:0;}
+  .scene-label,.demo-switcher{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     APP DEMO (phone)
+═══════════════════════════════════════ -->
+<div id="app-view">
+<div class="scene">
+  <div class="scene-label">🔗 Yungly PayLink — Investor Demo</div>
+
+  <div class="demo-switcher">
+    <button class="demo-switch-btn active" onclick="switchRole('teen')">👤 Teen Creator</button>
+    <button class="demo-switch-btn" onclick="switchRole('parent')">👨‍👩‍👧 Guardian</button>
+  </div>
+
+  <div class="phone" id="phone">
+
+    <!-- ════════ TEEN: DASHBOARD ════════ -->
+    <div class="page active" id="pg-teen-home">
+      <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block"></div></div></div>
+      <div style="padding:12px 20px 0;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
+        <div>
+          <div style="font-size:13px;color:var(--sub);font-weight:500;">Good morning 👋</div>
+          <div style="font-size:20px;font-weight:900;color:var(--black);">Adhil Designs</div>
+        </div>
+        <div style="width:42px;height:42px;border-radius:50%;background:var(--black);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;">AD</div>
+      </div>
+      <div class="scroll" style="padding-top:14px;">
+        <!-- Wallet card -->
+        <div class="wallet-card">
+          <div class="wc-glow"></div>
+          <div class="wc-inner">
+            <div class="wc-logo">Yungly<em>.</em></div>
+            <div>
+              <div class="wc-lbl">Wallet Balance</div>
+              <div class="wc-amt" id="wallet-bal"><sup>₹</sup>499</div>
+            </div>
+            <div class="wc-foot">
+              <div class="wc-name">Adhil Rahman A</div>
+              <div class="wc-badge">PayLink ✓</div>
+            </div>
+          </div>
+        </div>
+        <!-- Stats -->
+        <div class="stat-row">
+          <div class="stat">
+            <div class="stat-lbl">This Month</div>
+            <div class="stat-val" id="monthly-val">₹2,400</div>
+            <div class="stat-sub">received</div>
+          </div>
+          <div class="stat">
+            <div class="stat-lbl">Limit</div>
+            <div class="stat-val">₹5,000</div>
+            <div class="progress-bar" style="margin-top:8px;"><div class="progress-fill" id="limit-bar" style="width:48%;"></div></div>
+          </div>
+        </div>
+        <!-- Quick actions -->
+        <div style="display:flex;gap:10px;margin-bottom:16px;">
+          <button class="btn btn-black" style="flex:1;" onclick="nav('pg-create-link')">+ Create PayLink</button>
+          <button class="btn btn-lav" style="flex:1;" onclick="nav('pg-my-links')">My Links</button>
+        </div>
+        <!-- Recent -->
+        <div class="card">
+          <div class="sec"><span class="sec-t">Recent Payments</span><span class="sec-m" onclick="nav('pg-earnings')">See all</span></div>
+          <div id="recent-txns"></div>
+        </div>
+        <!-- Ghost PayLink promo -->
+        <div style="background:var(--black);border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:4px;" onclick="nav('pg-create-link')">
+          <div style="font-size:28px;">🔗</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:2px;">Ghost PayLink</div>
+            <div style="font-size:12px;color:rgba(203,213,240,0.5);">UPI ID hidden · Verified alias · Instant credit</div>
+          </div>
+          <div style="font-size:18px;color:var(--lav);">›</div>
+        </div>
+      </div>
+      <div class="bnav">
+        <div class="ni on" onclick="navTab('home')"><div class="ni-ico">🏠</div><div class="ni-lbl">Home</div></div>
+        <div class="ni" onclick="navTab('links')"><div class="ni-ico">🔗</div><div class="ni-lbl">Links</div></div>
+        <div class="ni-fab" onclick="nav('pg-create-link')">+</div>
+        <div class="ni" onclick="navTab('earnings')"><div class="ni-ico">💸</div><div class="ni-lbl">Earnings</div></div>
+        <div class="ni" onclick="navTab('profile')"><div class="ni-ico">👤</div><div class="ni-lbl">Profile</div></div>
+      </div>
+    </div>
+
+    <!-- ════════ TEEN: CREATE PAYLINK ════════ -->
+    <div class="page" id="pg-create-link">
+      <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt"></div></div></div>
+      <div class="pg-head"><div class="back-btn" onclick="nav('pg-teen-home')">← Back</div><div class="pg-title">New PayLink</div></div>
+      <div class="scroll">
+        <div class="card" style="margin-top:4px;">
+          <div style="font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.6;">Create a payment link. Share it with your customer. Your real UPI ID stays hidden — they only see <strong style="color:var(--black);">Adhil Designs</strong> powered by Yungly.</div>
+          <div class="form-group">
+            <label class="form-label">Purpose / Service</label>
+            <input class="form-input" id="pl-purpose" placeholder="e.g. Logo design, Reel edit, Poster…" maxlength="50"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Amount (₹)</label>
+            <input class="form-input" id="pl-amount" type="number" placeholder="e.g. 299" min="1" max="1000"/>
+            <div style="font-size:11px;color:var(--sub2);margin-top:4px;">Guardian limit: ₹1,000 per link</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Note (optional)</label>
+            <input class="form-input" id="pl-note" placeholder="Any extra info for your customer…" maxlength="80"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Expires in</label>
+            <select class="form-input" id="pl-expiry">
+              <option value="7">7 days</option>
+              <option value="14">14 days</option>
+              <option value="30">30 days</option>
+            </select>
+          </div>
+          <button class="btn btn-black btn-full btn-lg" onclick="createPayLink()">Generate PayLink →</button>
+        </div>
+
+        <!-- Result (shown after creation) -->
+        <div id="pl-result-card" style="display:none;" class="card">
+          <div style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">✅ PayLink Created!</div>
+          <div style="font-size:16px;font-weight:800;color:var(--black);margin-bottom:2px;" id="res-purpose"></div>
+          <div style="font-size:28px;font-weight:900;color:var(--lav-deep);margin-bottom:12px;" id="res-amount"></div>
+          <div style="font-size:11px;color:var(--sub);margin-bottom:4px;">Share this link with your customer:</div>
+          <div class="pl-url" id="res-url" onclick="copyResUrl()"></div>
+          <div class="btn-row">
+            <button class="btn btn-lav btn-sm" onclick="copyResUrl()">📋 Copy Link</button>
+            <button class="btn btn-sm" style="background:#F0F0F0;color:var(--black);" onclick="shareResUrl()">📤 Share</button>
+            <button class="btn btn-sm btn-black" onclick="openPayPage()">👁 Preview</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════ TEEN: MY LINKS ════════ -->
+    <div class="page" id="pg-my-links">
+      <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt"></div></div></div>
+      <div class="pg-head"><div class="back-btn" onclick="nav('pg-teen-home')">← Back</div><div class="pg-title">My PayLinks</div></div>
+      <div class="scroll" style="padding-top:8px;">
+        <div id="my-links-list"></div>
+      </div>
+      <div class="bnav">
+        <div class="ni" onclick="navTab('home')"><div class="ni-ico">🏠</div><div class="ni-lbl">Home</div></div>
+        <div class="ni on" onclick="navTab('links')"><div class="ni-ico">🔗</div><div class="ni-lbl">Links</div></div>
+        <div class="ni-fab" onclick="nav('pg-create-link')">+</div>
+        <div class="ni" onclick="navTab('earnings')"><div class="ni-ico">💸</div><div class="ni-lbl">Earnings</div></div>
+        <div class="ni" onclick="navTab('profile')"><div class="ni-ico">👤</div><div class="ni-lbl">Profile</div></div>
+      </div>
+    </div>
+
+    <!-- ════════ TEEN: EARNINGS ════════ -->
+    <div class="page" id="pg-earnings">
+      <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt"></div></div></div>
+      <div class="pg-head"><div class="back-btn" onclick="nav('pg-teen-home')">← Back</div><div class="pg-title">Earnings</div></div>
+      <div class="scroll" style="padding-top:8px;">
+        <div class="card">
+          <div class="stat-lbl">Total Received</div>
+          <div style="font-size:32px;font-weight:900;color:var(--black);letter-spacing:-1px;" id="total-earned">₹2,899</div>
+          <div style="font-size:12px;color:var(--sub);margin-top:4px;">via Yungly PayLink · All time</div>
+        </div>
+        <div class="card">
+          <div class="sec-t" style="margin-bottom:12px;">Transaction History</div>
+          <div id="all-txns-list"></div>
+        </div>
+      </div>
+      <div class="bnav">
+        <div class="ni" onclick="navTab('home')"><div class="ni-ico">🏠</div><div class="ni-lbl">Home</div></div>
+        <div class="ni" onclick="navTab('links')"><div class="ni-ico">🔗</div><div class="ni-lbl">Links</div></div>
+        <div class="ni-fab" onclick="nav('pg-create-link')">+</div>
+        <div class="ni on" onclick="navTab('earnings')"><div class="ni-ico">💸</div><div class="ni-lbl">Earnings</div></div>
+        <div class="ni" onclick="navTab('profile')"><div class="ni-ico">👤</div><div class="ni-lbl">Profile</div></div>
+      </div>
+    </div>
+
+    <!-- ════════ PARENT: DASHBOARD ════════ -->
+    <div class="page" id="pg-parent-home">
+      <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt"></div></div></div>
+      <div style="padding:14px 20px 0;flex-shrink:0;">
+        <div style="font-size:13px;color:var(--sub);">Guardian View</div>
+        <div style="font-size:20px;font-weight:900;color:var(--black);">Adhil's Account</div>
+      </div>
+      <div class="scroll" style="padding-top:14px;">
+        <!-- Teen wallet overview -->
+        <div class="wallet-card">
+          <div class="wc-glow"></div>
+          <div class="wc-inner">
+            <div class="wc-logo">Guardian<em>.</em></div>
+            <div>
+              <div class="wc-lbl">Adhil's Wallet</div>
+              <div class="wc-amt" id="parent-wallet-bal"><sup>₹</sup>499</div>
+            </div>
+            <div class="wc-foot">
+              <div class="wc-name">Adhil Rahman A · 16 yrs</div>
+              <div class="wc-badge">KYC ✓</div>
+            </div>
+          </div>
+        </div>
+        <!-- Monthly progress -->
+        <div class="card">
+          <div class="sec"><span class="sec-t">Monthly Limit</span><span style="font-size:12px;color:var(--lav-deep);font-weight:700;" id="monthly-pct">48%</span></div>
+          <div style="font-size:13px;color:var(--sub);margin-bottom:8px;" id="parent-monthly-text">₹2,400 received of ₹5,000 limit</div>
+          <div class="progress-bar"><div class="progress-fill" id="parent-limit-bar" style="width:48%;"></div></div>
+        </div>
+        <!-- Limits -->
+        <div class="card">
+          <div class="sec-t" style="margin-bottom:12px;">Guardian Controls</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(203,213,240,0.2);">
+            <div><div style="font-size:13px;font-weight:700;">Per-Link Limit</div><div style="font-size:11px;color:var(--sub);">Max per payment link</div></div>
+            <div style="font-size:14px;font-weight:800;color:var(--lav-deep);">₹1,000</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(203,213,240,0.2);">
+            <div><div style="font-size:13px;font-weight:700;">Daily Limit</div><div style="font-size:11px;color:var(--sub);">Max per day</div></div>
+            <div style="font-size:14px;font-weight:800;color:var(--lav-deep);">₹2,000</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;">
+            <div><div style="font-size:13px;font-weight:700;">Monthly Limit</div><div style="font-size:11px;color:var(--sub);">Max per month</div></div>
+            <div style="font-size:14px;font-weight:800;color:var(--lav-deep);">₹5,000</div>
+          </div>
+        </div>
+        <!-- Notifications -->
+        <div class="sec-t" style="margin-bottom:10px;">Payment Alerts</div>
+        <div id="parent-notifs"></div>
+      </div>
+    </div>
+
+    <!-- ─── MODAL ─── -->
+    <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+      <div class="modal" id="modal-inner">
+        <div class="modal-handle"></div>
+        <div id="modal-content"></div>
+      </div>
+    </div>
+
+    <!-- ─── TOAST ─── -->
+    <div class="toast" id="toast"></div>
+
+  </div><!-- /phone -->
+</div><!-- /scene -->
+</div><!-- /app-view -->
+
+<!-- ═══════════════════════════════════════
+     CUSTOMER PAY PAGE (full screen)
+═══════════════════════════════════════ -->
+<div id="pay-page">
+  <div class="pay-card">
+    <div class="pay-header">
+      <div class="pay-header-glow"></div>
+      <div class="pay-powered">Powered by Yungly Pay</div>
+      <div class="pay-creator-name" id="pp-creator-name">Adhil Designs</div>
+      <div class="pay-handle" id="pp-handle">@adhil · Verified Creator</div>
+      <div class="pay-privacy-badge">
+        <div class="pay-privacy-dot"></div>
+        <span class="pay-privacy-text">👻 Privacy Protected — UPI ID Hidden</span>
+      </div>
+    </div>
+    <div class="pay-body">
+      <div class="pay-purpose-row">
+        <span class="pay-purpose-lbl">Payment for</span>
+        <span class="pay-purpose-val" id="pp-purpose">Poster design</span>
+      </div>
+      <div class="pay-amount-big">
+        <div class="amount"><sup>₹</sup><span id="pp-amount">99</span></div>
+        <div class="amount-label">Fixed amount · Non-negotiable</div>
+      </div>
+      <div class="pay-method-title">Pay with</div>
+      <div class="pay-methods">
+        <div class="pay-method selected" onclick="selectMethod(this,'upi')">
+          <div class="pay-method-icon">📱</div>
+          <div class="pay-method-label">UPI</div>
+        </div>
+        <div class="pay-method" onclick="selectMethod(this,'card')">
+          <div class="pay-method-icon">💳</div>
+          <div class="pay-method-label">Card</div>
+        </div>
+        <div class="pay-method" onclick="selectMethod(this,'netbanking')">
+          <div class="pay-method-icon">🏦</div>
+          <div class="pay-method-label">Net Banking</div>
+        </div>
+      </div>
+      <div id="pay-method-input">
+        <input class="pay-upi-input" id="upi-id-input" placeholder="Enter your UPI ID (e.g. name@upi)"/>
+      </div>
+      <button class="pay-btn" id="pay-now-btn" onclick="initiatePayment()">Pay ₹<span id="pay-btn-amt">99</span> Now →</button>
+    </div>
+    <div class="pay-footer">
+      <p>🔒 Payment processed securely by <strong>Yungly Pay</strong> via licensed payment partner.<br/>Your payment is protected. Receipt sent after payment.</p>
+    </div>
+  </div>
+  <div style="margin-top:20px;text-align:center;">
+    <button onclick="closePay()" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);padding:10px 20px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);">← Back to demo</button>
+  </div>
+</div>
+
+<!-- RECEIPT OVERLAY -->
+<div class="receipt-overlay" id="receipt">
+  <div class="receipt-card">
+    <div class="receipt-check">✅</div>
+    <div class="receipt-title">Payment Successful!</div>
+    <div class="receipt-sub">Your payment has been confirmed.</div>
+    <div class="receipt-row"><span class="label">Paid to</span><span class="value" id="r-creator"></span></div>
+    <div class="receipt-row"><span class="label">For</span><span class="value" id="r-purpose"></span></div>
+    <div class="receipt-row"><span class="label">Amount</span><span class="value" id="r-amount"></span></div>
+    <div class="receipt-row"><span class="label">Method</span><span class="value" id="r-method"></span></div>
+    <div class="receipt-row"><span class="label">Status</span><span class="value" style="color:var(--green);">✓ Confirmed</span></div>
+    <div class="receipt-txid" id="r-txid"></div>
+    <button class="receipt-close-btn" onclick="closeReceipt()">Done</button>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════
+// STATE
+// ═══════════════════════════════════
+let currentPage = 'pg-teen-home';
+let currentRole = 'teen';
+let walletBalance = 499;
+let monthlyReceived = 2400;
+const MONTHLY_LIMIT = 5000;
+let lastCreatedLink = null;
+let selectedPayMethod = 'upi';
+
+const payLinks = [
+  { id:'lnk_001', purpose:'Logo design', amount:250, status:'paid', from:'Rahul K', createdAt:'2d ago', handle:'adhil-x7k2m' },
+  { id:'lnk_002', purpose:'Reel edit', amount:150, status:'paid', from:'Priya M', createdAt:'1d ago', handle:'adhil-9pq3n' },
+  { id:'lnk_003', purpose:'Poster design', amount:99, status:'active', from:null, createdAt:'Today', handle:'adhil-4rj8k' },
+];
+
+const txns = [
+  { id:'txn_001', purpose:'Logo design', amount:250, from:'Rahul K', time:'2d ago' },
+  { id:'txn_002', purpose:'Reel edit', amount:150, from:'Priya M', time:'1d ago' },
+  { id:'txn_003', purpose:'Poster design', amount:99, from:'Arjun S', time:'5h ago' },
+];
+
+const parentNotifs = [
+  { msg:'Adhil Designs received ₹99 for "Poster design" from Arjun S', time:'5h ago', read:false },
+  { msg:'Adhil Designs received ₹150 for "Reel edit" from Priya M', time:'1d ago', read:true },
+  { msg:'Adhil Designs received ₹250 for "Logo design" from Rahul K', time:'2d ago', read:true },
+];
+
+// ═══════════════════════════════════
+// NAV
+// ═══════════════════════════════════
+function nav(id) {
+  const cur = document.getElementById(currentPage);
+  const next = document.getElementById(id);
+  if (!next || id === currentPage) return;
+  cur.classList.add('slide-left');
+  setTimeout(() => { cur.classList.remove('active','slide-left'); }, 300);
+  next.classList.add('active');
+  currentPage = id;
+  if (id === 'pg-my-links') renderMyLinks();
+  if (id === 'pg-earnings') renderAllTxns();
+  if (id === 'pg-parent-home') renderParentNotifs();
+}
+
+function navTab(tab) {
+  const map = { home:'pg-teen-home', links:'pg-my-links', earnings:'pg-earnings', profile:'pg-teen-home' };
+  if (map[tab]) nav(map[tab]);
+}
+
+// ═══════════════════════════════════
+// ROLE SWITCHER
+// ═══════════════════════════════════
+function switchRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.demo-switch-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (role === 'teen') nav('pg-teen-home');
+  else { nav('pg-parent-home'); renderParentNotifs(); }
+}
+
+// ═══════════════════════════════════
+// RENDER HELPERS
+// ═══════════════════════════════════
+function renderRecentTxns() {
+  const el = document.getElementById('recent-txns');
+  el.innerHTML = txns.slice(0,3).map(t => `
+    <div class="tx-item">
+      <div class="tx-ico">🔗</div>
+      <div class="tx-info">
+        <div class="tx-nm">${t.purpose}</div>
+        <div class="tx-dt">from ${t.from} · ${t.time}</div>
+      </div>
+      <div class="tx-am">+₹${t.amount}</div>
+    </div>
+  `).join('');
+}
+
+function renderMyLinks() {
+  const el = document.getElementById('my-links-list');
+  if (!payLinks.length) { el.innerHTML = '<div class="empty">No PayLinks yet — create your first one!</div>'; return; }
+  el.innerHTML = payLinks.map(l => `
+    <div class="pl-item">
+      <div class="pl-item-head">
+        <div class="pl-purpose">${l.purpose}</div>
+        <div class="pl-amount">₹${l.amount}</div>
+      </div>
+      <div style="margin-bottom:6px;">
+        <span class="badge ${l.status==='paid'?'badge-paid':'badge-active'}">${l.status==='paid'?'💸 Paid':'✅ Active'}</span>
+        ${l.from?`<span style="font-size:12px;color:var(--sub);margin-left:8px;">from ${l.from}</span>`:''}
+        <span style="font-size:11px;color:var(--sub2);margin-left:8px;font-family:var(--mono);">${l.createdAt}</span>
+      </div>
+      <div class="pl-url" onclick="copyLink('${l.id}','${l.handle}')">pay.yunglypay.in/p/${l.handle}</div>
+      <div class="pl-actions">
+        <button class="pl-act pl-act-copy" onclick="copyLink('${l.id}','${l.handle}')">📋 Copy</button>
+        <button class="pl-act pl-act-share" onclick="openPayDemo('${l.id}')">👁 Preview Pay Page</button>
+        ${l.status==='active'?`<button class="pl-act pl-act-del" onclick="cancelLink('${l.id}')">Cancel</button>`:''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderAllTxns() {
+  const el = document.getElementById('all-txns-list');
+  el.innerHTML = txns.map(t => `
+    <div class="tx-item">
+      <div class="tx-ico">🔗</div>
+      <div class="tx-info">
+        <div class="tx-nm">${t.purpose}</div>
+        <div class="tx-dt">from ${t.from} · ${t.time}</div>
+      </div>
+      <div class="tx-am">+₹${t.amount}</div>
+    </div>
+  `).join('');
+}
+
+function renderParentNotifs() {
+  const el = document.getElementById('parent-notifs');
+  el.innerHTML = parentNotifs.map(n => `
+    <div class="notif-item">
+      <div class="notif-dot-wrap" style="${n.read?'background:var(--sub2);animation:none;':''}"></div>
+      <div>
+        <div class="notif-text">${n.msg}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════
+// CREATE PAYLINK
+// ═══════════════════════════════════
+function createPayLink() {
+  const purpose = document.getElementById('pl-purpose').value.trim();
+  const amtRaw  = document.getElementById('pl-amount').value.trim();
+  const note    = document.getElementById('pl-note').value.trim();
+  const expiry  = document.getElementById('pl-expiry').value;
+
+  if (!purpose) { toast('⚠️ Add a purpose'); return; }
+  if (!amtRaw || isNaN(amtRaw) || Number(amtRaw) < 1) { toast('⚠️ Enter a valid amount'); return; }
+  const amt = Number(amtRaw);
+  if (amt > 1000) { toast('⚠️ Guardian limit: max ₹1,000 per link'); return; }
+
+  const handles = ['x7k2m','9pq3n','4rj8k','m2n8p','v5t1q','r3k9w','z8j2p','q4n7r'];
+  const handle = 'adhil-' + handles[Math.floor(Math.random()*handles.length)];
+  const id = 'lnk_' + Date.now().toString(36);
+  const link = { id, purpose, amount:amt, note, status:'active', from:null, createdAt:'Just now', handle };
+
+  payLinks.unshift(link);
+  lastCreatedLink = link;
+
+  // show result card
+  document.getElementById('res-purpose').textContent = purpose;
+  document.getElementById('res-amount').textContent = '₹' + amt;
+  document.getElementById('res-url').textContent = 'pay.yunglypay.in/p/' + handle;
+  document.getElementById('pl-result-card').style.display = '';
+
+  // add to parent notif (link created)
+  parentNotifs.unshift({ msg:`Adhil created a new PayLink: "${purpose}" for ₹${amt}`, time:'Just now', read:false });
+
+  // clear inputs
+  document.getElementById('pl-purpose').value = '';
+  document.getElementById('pl-amount').value = '';
+  document.getElementById('pl-note').value = '';
+
+  toast('🔗 PayLink created!');
+}
+
+function copyResUrl() {
+  if (!lastCreatedLink) return;
+  const url = 'https://yunglypay.in/paylink-demo.html#pay/' + lastCreatedLink.handle;
+  navigator.clipboard?.writeText(url).catch(()=>{});
+  toast('📋 Link copied!');
+}
+
+function shareResUrl() {
+  if (!lastCreatedLink) return;
+  const url = 'https://yunglypay.in/paylink-demo.html#pay/' + lastCreatedLink.handle;
+  if (navigator.share) { navigator.share({ title:'Pay ' + lastCreatedLink.purpose, url }); }
+  else toast('📤 Share: ' + url);
+}
+
+function openPayPage() {
+  if (!lastCreatedLink) return;
+  loadPayPage(lastCreatedLink);
+}
+
+function openPayDemo(linkId) {
+  const link = payLinks.find(l => l.id === linkId);
+  if (link) loadPayPage(link);
+}
+
+function copyLink(linkId, handle) {
+  const url = 'https://yunglypay.in/paylink-demo.html#pay/' + handle;
+  navigator.clipboard?.writeText(url).catch(()=>{});
+  toast('📋 Copied: pay.yunglypay.in/p/' + handle);
+}
+
+function cancelLink(linkId) {
+  const idx = payLinks.findIndex(l => l.id === linkId);
+  if (idx > -1) { payLinks[idx].status = 'cancelled'; renderMyLinks(); toast('🗑 PayLink cancelled'); }
+}
+
+// ═══════════════════════════════════
+// PAY PAGE (customer view)
+// ═══════════════════════════════════
+function loadPayPage(link) {
+  document.getElementById('pp-creator-name').textContent = 'Adhil Designs';
+  document.getElementById('pp-handle').textContent = '@adhil · Verified Creator';
+  document.getElementById('pp-purpose').textContent = link.purpose;
+  document.getElementById('pp-amount').textContent = link.amount;
+  document.getElementById('pay-btn-amt').textContent = link.amount;
+
+  window._currentPayLink = link;
+  selectedPayMethod = 'upi';
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  document.querySelectorAll('.pay-method')[0].classList.add('selected');
+  renderPayMethodInput();
+
+  document.getElementById('app-view').style.display = 'none';
+  document.getElementById('pay-page').classList.add('show');
+  window.scrollTo(0,0);
+  // update URL hash
+  window.history.pushState(null, '', '#pay/' + link.handle);
+}
+
+function closePay() {
+  document.getElementById('pay-page').classList.remove('show');
+  document.getElementById('app-view').style.display = '';
+  window.history.pushState(null, '', window.location.pathname);
+}
+
+function selectMethod(el, method) {
+  selectedPayMethod = method;
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('selected'));
+  el.classList.add('selected');
+  renderPayMethodInput();
+}
+
+function renderPayMethodInput() {
+  const inputs = {
+    upi: `<input class="pay-upi-input" id="pay-detail-input" placeholder="Enter your UPI ID (e.g. name@upi)"/>`,
+    card: `<input class="pay-upi-input" id="pay-detail-input" placeholder="Card number (demo — any number)"/>`,
+    netbanking: `<select class="pay-upi-input" id="pay-detail-input"><option value="">Select your bank</option><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Kotak Mahindra</option></select>`
+  };
+  document.getElementById('pay-method-input').innerHTML = inputs[selectedPayMethod] || inputs.upi;
+}
+
+function initiatePayment() {
+  const input = document.getElementById('pay-detail-input');
+  if (!input || !input.value.trim()) { alert('Please enter your ' + selectedPayMethod + ' details'); return; }
+
+  const btn = document.getElementById('pay-now-btn');
+  btn.disabled = true;
+  btn.textContent = 'Processing…';
+
+  setTimeout(() => {
+    btn.textContent = 'Confirming with gateway…';
+    setTimeout(() => {
+      confirmPayment();
+    }, 1200);
+  }, 1500);
+}
+
+function confirmPayment() {
+  const link = window._currentPayLink;
+  if (!link) return;
+
+  const txnId = 'TXN' + Date.now().toString(36).toUpperCase();
+  const methodLabels = { upi:'UPI', card:'Debit/Credit Card', netbanking:'Net Banking' };
+
+  // update receipt
+  document.getElementById('r-creator').textContent = 'Adhil Designs';
+  document.getElementById('r-purpose').textContent = link.purpose;
+  document.getElementById('r-amount').textContent = '₹' + link.amount;
+  document.getElementById('r-method').textContent = methodLabels[selectedPayMethod] || 'UPI';
+  document.getElementById('r-txid').textContent = 'Txn ID: ' + txnId;
+
+  document.getElementById('receipt').classList.add('show');
+
+  // update teen wallet & notifs
+  walletBalance += link.amount;
+  monthlyReceived += link.amount;
+  txns.unshift({ id:txnId, purpose:link.purpose, amount:link.amount, from:'Customer', time:'Just now' });
+
+  // mark link as paid
+  const idx = payLinks.findIndex(l => l.id === link.id);
+  if (idx > -1) { payLinks[idx].status = 'paid'; payLinks[idx].from = 'Customer'; }
+
+  // parent notif
+  parentNotifs.unshift({ msg:`Adhil Designs received ₹${link.amount} for "${link.purpose}" from Customer`, time:'Just now', read:false });
+
+  // update wallet display
+  updateWalletDisplay();
+}
+
+function closeReceipt() {
+  document.getElementById('receipt').classList.remove('show');
+  closePay();
+  // reset pay btn
+  const btn = document.getElementById('pay-now-btn');
+  if (btn) { btn.disabled = false; btn.innerHTML = 'Pay ₹<span id="pay-btn-amt">' + (window._currentPayLink?.amount||0) + '</span> Now →'; }
+}
+
+// ═══════════════════════════════════
+// WALLET UPDATE
+// ═══════════════════════════════════
+function updateWalletDisplay() {
+  const pct = Math.min(100, Math.round(monthlyReceived / MONTHLY_LIMIT * 100));
+  document.getElementById('wallet-bal').innerHTML = '<sup>₹</sup>' + walletBalance;
+  document.getElementById('parent-wallet-bal').innerHTML = '<sup>₹</sup>' + walletBalance;
+  document.getElementById('monthly-val').textContent = '₹' + monthlyReceived.toLocaleString('en-IN');
+  document.getElementById('total-earned').textContent = '₹' + (2899 + (walletBalance - 499));
+  document.getElementById('limit-bar').style.width = pct + '%';
+  document.getElementById('parent-limit-bar').style.width = pct + '%';
+  document.getElementById('monthly-pct').textContent = pct + '%';
+  document.getElementById('parent-monthly-text').textContent = '₹' + monthlyReceived.toLocaleString('en-IN') + ' received of ₹' + MONTHLY_LIMIT.toLocaleString('en-IN') + ' limit';
+}
+
+// ═══════════════════════════════════
+// MODAL / TOAST
+// ═══════════════════════════════════
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal')) {
+    document.getElementById('modal').classList.remove('open');
+  }
+}
+let _toastT;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastT);
+  _toastT = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ═══════════════════════════════════
+// URL HASH ROUTING (real pay page)
+// ═══════════════════════════════════
+function checkHash() {
+  const hash = window.location.hash;
+  if (hash.startsWith('#pay/')) {
+    const handle = hash.replace('#pay/','');
+    // find link or create a demo one
+    let link = payLinks.find(l => l.handle === handle);
+    if (!link) {
+      // demo fallback — someone opened a real link
+      link = { id:'lnk_demo', purpose:'Creative service', amount:99, status:'active', handle };
+    }
+    loadPayPage(link);
+  }
+}
+
+// ═══════════════════════════════════
+// INIT
+// ═══════════════════════════════════
+window.addEventListener('popstate', () => {
+  if (!window.location.hash.startsWith('#pay/')) {
+    document.getElementById('pay-page').classList.remove('show');
+    document.getElementById('app-view').style.display = '';
+  }
+});
+
+renderRecentTxns();
+checkHash();
+</script>
+</body>
+</html>
