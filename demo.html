@@ -404,6 +404,7 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
 .paylink-pill{display:inline-flex;align-items:center;gap:5px;background:var(--lav-dim);border:1px solid var(--lav-border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--lav-deep);font-weight:600;cursor:pointer;transition:all 0.2s;}
 .paylink-pill:hover{background:var(--lav);color:var(--black);}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -744,9 +745,17 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
       <div class="pl-result" id="pl-result">
         <div class="pl-result-lbl">Your PayLink</div>
         <div class="pl-result-url" id="pl-url">yungly-paylink-production.up.railway.app/pay/lnk_demo</div>
+        <!-- QR CODE -->
+        <div style="display:flex;flex-direction:column;align-items:center;margin:12px 0;">
+          <div style="background:#fff;border-radius:16px;padding:12px;border:1.5px solid var(--lav-border);display:inline-block;">
+            <canvas id="pl-qr" width="140" height="140"></canvas>
+          </div>
+          <div style="font-size:11px;color:var(--sub2);margin-top:8px;font-weight:600;">Scan to pay</div>
+        </div>
         <div class="pl-actions">
           <div class="pl-act" onclick="copyPayLink()">📋 Copy</div>
           <div class="pl-act" onclick="sharePayLink()">📤 Share</div>
+          <div class="pl-act" onclick="downloadQR()">⬇️ QR</div>
           <div class="pl-act" onclick="resetPayLink()">🔄 New</div>
         </div>
       </div>
@@ -1041,9 +1050,53 @@ async function generatePayLink() {
   const result = document.getElementById('pl-result');
   if (el) el.textContent = currentPayLinkUrl;
   if (result) result.style.display = 'block';
+
+  // Generate QR code
+  const canvas = document.getElementById('pl-qr');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, 140, 140);
+    // Use QRCode library if available
+    if (typeof QRCode !== 'undefined') {
+      const tempDiv = document.createElement('div');
+      new QRCode(tempDiv, {
+        text: currentPayLinkUrl,
+        width: 140, height: 140,
+        colorDark: '#111111', colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      setTimeout(() => {
+        const img = tempDiv.querySelector('img') || tempDiv.querySelector('canvas');
+        if (img) {
+          const qrImg = new Image();
+          qrImg.onload = () => ctx.drawImage(qrImg, 0, 0, 140, 140);
+          qrImg.src = img.src || img.toDataURL();
+        }
+      }, 100);
+    } else {
+      // fallback — draw a simple placeholder
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0,0,140,140);
+      ctx.fillStyle = '#D8DEFF';
+      ctx.font = 'bold 12px DM Sans, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('QR Ready', 70, 65);
+      ctx.fillText('scan to pay', 70, 82);
+    }
+  }
+
   showToast('🔗 PayLink created!');
 }
 
+function downloadQR() {
+  const canvas = document.getElementById('pl-qr');
+  if (!canvas) { showToast('Generate a link first'); return; }
+  const link = document.createElement('a');
+  link.download = 'yungly-paylink-qr.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('⬇️ QR downloaded!');
+}
 function copyPayLink() {
   navigator.clipboard?.writeText(currentPayLinkUrl).catch(()=>{});
   showToast('🔗 PayLink copied!');
