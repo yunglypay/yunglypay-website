@@ -476,50 +476,6 @@
   .good { color: #1A7A4A !important; font-weight: 700 !important; }
   .bad { color: #C0392B !important; }
 
-  /* PAYLINK SECTION */
-  .paylink-section { background: var(--white); }
-  .paylink-inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-  .paylink-left .section-title { margin-bottom: 16px; }
-  .paylink-left p { font-size: 16px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
-  .paylink-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
-  .paylink-pill { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--lavender); color: var(--ink); border-radius: 100px; font-size: 13px; font-weight: 600; }
-  .paylink-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--black); color: var(--white); padding: 14px 28px; border-radius: 100px; font-size: 14px; font-weight: 700; text-decoration: none; transition: opacity 0.2s; cursor: pointer; border: none; font-family: 'Poppins', sans-serif; }
-  .paylink-cta:hover { opacity: 0.85; }
-
-  /* PAYLINK DEMO WIDGET */
-  .paylink-phone { display: flex; justify-content: center; }
-  .pl-phone-wrap { width: 300px; background: #111; border-radius: 40px; padding: 14px; box-shadow: 0 40px 100px rgba(10,10,10,0.25), 0 0 0 1px rgba(255,255,255,0.06); }
-  .pl-phone-inner { background: #F4F5FB; border-radius: 28px; overflow: hidden; min-height: 520px; display: flex; flex-direction: column; }
-  .pl-phone-header { background: #111; padding: 14px 18px 12px; display: flex; align-items: center; justify-content: space-between; }
-  .pl-phone-header-title { color: #fff; font-size: 13px; font-weight: 700; }
-  .pl-phone-header-badge { background: var(--lavender-deep); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
-  .pl-phone-body { padding: 16px; flex: 1; }
-  .pl-w-input { width: 100%; background: #fff; border: 1.5px solid #E2E4F0; border-radius: 12px; padding: 10px 13px; font-size: 13px; font-family: 'Poppins', sans-serif; color: #111; outline: none; margin-bottom: 8px; box-sizing: border-box; }
-  .pl-w-input:focus { border-color: var(--lavender-deep); }
-  .pl-w-input::placeholder { color: #aaa; }
-  .pl-w-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: #111; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; margin-bottom: 14px; transition: opacity 0.15s; }
-  .pl-w-btn:hover { opacity: 0.85; }
-  .pl-w-result { background: var(--lavender); border-radius: 14px; padding: 13px 14px; margin-bottom: 12px; display: none; }
-  .pl-w-result-label { font-size: 10px; font-weight: 700; color: var(--lavender-deep); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-  .pl-w-result-purpose { font-size: 13px; font-weight: 700; color: #111; }
-  .pl-w-result-amt { font-size: 20px; font-weight: 900; color: var(--lavender-deep); margin: 2px 0 8px; }
-  .pl-w-result-url { font-size: 11px; font-family: monospace; color: var(--lavender-deep); background: rgba(255,255,255,0.7); padding: 6px 10px; border-radius: 8px; margin-bottom: 8px; word-break: break-all; }
-  .pl-w-actions { display: flex; gap: 6px; }
-  .pl-w-act { flex: 1; padding: 7px 0; border-radius: 9px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; font-family: 'Poppins', sans-serif; background: rgba(255,255,255,0.8); color: var(--lavender-deep); }
-  .pl-w-list-title { font-size: 10px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .pl-w-item { background: #fff; border-radius: 12px; padding: 11px 13px; margin-bottom: 8px; border: 1px solid #E2E4F0; }
-  .pl-w-item-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-  .pl-w-item-purpose { font-size: 12px; font-weight: 700; color: #111; }
-  .pl-w-item-amt { font-size: 13px; font-weight: 800; color: var(--lavender-deep); }
-  .pl-w-item-url { font-size: 10px; font-family: monospace; color: #aaa; }
-  .pl-w-empty { text-align: center; padding: 24px 12px; color: #bbb; font-size: 12px; }
-
-  @media (max-width: 900px) {
-    .paylink-inner { grid-template-columns: 1fr; gap: 48px; }
-    .paylink-phone { order: -1; }
-    .pl-phone-wrap { width: 100%; max-width: 320px; }
-  }
-
   /* WAITLIST */
   .waitlist { background: var(--black); text-align: center; }
 
@@ -1138,58 +1094,6 @@
   </div>
 </section>
 
-<!-- PAYLINK SECTION -->
-<section class="paylink-section" id="paylink">
-  <div class="paylink-inner">
-
-    <div class="paylink-left reveal">
-      <span class="section-label">PayLink — Creator Feature</span>
-      <h2 class="section-title">Get paid.<br><em>Privately.</em></h2>
-      <p>Teen creators on Yungly can generate a Ghost PayLink in seconds — a clean payment link with a fixed amount and purpose. Share it on Instagram, WhatsApp, or anywhere. Your real UPI ID stays completely hidden.</p>
-      <div class="paylink-pills">
-        <span class="paylink-pill">👻 UPI ID hidden</span>
-        <span class="paylink-pill">🔗 Shareable link</span>
-        <span class="paylink-pill">💸 Fixed amount</span>
-        <span class="paylink-pill">⚡ Instant wallet credit</span>
-      </div>
-      <a href="demo.html" class="paylink-cta">Try the demo →</a>
-    </div>
-
-    <div class="paylink-phone reveal">
-      <div class="pl-phone-wrap">
-        <div class="pl-phone-inner">
-          <div class="pl-phone-header">
-            <div class="pl-phone-header-title">🔗 Ghost PayLink</div>
-            <div class="pl-phone-header-badge">👻 Privacy ON</div>
-          </div>
-          <div class="pl-phone-body">
-            <input class="pl-w-input" id="idx-pl-purpose" placeholder="What's it for? (e.g. Logo design)" maxlength="40"/>
-            <input class="pl-w-input" id="idx-pl-amount" placeholder="Amount (₹)" type="number" min="1" max="5000"/>
-            <button class="pl-w-btn" onclick="idxCreatePayLink()">Generate PayLink →</button>
-
-            <div class="pl-w-result" id="idx-pl-result">
-              <div class="pl-w-result-label">✅ Your PayLink is ready!</div>
-              <div class="pl-w-result-purpose" id="idx-pl-r-purpose"></div>
-              <div class="pl-w-result-amt" id="idx-pl-r-amt"></div>
-              <div class="pl-w-result-url" id="idx-pl-r-url"></div>
-              <div class="pl-w-actions">
-                <button class="pl-w-act" onclick="idxCopyLink()">📋 Copy</button>
-                <button class="pl-w-act" onclick="idxShareLink()">📤 Share</button>
-              </div>
-            </div>
-
-            <div class="pl-w-list-title">My PayLinks</div>
-            <div id="idx-pl-list">
-              <div class="pl-w-empty">No PayLinks yet — create your first one! 👆</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <!-- WAITLIST -->
 <section class="waitlist" id="waitlist">
   <span class="section-label reveal">Early access</span>
@@ -1341,53 +1245,6 @@
   document.getElementById('emailInput').addEventListener('keypress', e => {
     if (e.key === 'Enter') handleWaitlist();
   });
-
-  // ── INDEX PAYLINK WIDGET ──
-  const idxPayLinks = [];
-  const idxHandles = ['x7k2m','9pq3n','4rj8k','m2n8p','v5t1q','r3k9w'];
-  let idxResultUrl = '';
-
-  function idxCreatePayLink() {
-    const purpose = document.getElementById('idx-pl-purpose').value.trim();
-    const amtRaw  = document.getElementById('idx-pl-amount').value.trim();
-    if (!purpose) { alert('Add a purpose first!'); return; }
-    if (!amtRaw || isNaN(amtRaw) || Number(amtRaw) < 1) { alert('Enter a valid amount'); return; }
-    const amt = Number(amtRaw);
-    if (amt > 5000) { alert('Max ₹5,000 per link'); return; }
-    const handle = 'adhil-' + idxHandles[Math.floor(Math.random()*idxHandles.length)];
-    const url = 'pay.yunglypay.in/p/' + handle;
-    idxPayLinks.unshift({ id: Date.now(), purpose, amt, url });
-    idxResultUrl = url;
-    document.getElementById('idx-pl-r-purpose').textContent = purpose;
-    document.getElementById('idx-pl-r-amt').textContent = '₹' + amt.toLocaleString('en-IN');
-    document.getElementById('idx-pl-r-url').textContent = url;
-    document.getElementById('idx-pl-result').style.display = '';
-    document.getElementById('idx-pl-purpose').value = '';
-    document.getElementById('idx-pl-amount').value = '';
-    idxRenderPayLinks();
-  }
-  function idxCopyLink() {
-    navigator.clipboard?.writeText('https://' + idxResultUrl).catch(()=>{});
-    const btn = event.target; btn.textContent = '✅ Copied!';
-    setTimeout(() => btn.textContent = '📋 Copy', 1500);
-  }
-  function idxShareLink() { alert('Share: https://' + idxResultUrl); }
-  function idxRenderPayLinks() {
-    const el = document.getElementById('idx-pl-list');
-    if (!idxPayLinks.length) {
-      el.innerHTML = '<div class="pl-w-empty">No PayLinks yet — create your first one! 👆</div>';
-      return;
-    }
-    el.innerHTML = idxPayLinks.map(p => `
-      <div class="pl-w-item">
-        <div class="pl-w-item-top">
-          <div class="pl-w-item-purpose">${p.purpose}</div>
-          <div class="pl-w-item-amt">₹${p.amt.toLocaleString('en-IN')}</div>
-        </div>
-        <div class="pl-w-item-url">${p.url}</div>
-      </div>
-    `).join('');
-  }
 </script>
 
 <!-- Yungly Pay Chatbot -->

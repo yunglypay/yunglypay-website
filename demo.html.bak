@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Yungly Pay App Demo — Try the Teen UPI App Live | Yungly Capital</title>
-  <meta name="description" content="Try the Yungly Pay app demo live in your browser. Explore Yungly PayLink, instant UPI payments, rewards, and the full teen payment experience. By Yungly Capital.">
+  <meta name="description" content="Try the Yungly Pay app demo live in your browser. Explore Ghost Link privacy, instant UPI payments, rewards, and the full teen payment experience. By Yungly Capital.">
   <meta name="keywords" content="Yungly Pay demo, Yungly app demo, try Yungly Pay, teen UPI app demo India, Yungly Capital app preview">
   <meta property="og:title" content="Try the Yungly Pay App Demo — Live Preview">
-  <meta property="og:description" content="Explore Yungly Pay's full app experience in your browser. PayLink, payments, rewards and more.">
+  <meta property="og:description" content="Explore Yungly Pay's full app experience in your browser. Ghost Link, payments, rewards and more.">
   <meta property="og:url" content="https://yunglypay.in/demo.html">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://yunglypay.in/demo.html">
@@ -310,41 +310,36 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
 .ki-d{font-size:12px;color:var(--sub);}
 
 /* ========== GHOST LINK PAGE ========== */
-.pl-hero{margin:16px 0;}
-.pl-card{border-radius:28px;background:var(--black);padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden;}
-.pl-bg1{position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(203,213,240,0.04);top:-100px;right:-80px;}
-.pl-bg2{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(168,184,232,0.04);bottom:-60px;left:-40px;}
-.pl-in{position:relative;z-index:1;}
-.pl-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.2);border-radius:20px;padding:5px 12px;margin-bottom:16px;}
-.pl-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--lav);animation:plDot 2s ease infinite;}
-@keyframes plDot{0%,100%{opacity:1;}50%{opacity:0.3;}}
-.pl-badge span{font-size:11px;color:var(--lav);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
-.pl-t{font-size:26px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;}
-.pl-t em{font-style:normal;color:var(--lav);}
-.pl-s{font-size:13px;color:rgba(203,213,240,0.45);line-height:1.6;}
-.pl-input{background:#fff;border:1.5px solid var(--lav-border);border-radius:14px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--black);width:100%;outline:none;margin-bottom:10px;box-sizing:border-box;}
-.pl-input:focus{border-color:var(--lav-deep);}
-.pl-input::placeholder{color:#aaa;}
-.pl-amount-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
-.pl-currency{font-size:22px;font-weight:800;color:var(--black);}
-.pl-amount-input{background:#fff;border:1.5px solid var(--lav-border);border-radius:14px;padding:12px 14px;font-size:20px;font-weight:700;font-family:inherit;color:var(--black);width:100%;outline:none;box-sizing:border-box;}
-.pl-amount-input:focus{border-color:var(--lav-deep);}
-.pl-generate-btn{background:var(--black);color:#fff;border:none;border-radius:14px;padding:14px;font-size:15px;font-weight:700;width:100%;cursor:pointer;margin-top:4px;font-family:inherit;transition:opacity 0.15s;}
-.pl-generate-btn:hover{opacity:0.85;}
-.pl-result{background:var(--lav-dim);border:1.5px solid var(--lav-border);border-radius:16px;padding:16px;margin:12px 0;display:none;}
-.pl-result-lbl{font-size:11px;color:var(--sub2);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;}
-.pl-result-url{font-size:12px;color:var(--lav-deep);font-family:'Space Mono',monospace;word-break:break-all;margin-bottom:10px;}
-.pl-actions{display:flex;gap:8px;}
-.pl-act{flex:1;background:rgba(123,150,212,0.12);color:var(--lav-deep);border:1px solid var(--lav-border);border-radius:10px;padding:8px;font-size:12px;font-weight:600;text-align:center;cursor:pointer;}
-.pl-guardian{background:var(--lav-dim);border:1.5px solid var(--lav-border);border-radius:14px;padding:12px 14px;font-size:12px;color:var(--lav-deep);font-weight:500;display:flex;gap:8px;align-items:flex-start;line-height:1.5;margin-top:10px;}
-.pl-mylinks{margin-top:8px;}
-.pl-link-item{background:#fff;border:1.5px solid var(--lav-border);border-radius:16px;padding:14px;margin-bottom:10px;}
-.pl-li-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
-.pl-li-purpose{font-size:14px;font-weight:700;color:var(--black);}
-.pl-li-amount{font-size:16px;font-weight:800;color:var(--lav-deep);}
-.pl-li-status{display:inline-flex;align-items:center;gap:4px;background:var(--lav-dim);color:var(--lav-deep);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;}
-.pl-li-status.paid{background:#DCFCE7;color:#15803D;}
-.pl-li-url{font-size:11px;color:#aaa;font-family:'Space Mono',monospace;margin-top:4px;word-break:break-all;}
+.ghost-hero{margin:16px 0;}
+.ghost-card{border-radius:28px;background:var(--black);padding:28px 24px;margin-bottom:16px;position:relative;overflow:hidden;}
+.ghost-bg1{position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(203,213,240,0.04);top:-100px;right:-80px;}
+.ghost-bg2{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(168,184,232,0.04);bottom:-60px;left:-40px;}
+.ghost-in{position:relative;z-index:1;}
+.ghost-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.2);border-radius:20px;padding:5px 12px;margin-bottom:16px;}
+.ghost-badge-dot{width:7px;height:7px;border-radius:50%;background:var(--lav);animation:ghostDot 2s ease infinite;}
+@keyframes ghostDot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.ghost-badge span{font-size:11px;color:var(--lav);letter-spacing:1.5px;text-transform:uppercase;font-weight:600;}
+.ghost-t{font-size:26px;font-weight:900;color:#fff;line-height:1.2;margin-bottom:8px;}
+.ghost-t em{font-style:normal;color:var(--lav);}
+.ghost-s{font-size:13px;color:rgba(203,213,240,0.45);line-height:1.6;}
+
+/* GHOST TOGGLE */
+.ghost-toggle-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.06);border-radius:16px;padding:16px;margin:16px 0;}
+.gt-info{flex:1;}
+.gt-t{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;}
+.gt-s{font-size:12px;color:rgba(203,213,240,0.4);}
+.toggle{width:52px;height:28px;border-radius:14px;background:rgba(255,255,255,0.15);position:relative;cursor:pointer;transition:background 0.3s;flex-shrink:0;border:1px solid rgba(255,255,255,0.1);}
+.toggle.on{background:var(--lav);}
+.toggle-ball{width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:2px;left:3px;transition:all 0.3s;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.toggle.on .toggle-ball{left:27px;}
+
+/* GHOST LINK DISPLAY */
+.ghost-link-box{background:rgba(255,255,255,0.05);border:1px solid rgba(203,213,240,0.15);border-radius:16px;padding:16px;margin:12px 0;}
+.gl-lbl{font-size:10px;color:rgba(203,213,240,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.gl-link{font-size:13px;color:var(--lav);font-family:'Space Mono',monospace;word-break:break-all;line-height:1.5;}
+.gl-actions{display:flex;gap:8px;margin-top:12px;}
+.gl-act{flex:1;height:38px;border-radius:10px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.15);display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;color:var(--lav);font-weight:600;cursor:pointer;transition:all 0.2s;}
+.gl-act:hover{background:rgba(203,213,240,0.18);}
 
 /* HOW IT WORKS */
 .how-card{background:#fff;border:1.5px solid var(--lav-border);border-radius:24px;padding:20px;margin:16px 0;}
@@ -355,6 +350,18 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
 .how-info{flex:1;}
 .how-st{font-size:13px;font-weight:700;color:var(--black);margin-bottom:2px;}
 .how-sd{font-size:12px;color:var(--sub);line-height:1.5;}
+
+/* GHOST DEMO */
+.ghost-demo{background:var(--lav-dim);border:1.5px solid var(--lav-border);border-radius:20px;padding:16px;margin:12px 0;}
+.gd-t{font-size:13px;font-weight:700;color:var(--black);margin-bottom:12px;}
+.gd-scenario{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--lav-border);}
+.gd-label{font-size:10px;color:var(--sub2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.gd-val{font-size:13px;color:var(--black);font-weight:600;font-family:'Space Mono',monospace;}
+.gd-vs{text-align:center;font-size:12px;color:var(--sub);margin:8px 0;font-weight:600;}
+.gd-good{background:var(--black);border-radius:14px;padding:14px;margin-top:0;}
+.gd-good .gd-label{color:rgba(203,213,240,0.5);}
+.gd-good .gd-val{color:var(--lav);}
+.gd-protect{font-size:12px;color:rgba(203,213,240,0.5);margin-top:6px;}
 
 /* ── MODAL OVERLAY ── */
 .modal-overlay{position:absolute;inset:0;background:rgba(10,10,10,0.6);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.3s;}
@@ -392,9 +399,9 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
 .amount-display{font-size:36px;font-weight:900;color:var(--black);text-align:center;padding:12px 0;letter-spacing:-1px;min-height:56px;}
 .amount-display sup{font-size:20px;color:var(--sub);}
 
-/* PayLink pill */
-.paylink-pill{display:inline-flex;align-items:center;gap:5px;background:var(--lav-dim);border:1px solid var(--lav-border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--lav-deep);font-weight:600;cursor:pointer;transition:all 0.2s;}
-.paylink-pill:hover{background:var(--lav);color:var(--black);}
+/* ghost privacy label */
+.privacy-pill{display:inline-flex;align-items:center;gap:5px;background:var(--lav-dim);border:1px solid var(--lav-border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--lav-deep);font-weight:600;cursor:pointer;transition:all 0.2s;}
+.privacy-pill:hover{background:var(--lav);color:var(--black);}
 </style>
 </head>
 <body>
@@ -504,9 +511,9 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
 
     <!-- GHOST LINK PROMO -->
     <div style="background:var(--black);border-radius:20px;padding:18px;margin:0 0 16px;cursor:pointer;display:flex;align-items:center;gap:14px;" onclick="nav('pg-ghost')">
-      <div style="width:48px;height:48px;border-radius:14px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🔗</div>
+      <div style="width:48px;height:48px;border-radius:14px;background:rgba(203,213,240,0.1);border:1px solid rgba(203,213,240,0.15);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">👻</div>
       <div style="flex:1;">
-        <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:3px;">Yungly PayLink</div>
+        <div style="font-size:14px;font-weight:800;color:#fff;margin-bottom:3px;">Ghost Link Privacy</div>
         <div style="font-size:12px;color:rgba(203,213,240,0.45);">Pay without revealing your real UPI ID</div>
       </div>
       <div style="background:var(--lav);color:var(--black);font-size:10px;font-weight:700;padding:4px 9px;border-radius:7px;flex-shrink:0;">NEW</div>
@@ -552,7 +559,7 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
         <div class="wc-bal"><sup>₹</sup>3,842.00</div>
         <div class="wc-upi">adhil11@yunglypay</div>
         <div style="margin-top:10px;display:flex;align-items:center;gap:8px;" onclick="nav('pg-ghost')">
-          <div class="paylink-pill">🔗 PayLink</div>
+          <div class="privacy-pill">👻 Ghost Link Active</div>
         </div>
         <div class="wc-row">
           <div class="wc-btn wcb-main" onclick="showModal('add')">➕ Add Money</div>
@@ -571,7 +578,7 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
     </div>
 
     <div class="sec"><div class="sec-t">Wallet Details</div></div>
-    <div class="wallet-item" onclick="nav('pg-ghost')"><div class="wi-ico wia" style="background:var(--black);">🔗</div><div class="wi-info"><div class="wi-nm" style="color:var(--black);">Yungly PayLink</div><div class="wi-d">Create payment links &amp; get paid</div></div><div class="wi-arr">›</div></div>
+    <div class="wallet-item" onclick="nav('pg-ghost')"><div class="wi-ico wia" style="background:var(--black);">👻</div><div class="wi-info"><div class="wi-nm" style="color:var(--black);">Ghost Link Privacy</div><div class="wi-d">Your real UPI ID stays hidden</div></div><div class="wi-arr">›</div></div>
     <div class="wallet-item" onclick="showToast('Manage beneficiaries')"><div class="wi-ico wib">👥</div><div class="wi-info"><div class="wi-nm">Manage Beneficiaries</div><div class="wi-d">Saved payees</div></div><div class="wi-arr">›</div></div>
     <div class="wallet-item" onclick="showToast('View invoices')"><div class="wi-ico wia">📄</div><div class="wi-info"><div class="wi-nm">View Invoices</div><div class="wi-d">Download receipts</div></div><div class="wi-arr">›</div></div>
     <div style="height:20px;"></div>
@@ -670,7 +677,7 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
       <div class="keeper-s">Keeper protects your transactions with smart alerts, limits, and privacy tools.</div>
     </div>
     <div class="keeper-items">
-      <div class="ki" onclick="nav('pg-ghost')"><div class="ki-ico" style="background:var(--black);font-size:20px;">🔗</div><div><div class="ki-nm">Yungly PayLink</div><div class="ki-d">Create &amp; share payment links</div></div></div>
+      <div class="ki" onclick="nav('pg-ghost')"><div class="ki-ico" style="background:var(--black);font-size:20px;">👻</div><div><div class="ki-nm">Ghost Link Privacy</div><div class="ki-d">Hide your real UPI ID — Active</div></div></div>
       <div class="ki" onclick="showToast('Spending limits settings')"><div class="ki-ico">💰</div><div><div class="ki-nm">Spending Limits</div><div class="ki-d">Set daily & monthly caps</div></div></div>
       <div class="ki" onclick="showToast('Block/unblock UPI IDs')"><div class="ki-ico">🚫</div><div><div class="ki-nm">Blocked UPI IDs</div><div class="ki-d">Manage blocked contacts</div></div></div>
       <div class="ki" onclick="showToast('Transaction alerts active')"><div class="ki-ico">🔔</div><div><div class="ki-nm">Smart Alerts</div><div class="ki-d">Instant SMS + push alerts</div></div></div>
@@ -695,98 +702,103 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
   </div>
 </div>
 
-<!-- ======= 🔗 PAYLINK CREATOR PAGE ======= -->
+<!-- ======= 👻 GHOST LINK PAGE ======= -->
 <div class="page" id="pg-ghost">
   <div class="status"><span style="font-weight:700">9:41</span><div><span>5G</span><div class="batt" style="display:inline-block;"></div></div></div>
   <div class="pg-head">
     <div class="back-btn" onclick="nav('pg-home')">← Back</div>
-    <div class="pg-title">PayLink</div>
   </div>
   <div class="scroll">
-    <div class="pl-hero">
+    <div class="ghost-hero">
       <!-- HERO CARD -->
-      <div class="pl-card">
-        <div class="pl-bg1"></div>
-        <div class="pl-bg2"></div>
-        <div class="pl-in">
-          <div class="pl-badge"><div class="pl-badge-dot"></div><span>Creator Feature</span></div>
-          <div class="pl-t">🔗 Yungly<br><em>PayLink</em></div>
-          <div class="pl-s">Create a payment link — get paid by anyone, anywhere. Your bank details stay hidden. Guardian-approved &amp; fully verified.</div>
+      <div class="ghost-card">
+        <div class="ghost-bg1"></div>
+        <div class="ghost-bg2"></div>
+        <div class="ghost-in">
+          <div class="ghost-badge"><div class="ghost-badge-dot"></div><span>Privacy Feature</span></div>
+          <div class="ghost-t">👻 Ghost<br><em>Link Privacy</em></div>
+          <div class="ghost-s">Share a masked payment link — nobody ever sees your real UPI ID. Not the merchant. Not the stranger. Not anyone.</div>
+        </div>
+      </div>
+
+      <!-- TOGGLE -->
+      <div class="ghost-toggle-row" style="background:#fff;border:1.5px solid var(--lav-border);">
+        <div class="gt-info">
+          <div class="gt-t" style="color:var(--black);">Ghost Mode</div>
+          <div class="gt-s" style="color:var(--sub);">Your UPI identity is masked</div>
+        </div>
+        <div class="toggle on" id="ghostToggle" onclick="toggleGhost()">
+          <div class="toggle-ball"></div>
+        </div>
+      </div>
+
+      <!-- GHOST LINK DISPLAY -->
+      <div class="ghost-link-box" style="background:var(--lav-dim);border:1.5px solid var(--lav-border);">
+        <div class="gl-lbl" style="color:var(--sub2);">Your Ghost Payment Link</div>
+        <div class="gl-link" style="color:var(--lav-deep);" id="ghostLinkText">pay.yunglypay.in/g/adhil-x7k2m</div>
+        <div class="gl-actions">
+          <div class="gl-act" style="background:rgba(123,150,212,0.12);color:var(--lav-deep);border-color:var(--lav-border);" onclick="copyGhostLink()">📋 Copy</div>
+          <div class="gl-act" style="background:rgba(123,150,212,0.12);color:var(--lav-deep);border-color:var(--lav-border);" onclick="shareGhostLink()">📤 Share</div>
+          <div class="gl-act" style="background:rgba(123,150,212,0.12);color:var(--lav-deep);border-color:var(--lav-border);" onclick="refreshGhostLink()">🔄 New</div>
         </div>
       </div>
     </div>
 
-    <!-- CREATE LINK FORM -->
-    <div style="background:#fff;border:1.5px solid var(--lav-border);border-radius:20px;padding:18px;margin:0 0 12px;">
-      <div style="font-size:15px;font-weight:800;color:var(--black);margin-bottom:14px;">Create a PayLink</div>
-      <div style="font-size:11px;font-weight:600;color:var(--sub2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Display Name</div>
-      <input class="pl-input" id="pl-name" value="Adhil Designs" placeholder="Your creator / store name"/>
-      <div style="font-size:11px;font-weight:600;color:var(--sub2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Purpose</div>
-      <input class="pl-input" id="pl-purpose" placeholder="e.g. Poster design, Reel edit..."/>
-      <div style="font-size:11px;font-weight:600;color:var(--sub2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Amount</div>
-      <div class="pl-amount-row">
-        <span class="pl-currency">₹</span>
-        <input class="pl-amount-input" id="pl-amount" type="number" placeholder="99"/>
-      </div>
-      <div class="pl-guardian">
-        <span>🔒</span>
-        Your guardian will be notified when this link receives a payment. Bank details never exposed.
-      </div>
-      <button class="pl-generate-btn" onclick="generatePayLink()">Generate PayLink →</button>
-      <div class="pl-result" id="pl-result">
-        <div class="pl-result-lbl">Your PayLink</div>
-        <div class="pl-result-url" id="pl-url">yungly-paylink-production.up.railway.app/pay/lnk_demo</div>
-        <div class="pl-actions">
-          <div class="pl-act" onclick="copyPayLink()">📋 Copy</div>
-          <div class="pl-act" onclick="sharePayLink()">📤 Share</div>
-          <div class="pl-act" onclick="resetPayLink()">🔄 New</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MY LINKS -->
+    <!-- HOW IT WORKS -->
     <div class="how-card">
-      <div class="how-t">How PayLink Works</div>
+      <div class="how-t">How Ghost Link Works</div>
       <div class="how-step">
         <div class="how-num">1</div>
         <div class="how-info">
-          <div class="how-st">Create your PayLink</div>
-          <div class="how-sd">Enter your display name, amount, and purpose. Guardian approves your creator profile.</div>
+          <div class="how-st">You share your Ghost Link</div>
+          <div class="how-sd">Instead of your real UPI ID like <code style="background:#f0f0f0;padding:1px 5px;border-radius:4px;font-size:11px;">adhil@okicici</code>, you share a masked link.</div>
         </div>
       </div>
       <div class="how-step">
         <div class="how-num">2</div>
         <div class="how-info">
-          <div class="how-st">Customer pays securely</div>
-          <div class="how-sd">They open the link, pay via UPI / Card / Netbanking. Your bank details stay hidden.</div>
+          <div class="how-st">They pay through the link</div>
+          <div class="how-sd">The payer sees only your Ghost link — your real identity stays completely hidden.</div>
         </div>
       </div>
       <div class="how-step">
         <div class="how-num">3</div>
         <div class="how-info">
           <div class="how-st">Money lands in your wallet</div>
-          <div class="how-sd">Payment confirmed via gateway webhook. Receipt sent. Guardian notified instantly.</div>
+          <div class="how-sd">Payment arrives instantly. No exposure, no trace, full privacy.</div>
         </div>
       </div>
     </div>
 
-    <!-- RECENT LINKS -->
-    <div class="pl-mylinks">
-      <div style="font-size:14px;font-weight:800;color:var(--black);margin-bottom:10px;">Recent PayLinks</div>
-      <div class="pl-link-item">
-        <div class="pl-li-top"><span class="pl-li-purpose">Logo design</span><span class="pl-li-amount">₹250</span></div>
-        <span class="pl-li-status paid">✓ Paid</span>
-        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/lnk_001</div>
+    <!-- DEMO SCENARIO -->
+    <div class="ghost-demo">
+      <div class="gd-t">🔍 What others see</div>
+      <div class="gd-scenario">
+        <div class="gd-label">Without Ghost Link (Exposed ❌)</div>
+        <div class="gd-val">adhil.rahman.kerala@okicici</div>
       </div>
-      <div class="pl-link-item">
-        <div class="pl-li-top"><span class="pl-li-purpose">Reel edit</span><span class="pl-li-amount">₹150</span></div>
-        <span class="pl-li-status paid">✓ Paid</span>
-        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/lnk_002</div>
+      <div class="gd-vs">↓ Ghost Link protects you ↓</div>
+      <div class="gd-scenario" style="background:var(--black);">
+        <div class="gd-label" style="color:rgba(203,213,240,0.4);">With Ghost Link (Protected ✅)</div>
+        <div class="gd-val" style="color:var(--lav);">pay.yunglypay.in/g/adhil-x7k2m</div>
+        <div class="gd-protect" style="color:rgba(203,213,240,0.4);font-size:12px;margin-top:6px;">Your real name & bank hidden 👻</div>
       </div>
-      <div class="pl-link-item" style="margin-bottom:24px;">
-        <div class="pl-li-top"><span class="pl-li-purpose">Poster design</span><span class="pl-li-amount">₹99</span></div>
-        <span class="pl-li-status">⏳ Active</span>
-        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/lnk_003</div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div style="background:#fff;border-radius:20px;padding:18px;border:1.5px solid var(--lav-border);margin:12px 0 24px;">
+      <div style="font-size:15px;font-weight:800;color:var(--black);margin-bottom:14px;">Link Settings</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(203,213,240,0.3);">
+        <div><div style="font-size:13px;font-weight:600;color:var(--black);">Auto-expire link</div><div style="font-size:12px;color:var(--sub);">After 30 days</div></div>
+        <div class="toggle on" onclick="showToast('Expiry setting updated')"><div class="toggle-ball"></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid rgba(203,213,240,0.3);">
+        <div><div style="font-size:13px;font-weight:600;color:var(--black);">Payment notifications</div><div style="font-size:12px;color:var(--sub);">When someone pays via link</div></div>
+        <div class="toggle on" onclick="showToast('Notification setting saved')"><div class="toggle-ball"></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;">
+        <div><div style="font-size:13px;font-weight:600;color:var(--black);">Request amount</div><div style="font-size:12px;color:var(--sub);">Pre-fill amount in link</div></div>
+        <div class="toggle" onclick="showToast('Amount pre-fill toggled')"><div class="toggle-ball"></div></div>
       </div>
     </div>
 
@@ -810,12 +822,12 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
         <div style="font-size:22px;font-weight:800;color:var(--black);">Adhil Rahman</div>
         <div style="font-size:13px;color:var(--sub);font-family:'Space Mono',monospace;">adhil11@yunglypay</div>
       </div>
-      <div onclick="nav('pg-ghost')" class="paylink-pill">🔗 PayLink Active</div>
+      <div onclick="nav('pg-ghost')" class="privacy-pill">👻 Ghost Link Active</div>
     </div>
     <div style="margin:0 0 20px;">
       <div class="wallet-item" onclick="showToast('Edit personal info')"><div class="wi-ico wia">👤</div><div class="wi-info"><div class="wi-nm">Personal Info</div><div class="wi-d">Name, phone, email</div></div><div class="wi-arr">›</div></div>
       <div class="wallet-item" onclick="showToast('KYC verified ✓')"><div class="wi-ico wib">✅</div><div class="wi-info"><div class="wi-nm">KYC Status</div><div class="wi-d">Verified</div></div><div class="wi-arr">›</div></div>
-      <div class="wallet-item" onclick="nav('pg-ghost')"><div class="wi-ico" style="background:var(--black);width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;">🔗</div><div class="wi-info"><div class="wi-nm">Yungly PayLink</div><div class="wi-d">Creator payment links</div></div><div class="wi-arr">›</div></div>
+      <div class="wallet-item" onclick="nav('pg-ghost')"><div class="wi-ico" style="background:var(--black);width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;">👻</div><div class="wi-info"><div class="wi-nm">Ghost Link Privacy</div><div class="wi-d">Payment privacy settings</div></div><div class="wi-arr">›</div></div>
       <div class="wallet-item" onclick="showToast('Notification preferences')"><div class="wi-ico wia">🔔</div><div class="wi-info"><div class="wi-nm">Notifications</div><div class="wi-d">Alerts & reminders</div></div><div class="wi-arr">›</div></div>
       <div class="wallet-item" onclick="showToast('Help & support')"><div class="wi-ico wib">💬</div><div class="wi-info"><div class="wi-nm">Help & Support</div><div class="wi-d">FAQs & chat support</div></div><div class="wi-arr">›</div></div>
       <div class="wallet-item" onclick="showToast('Logging out...')"><div class="wi-ico" style="background:#FFF0F0;border-color:rgba(255,0,0,0.08);width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:20px;">🚪</div><div class="wi-info"><div class="wi-nm" style="color:#CC2222;">Log Out</div><div class="wi-d">Sign out of Yungly Pay</div></div><div class="wi-arr">›</div></div>
@@ -899,8 +911,8 @@ const modals = {
     <div style="flex:1;height:80px;border-radius:16px;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;" onclick="showToast('Opening QR scanner...');closeModal()"><div style="font-size:24px;">📷</div><div style="font-size:12px;color:rgba(203,213,240,0.6);">Scan QR</div></div>
     <div style="flex:1;height:80px;border-radius:16px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;" onclick="showModal('send')"><div style="font-size:24px;">📱</div><div style="font-size:12px;color:var(--sub);">UPI / Phone</div></div>
     </div>
-    <div style="text-align:center;color:var(--sub2);font-size:12px;margin:8px 0 12px;">— or pay via PayLink —</div>
-    <button class="modal-btn" style="background:var(--lav-dim);color:var(--black);box-shadow:none;" onclick="closeModal();nav('pg-ghost')">🔗 Use PayLink</button>`
+    <div style="text-align:center;color:var(--sub2);font-size:12px;margin:8px 0 12px;">— or pay via Ghost Link —</div>
+    <button class="modal-btn" style="background:var(--lav-dim);color:var(--black);box-shadow:none;" onclick="closeModal();nav('pg-ghost')">👻 Use Ghost Link</button>`
   },
   scan: {
     title:'Scan & Pay', sub:'Point at any UPI QR code',
@@ -969,51 +981,29 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// ── PAYLINK CREATOR ──
-const BACKEND = 'https://yungly-paylink-production.up.railway.app/api';
-let currentPayLinkUrl = '';
-
-async function generatePayLink() {
-  const name    = document.getElementById('pl-name')?.value || 'Adhil Designs';
-  const purpose = document.getElementById('pl-purpose')?.value;
-  const amount  = document.getElementById('pl-amount')?.value;
-  if (!purpose || !amount) { showToast('Fill in purpose & amount'); return; }
-  try {
-    const res = await fetch(`${BACKEND}/paylinks`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ creatorId:'u_adhil', displayName:name, amount:+amount, purpose, expiryDays:7 })
-    });
-    const data = await res.json();
-    currentPayLinkUrl = data.payUrl || `${BACKEND.replace('/api','')}/pay/${data.link?.id}`;
-  } catch(e) {
-    currentPayLinkUrl = `https://yungly-paylink-production.up.railway.app/pay/lnk_demo_${Date.now()}`;
-  }
-  const el = document.getElementById('pl-url');
-  const result = document.getElementById('pl-result');
-  if (el) el.textContent = currentPayLinkUrl;
-  if (result) result.style.display = 'block';
-  showToast('🔗 PayLink created!');
+// ── GHOST TOGGLE ──
+let ghostOn = true;
+function toggleGhost() {
+  ghostOn = !ghostOn;
+  const tog = document.getElementById('ghostToggle');
+  tog.classList.toggle('on', ghostOn);
+  showToast(ghostOn ? '👻 Ghost Mode activated' : 'Ghost Mode disabled');
 }
 
-function copyPayLink() {
-  navigator.clipboard?.writeText(currentPayLinkUrl).catch(()=>{});
-  showToast('🔗 PayLink copied!');
+// ── GHOST LINK ACTIONS ──
+const ghostLinks = ['pay.yunglypay.in/g/adhil-x7k2m','pay.yunglypay.in/g/ghost-9pq3n','pay.yunglypay.in/g/priv-4rj8k'];
+let glIdx = 0;
+function copyGhostLink() {
+  const txt = document.getElementById('ghostLinkText').textContent;
+  navigator.clipboard?.writeText(txt).catch(()=>{});
+  showToast('🔗 Ghost link copied!');
 }
-function sharePayLink() {
-  if (navigator.share) { navigator.share({ title:'Pay via Yungly', url: currentPayLinkUrl }); }
-  else { showToast('📤 Share: ' + currentPayLinkUrl); }
+function shareGhostLink() { showToast('📤 Share sheet opened'); }
+function refreshGhostLink() {
+  glIdx = (glIdx+1) % ghostLinks.length;
+  document.getElementById('ghostLinkText').textContent = ghostLinks[glIdx];
+  showToast('🔄 New Ghost link generated');
 }
-function resetPayLink() {
-  document.getElementById('pl-result').style.display = 'none';
-  document.getElementById('pl-purpose').value = '';
-  document.getElementById('pl-amount').value = '';
-  showToast('🔄 Ready for a new PayLink');
-}
-// legacy aliases (used by old references)
-function copyGhostLink() { copyPayLink(); }
-function shareGhostLink() { sharePayLink(); }
-function refreshGhostLink() { resetPayLink(); }
 
 // ── 3D CARD TILT ──
 const hc = document.getElementById('hcard');
