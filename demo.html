@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<script>
+  // Auth gate — runs before anything renders
+  (function() {
+    if (sessionStorage.getItem('yp_admin') !== 'granted') {
+      window.location.replace('gate.html');
+    }
+  })();
+</script>
 <title>Yungly Pay App Demo — Try the Teen UPI App Live | Yungly Capital</title>
   <meta name="description" content="Try the Yungly Pay app demo live in your browser. Explore Yungly PayLink, instant UPI payments, rewards, and the full teen payment experience. By Yungly Capital.">
   <meta name="keywords" content="Yungly Pay demo, Yungly app demo, try Yungly Pay, teen UPI app demo India, Yungly Capital app preview">
@@ -773,21 +781,7 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
     <!-- RECENT LINKS -->
     <div class="pl-mylinks">
       <div style="font-size:14px;font-weight:800;color:var(--black);margin-bottom:10px;">Recent PayLinks</div>
-      <div class="pl-link-item">
-        <div class="pl-li-top"><span class="pl-li-purpose">Logo design</span><span class="pl-li-amount">₹250</span></div>
-        <span class="pl-li-status paid">✓ Paid</span>
-        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/lnk_001</div>
-      </div>
-      <div class="pl-link-item">
-        <div class="pl-li-top"><span class="pl-li-purpose">Reel edit</span><span class="pl-li-amount">₹150</span></div>
-        <span class="pl-li-status paid">✓ Paid</span>
-        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/lnk_002</div>
-      </div>
-      <div class="pl-link-item" style="margin-bottom:24px;">
-        <div class="pl-li-top"><span class="pl-li-purpose">Poster design</span><span class="pl-li-amount">₹99</span></div>
-        <span class="pl-li-status">⏳ Active</span>
-        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/lnk_003</div>
-      </div>
+      <div id="pl-links-list"><div style="font-size:13px;color:var(--sub);text-align:center;padding:16px;">Loading...</div></div>
     </div>
 
   </div>
@@ -972,6 +966,60 @@ function showToast(msg) {
 // ── PAYLINK CREATOR ──
 const BACKEND = 'https://yungly-paylink-production.up.railway.app/api';
 let currentPayLinkUrl = '';
+
+async function loadRecentLinks() {
+  const el = document.getElementById('pl-links-list');
+  if (!el) return;
+  try {
+    const res = await fetch(`${BACKEND}/paylinks?creatorId=u_adhil`);
+    const links = await res.json();
+    if (!links.length) { el.innerHTML = '<div style="font-size:13px;color:var(--sub);text-align:center;padding:16px;">No PayLinks yet — create your first one!</div>'; return; }
+    el.innerHTML = links.slice(0,5).map(l => `
+      <div class="pl-link-item" onclick="viewReceipt('${l.id}','${l.purpose}','${l.amount}','${l.status}','${l.txnId||''}','${l.createdAt||''}')">
+        <div class="pl-li-top"><span class="pl-li-purpose">${l.purpose}</span><span class="pl-li-amount">₹${l.amount}</span></div>
+        <span class="pl-li-status ${l.status==='paid'?'paid':''}">${l.status==='paid'?'✓ Paid':l.status==='active'?'⏳ Active':'✕ '+l.status}</span>
+        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/${l.id}</div>
+        ${l.status==='paid'?'<div style="font-size:11px;color:var(--lav-deep);margin-top:6px;font-weight:600;">Tap to view receipt →</div>':''}
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = `
+      <div class="pl-link-item"><div class="pl-li-top"><span class="pl-li-purpose">Logo design</span><span class="pl-li-amount">₹250</span></div><span class="pl-li-status paid">✓ Paid</span></div>
+      <div class="pl-link-item"><div class="pl-li-top"><span class="pl-li-purpose">Reel edit</span><span class="pl-li-amount">₹150</span></div><span class="pl-li-status paid">✓ Paid</span></div>
+      <div class="pl-link-item" style="margin-bottom:24px;"><div class="pl-li-top"><span class="pl-li-purpose">Poster design</span><span class="pl-li-amount">₹99</span></div><span class="pl-li-status">⏳ Active</span></div>`;
+  }
+}
+
+function viewReceipt(id, purpose, amount, status, txnId, createdAt) {
+  if (status !== 'paid') { showToast('No receipt — link not paid yet'); return; }
+  const date = createdAt ? new Date(createdAt).toLocaleDateString('en-IN') : new Date().toLocaleDateString('en-IN');
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal-handle"></div>
+    <div class="modal-t">Payment Receipt</div>
+    <div class="modal-s">Confirmed by Yungly Pay</div>
+    <div style="background:var(--lav-dim);border:1.5px dashed var(--lav-border);border-radius:16px;padding:16px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--lav-border);font-size:13px;"><span style="color:var(--sub);">Txn ID</span><span style="font-weight:600;font-family:'Space Mono',monospace;font-size:11px;">${txnId||id}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--lav-border);font-size:13px;"><span style="color:var(--sub);">Purpose</span><span style="font-weight:600;">${purpose}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--lav-border);font-size:13px;"><span style="color:var(--sub);">Amount</span><span style="font-weight:700;color:#15803D;">₹${amount}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--lav-border);font-size:13px;"><span style="color:var(--sub);">Date</span><span style="font-weight:600;">${date}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;"><span style="color:var(--sub);">Status</span><span style="font-weight:600;color:#15803D;">✓ Success</span></div>
+    </div>
+    <div style="font-size:11px;color:var(--sub);text-align:center;margin-bottom:16px;">For refunds: support@yunglypay.in</div>
+    <div class="modal-cancel" onclick="closeModal()">Close</div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+// auto-load links when PayLink page is opened
+const _origNav = typeof nav === 'function' ? nav : null;
+document.addEventListener('DOMContentLoaded', () => {
+  const origNav = window.nav;
+  window.nav = function(pg) {
+    origNav(pg);
+    if (pg === 'pg-ghost') setTimeout(loadRecentLinks, 100);
+  };
+  // also load if already on the page
+  loadRecentLinks();
+});
 
 async function generatePayLink() {
   const name    = document.getElementById('pl-name')?.value || 'Adhil Designs';
