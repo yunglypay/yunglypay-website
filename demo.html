@@ -30,9 +30,8 @@
     const greet = document.querySelector('#pg-home .scroll div[style*="font-size:26px"]');
     if (greet) greet.innerHTML = `${firstName} <em style="font-style:normal;color:var(--lav-deep);">${lastName}</em>`;
 
-    // Card balance
-    const balEl = document.querySelector('.bal-amt');
-    if (balEl) balEl.innerHTML = `<sup>₹</sup>${balance.toFixed(2)}`;
+    // Card balance — will be set by updateBalance()
+    updateBalance();
 
     // Card holder name
     const holderEl = document.querySelector('.card-holder');
@@ -488,7 +487,7 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
           </div>
           <div>
             <div class="bal-lbl">Balance</div>
-            <div class="bal-amt"><sup>₹</sup>3,842.00</div>
+            <div class="bal-amt" id="homeBalAmt"><sup>₹</sup>0.00</div>
           </div>
           <div class="card-foot">
             <div class="card-holder">ADHIL RAHMAN</div>
@@ -602,7 +601,7 @@ html,body{height:100%;overflow:hidden;background:#DDEAFF;font-family:'Outfit',sa
       <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(203,213,240,0.05);top:-60px;right:-40px;"></div>
       <div style="position:relative;z-index:1;">
         <div class="wc-lbl">Available Balance</div>
-        <div class="wc-bal"><sup>₹</sup>3,842.00</div>
+        <div class="wc-bal" id="walletBalAmt"><sup>₹</sup>0.00</div>
         <div class="wc-upi">adhil11@yunglypay</div>
         <div style="margin-top:10px;display:flex;align-items:center;gap:8px;" onclick="nav('pg-ghost')">
           <div class="paylink-pill">🔗 PayLink</div>
@@ -913,13 +912,13 @@ function navTab(tab) {
 const modals = {
   add: {
     title:'Add Money',sub:'Choose how to top up your wallet',
-    html:`<input class="modal-input" placeholder="Enter amount (₹)" type="number" style="margin-bottom:10px;">
+    html:`<input class="modal-input" id="addAmtInput" placeholder="Enter amount (₹)" type="number" style="margin-bottom:10px;">
     <div style="display:flex;gap:8px;margin-bottom:14px;">
-      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="showToast('₹100 selected')">₹100</div>
-      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="showToast('₹500 selected')">₹500</div>
-      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="showToast('₹1000 selected')">₹1000</div>
+      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="document.getElementById('addAmtInput').value=100">₹100</div>
+      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="document.getElementById('addAmtInput').value=500">₹500</div>
+      <div style="flex:1;height:40px;border-radius:12px;background:var(--lav-dim);border:1.5px solid var(--lav-border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;cursor:pointer;" onclick="document.getElementById('addAmtInput').value=1000">₹1000</div>
     </div>
-    <button class="modal-btn" onclick="showToast('Redirecting to payment gateway...');closeModal()">Proceed to Pay</button>`
+    <button class="modal-btn" onclick="doAddMoney()">Add to Wallet ✓</button>`
   },
   send: {
     title:'Send Money', sub:'To UPI ID, phone number or contact',
@@ -931,7 +930,7 @@ const modals = {
       <button class="key zero" onclick="typeAmt('0')">0</button>
       <button class="key" onclick="typeAmt('.')">.</button>
     </div>
-    <button class="modal-btn" style="margin-top:14px;" onclick="showToast('Payment sent! 🎉');closeModal()">Send →</button>`
+    <button class="modal-btn" style="margin-top:14px;" onclick="doSendMoney()">Send →</button>`
   },
   req: {
     title:'Request Money', sub:'Send a payment request',
@@ -989,7 +988,38 @@ function delAmt() {
   if(el) el.innerHTML = '<sup>₹</sup>' + (sendAmtVal||'0');
 }
 
-function showModal(type) {
+function updateBalance() {
+  const bal = YP_USER.balance || 0;
+  const fmt = '₹' + bal.toFixed(2);
+  const homeEl = document.getElementById('homeBalAmt');
+  const walletEl = document.getElementById('walletBalAmt');
+  if (homeEl) homeEl.innerHTML = `<sup>₹</sup>${bal.toFixed(2)}`;
+  if (walletEl) walletEl.innerHTML = `<sup>₹</sup>${bal.toFixed(2)}`;
+  // persist
+  sessionStorage.setItem('yp_user', JSON.stringify(YP_USER));
+}
+
+function doAddMoney() {
+  const inp = document.getElementById('addAmtInput');
+  const amt = parseFloat(inp ? inp.value : 0);
+  if (!amt || amt <= 0) { showToast('Enter a valid amount'); return; }
+  YP_USER.balance = (YP_USER.balance || 0) + amt;
+  updateBalance();
+  closeModal();
+  showToast(`₹${amt.toFixed(2)} added to wallet! 💰`);
+}
+
+function doSendMoney() {
+  const amt = parseFloat(sendAmtVal) || 0;
+  if (!amt || amt <= 0) { showToast('Enter an amount to send'); return; }
+  if (amt > (YP_USER.balance || 0)) { showToast('Insufficient balance ❌'); return; }
+  YP_USER.balance = (YP_USER.balance || 0) - amt;
+  updateBalance();
+  closeModal();
+  showToast(`₹${amt.toFixed(2)} sent! 🎉`);
+}
+
+
   const m = modals[type];
   if(!m) return;
   sendAmtVal = '';
@@ -1023,33 +1053,32 @@ let currentPayLinkUrl = '';
 async function loadRecentLinks() {
   const el = document.getElementById('pl-links-list');
   if (!el) return;
-  const user = JSON.parse(sessionStorage.getItem('yp_user') || 'null');
-  let links = [];
+  // Use local data first — no backend needed
+  let links = YP_USER?.links || [];
+  // Try backend non-blocking
   try {
+    const user = YP_USER;
     if (user?.sessionId && !user.sessionId.startsWith('demo_')) {
       const res = await fetch(`${BACKEND}/session/${user.sessionId}/paylinks`);
-      links = await res.json();
-    } else {
-      const res = await fetch(`${BACKEND}/paylinks?creatorId=u_adhil`);
-      links = await res.json();
+      const remote = await res.json();
+      if (Array.isArray(remote) && remote.length) links = remote;
     }
-  } catch(e) {
-    links = user?.links || [];
-  }
+  } catch(e) { /* use local */ }
   if (!links.length) {
     el.innerHTML = '<div style="font-size:13px;color:var(--sub);text-align:center;padding:16px;">No PayLinks yet — create your first one above!</div>';
     return;
   }
   el.innerHTML = links.slice(0,5).map(l => `
-    <div class="pl-link-item" onclick="viewReceipt('${l.id}','${l.purpose}','${l.amount}','${l.status}','${l.txnId||''}','${l.createdAt||''}')">
-      <div class="pl-li-top"><span class="pl-li-purpose">${l.purpose}</span><span class="pl-li-amount">₹${l.amount}</span></div>
-      <span class="pl-li-status ${l.status==='paid'?'paid':''}">${l.status==='paid'?'✓ Paid':l.status==='active'?'⏳ Active':'✕ '+l.status}</span>
+    <div class="pl-link-item" onclick="viewReceipt('${l.id}','${encodeURIComponent(l.purpose)}','${l.amount}','${l.status}','${l.txnId||''}','${l.createdAt||''}')">
+      <div class="pl-li-top"><span class="pl-li-purpose">${l.purpose}</span><span class="pl-li-amount">\u20b9${l.amount}</span></div>
+      <span class="pl-li-status ${l.status==='paid'?'paid':''}">${l.status==='paid'?'\u2713 Paid':l.status==='active'?'\u23f3 Active':'\u2715 '+l.status}</span>
       <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/${l.id}</div>
-      ${l.status==='paid'?'<div style="font-size:11px;color:var(--lav-deep);margin-top:6px;font-weight:600;">Tap to view receipt →</div>':''}
+      ${l.status==='paid'?'<div style="font-size:11px;color:var(--lav-deep);margin-top:6px;font-weight:600;">Tap to view receipt \u2192</div>':''}
     </div>`).join('');
 }
 
 function viewReceipt(id, purpose, amount, status, txnId, createdAt) {
+  purpose = decodeURIComponent(purpose);
   if (status !== 'paid') { showToast('No receipt — link not paid yet'); return; }
   const date = createdAt ? new Date(createdAt).toLocaleDateString('en-IN') : new Date().toLocaleDateString('en-IN');
   document.getElementById('modal-content').innerHTML = `
@@ -1082,32 +1111,50 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function generatePayLink() {
-  const name    = document.getElementById('pl-name')?.value || 'Adhil Designs';
-  const purpose = document.getElementById('pl-purpose')?.value;
+  const name    = document.getElementById('pl-name')?.value.trim() || YP_USER?.displayName || 'Yungly Creator';
+  const purpose = document.getElementById('pl-purpose')?.value.trim();
   const amount  = document.getElementById('pl-amount')?.value;
-  if (!purpose || !amount) { showToast('Fill in purpose & amount'); return; }
+  if (!purpose) { showToast('Enter a purpose for this link'); return; }
+  if (!amount || +amount <= 0) { showToast('Enter a valid amount'); return; }
+
+  // Build a local link immediately — no backend needed
+  const linkId = 'lnk_' + Date.now();
+  const newLink = {
+    id: linkId,
+    purpose,
+    amount: +amount,
+    displayName: name,
+    status: 'active',
+    txnId: null,
+    createdAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + 7*86400000).toISOString()
+  };
+  currentPayLinkUrl = `https://yungly-paylink-production.up.railway.app/pay/${linkId}`;
+
+  // Save to local user data
+  YP_USER.links = YP_USER.links || [];
+  YP_USER.links.unshift(newLink);
+  sessionStorage.setItem('yp_user', JSON.stringify(YP_USER));
+
+  // Also try backend (non-blocking)
   try {
-    const user = JSON.parse(sessionStorage.getItem('yp_user') || 'null');
+    const user = YP_USER;
     const endpoint = user?.sessionId && !user.sessionId.startsWith('demo_')
       ? `${BACKEND}/session/${user.sessionId}/paylinks`
       : `${BACKEND}/paylinks`;
     const body = user?.sessionId && !user.sessionId.startsWith('demo_')
-      ? { amount:+amount, purpose, note: document.getElementById('pl-note')?.value||'', expiryDays:7 }
+      ? { amount:+amount, purpose, expiryDays:7 }
       : { creatorId:'u_adhil', displayName:name, amount:+amount, purpose, expiryDays:7 };
     const res = await fetch(endpoint, {
       method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
     });
     const data = await res.json();
-    currentPayLinkUrl = data.payUrl || `${BACKEND.replace('/api','')}/pay/${data.link?.id}`;
-    // Update local balance
-    if (user && data.link) {
-      user.links = user.links || [];
-      user.links.unshift(data.link);
-      sessionStorage.setItem('yp_user', JSON.stringify(user));
+    if (data.link?.id) {
+      currentPayLinkUrl = data.payUrl || `https://yungly-paylink-production.up.railway.app/pay/${data.link.id}`;
     }
-  } catch(e) {
-    currentPayLinkUrl = `https://yungly-paylink-production.up.railway.app/pay/lnk_demo_${Date.now()}`;
-  }
+  } catch(e) { /* use local link — that's fine */ }
+
+  // Show result
   const el = document.getElementById('pl-url');
   const result = document.getElementById('pl-result');
   if (el) el.textContent = currentPayLinkUrl;
@@ -1116,37 +1163,27 @@ async function generatePayLink() {
   // Generate QR code
   const canvas = document.getElementById('pl-qr');
   if (canvas) {
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, 140, 140);
-    // Use QRCode library if available
+    // Remove any old QRCode div and re-render
+    const existingQR = canvas.parentNode.querySelector('.qrcode-div');
+    if (existingQR) existingQR.remove();
+    canvas.style.display = 'none';
+    const qrDiv = document.createElement('div');
+    qrDiv.className = 'qrcode-div';
+    canvas.parentNode.insertBefore(qrDiv, canvas);
     if (typeof QRCode !== 'undefined') {
-      const tempDiv = document.createElement('div');
-      new QRCode(tempDiv, {
+      new QRCode(qrDiv, {
         text: currentPayLinkUrl,
         width: 140, height: 140,
         colorDark: '#111111', colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.M
       });
-      setTimeout(() => {
-        const img = tempDiv.querySelector('img') || tempDiv.querySelector('canvas');
-        if (img) {
-          const qrImg = new Image();
-          qrImg.onload = () => ctx.drawImage(qrImg, 0, 0, 140, 140);
-          qrImg.src = img.src || img.toDataURL();
-        }
-      }, 100);
     } else {
-      // fallback — draw a simple placeholder
-      ctx.fillStyle = '#111';
-      ctx.fillRect(0,0,140,140);
-      ctx.fillStyle = '#D8DEFF';
-      ctx.font = 'bold 12px DM Sans, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('QR Ready', 70, 65);
-      ctx.fillText('scan to pay', 70, 82);
+      qrDiv.innerHTML = `<div style="width:140px;height:140px;background:#111;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#D8DEFF;font-size:12px;font-weight:700;text-align:center;padding:10px;">QR<br>Ready</div>`;
     }
   }
 
+  // Refresh links list
+  loadRecentLinks();
   showToast('🔗 PayLink created!');
 }
 
