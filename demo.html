@@ -11,6 +11,50 @@
     }
   })();
 </script>
+<script>
+  // Load user session data
+  const YP_USER = JSON.parse(sessionStorage.getItem('yp_user') || 'null');
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!YP_USER) return;
+    const firstName = YP_USER.name.split(' ')[0];
+    const lastName  = YP_USER.name.split(' ').slice(1).join(' ') || '';
+    const initials  = YP_USER.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const display   = YP_USER.displayName || firstName + ' Creations';
+    const balance   = YP_USER.balance || 0;
+
+    // Home: greeting name
+    document.querySelectorAll('[data-yp="firstname"]').forEach(el => el.textContent = firstName);
+    document.querySelectorAll('[data-yp="lastname"]').forEach(el => el.textContent = lastName);
+
+    // Replace hardcoded name in home greeting
+    const greet = document.querySelector('#pg-home .scroll div[style*="font-size:26px"]');
+    if (greet) greet.innerHTML = `${firstName} <em style="font-style:normal;color:var(--lav-deep);">${lastName}</em>`;
+
+    // Card balance
+    const balEl = document.querySelector('.bal-amt');
+    if (balEl) balEl.innerHTML = `<sup>₹</sup>${balance.toFixed(2)}`;
+
+    // Card holder name
+    const holderEl = document.querySelector('.card-holder');
+    if (holderEl) holderEl.textContent = YP_USER.name.toUpperCase();
+
+    // Avatar initials
+    document.querySelectorAll('.avatar').forEach(el => { if(el.textContent === 'AR') el.textContent = initials; });
+
+    // Profile name
+    const profileName = document.querySelector('#pg-profile .scroll [style*="font-size:22px"]');
+    if (profileName) profileName.textContent = YP_USER.name;
+
+    // PayLink display name prefill
+    const plName = document.getElementById('pl-name');
+    if (plName) plName.value = display;
+
+    // Update greeting time
+    const hr = new Date().getHours();
+    const greetLabel = document.querySelector('#pg-home .scroll [style*="letter-spacing:1.5px"]');
+    if (greetLabel) greetLabel.textContent = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  });
+</script>
 <title>Yungly Pay App Demo — Try the Teen UPI App Live | Yungly Capital</title>
   <meta name="description" content="Try the Yungly Pay app demo live in your browser. Explore Yungly PayLink, instant UPI payments, rewards, and the full teen payment experience. By Yungly Capital.">
   <meta name="keywords" content="Yungly Pay demo, Yungly app demo, try Yungly Pay, teen UPI app demo India, Yungly Capital app preview">
@@ -979,23 +1023,30 @@ let currentPayLinkUrl = '';
 async function loadRecentLinks() {
   const el = document.getElementById('pl-links-list');
   if (!el) return;
+  const user = JSON.parse(sessionStorage.getItem('yp_user') || 'null');
+  let links = [];
   try {
-    const res = await fetch(`${BACKEND}/paylinks?creatorId=u_adhil`);
-    const links = await res.json();
-    if (!links.length) { el.innerHTML = '<div style="font-size:13px;color:var(--sub);text-align:center;padding:16px;">No PayLinks yet — create your first one!</div>'; return; }
-    el.innerHTML = links.slice(0,5).map(l => `
-      <div class="pl-link-item" onclick="viewReceipt('${l.id}','${l.purpose}','${l.amount}','${l.status}','${l.txnId||''}','${l.createdAt||''}')">
-        <div class="pl-li-top"><span class="pl-li-purpose">${l.purpose}</span><span class="pl-li-amount">₹${l.amount}</span></div>
-        <span class="pl-li-status ${l.status==='paid'?'paid':''}">${l.status==='paid'?'✓ Paid':l.status==='active'?'⏳ Active':'✕ '+l.status}</span>
-        <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/${l.id}</div>
-        ${l.status==='paid'?'<div style="font-size:11px;color:var(--lav-deep);margin-top:6px;font-weight:600;">Tap to view receipt →</div>':''}
-      </div>`).join('');
+    if (user?.sessionId && !user.sessionId.startsWith('demo_')) {
+      const res = await fetch(`${BACKEND}/session/${user.sessionId}/paylinks`);
+      links = await res.json();
+    } else {
+      const res = await fetch(`${BACKEND}/paylinks?creatorId=u_adhil`);
+      links = await res.json();
+    }
   } catch(e) {
-    el.innerHTML = `
-      <div class="pl-link-item"><div class="pl-li-top"><span class="pl-li-purpose">Logo design</span><span class="pl-li-amount">₹250</span></div><span class="pl-li-status paid">✓ Paid</span></div>
-      <div class="pl-link-item"><div class="pl-li-top"><span class="pl-li-purpose">Reel edit</span><span class="pl-li-amount">₹150</span></div><span class="pl-li-status paid">✓ Paid</span></div>
-      <div class="pl-link-item" style="margin-bottom:24px;"><div class="pl-li-top"><span class="pl-li-purpose">Poster design</span><span class="pl-li-amount">₹99</span></div><span class="pl-li-status">⏳ Active</span></div>`;
+    links = user?.links || [];
   }
+  if (!links.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--sub);text-align:center;padding:16px;">No PayLinks yet — create your first one above!</div>';
+    return;
+  }
+  el.innerHTML = links.slice(0,5).map(l => `
+    <div class="pl-link-item" onclick="viewReceipt('${l.id}','${l.purpose}','${l.amount}','${l.status}','${l.txnId||''}','${l.createdAt||''}')">
+      <div class="pl-li-top"><span class="pl-li-purpose">${l.purpose}</span><span class="pl-li-amount">₹${l.amount}</span></div>
+      <span class="pl-li-status ${l.status==='paid'?'paid':''}">${l.status==='paid'?'✓ Paid':l.status==='active'?'⏳ Active':'✕ '+l.status}</span>
+      <div class="pl-li-url">yungly-paylink-production.up.railway.app/pay/${l.id}</div>
+      ${l.status==='paid'?'<div style="font-size:11px;color:var(--lav-deep);margin-top:6px;font-weight:600;">Tap to view receipt →</div>':''}
+    </div>`).join('');
 }
 
 function viewReceipt(id, purpose, amount, status, txnId, createdAt) {
@@ -1036,13 +1087,24 @@ async function generatePayLink() {
   const amount  = document.getElementById('pl-amount')?.value;
   if (!purpose || !amount) { showToast('Fill in purpose & amount'); return; }
   try {
-    const res = await fetch(`${BACKEND}/paylinks`, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ creatorId:'u_adhil', displayName:name, amount:+amount, purpose, expiryDays:7 })
+    const user = JSON.parse(sessionStorage.getItem('yp_user') || 'null');
+    const endpoint = user?.sessionId && !user.sessionId.startsWith('demo_')
+      ? `${BACKEND}/session/${user.sessionId}/paylinks`
+      : `${BACKEND}/paylinks`;
+    const body = user?.sessionId && !user.sessionId.startsWith('demo_')
+      ? { amount:+amount, purpose, note: document.getElementById('pl-note')?.value||'', expiryDays:7 }
+      : { creatorId:'u_adhil', displayName:name, amount:+amount, purpose, expiryDays:7 };
+    const res = await fetch(endpoint, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)
     });
     const data = await res.json();
     currentPayLinkUrl = data.payUrl || `${BACKEND.replace('/api','')}/pay/${data.link?.id}`;
+    // Update local balance
+    if (user && data.link) {
+      user.links = user.links || [];
+      user.links.unshift(data.link);
+      sessionStorage.setItem('yp_user', JSON.stringify(user));
+    }
   } catch(e) {
     currentPayLinkUrl = `https://yungly-paylink-production.up.railway.app/pay/lnk_demo_${Date.now()}`;
   }

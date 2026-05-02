@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Yungly Pay — Get Started</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#111111;--white:#ffffff;
+  --lav:#D8DEFF;--lav-mid:#8B9FFF;--lav-dark:#4A5AE8;
+  --bg:#F4F5FB;--muted:#6B7280;--border:rgba(0,0,0,0.08);
+  --danger:#DC2626;--success:#16A34A;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+
+/* PHONE SHELL */
+.phone{width:320px;min-height:600px;background:var(--white);border-radius:36px;border:2px solid #333;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(0,0,0,0.5);}
+.status-bar{background:var(--black);color:var(--white);display:flex;justify-content:space-between;align-items:center;padding:10px 20px 8px;font-size:11px;font-weight:500;}
+
+/* STEPS */
+.step{display:none;flex-direction:column;min-height:540px;}
+.step.active{display:flex;}
+
+/* PROGRESS */
+.progress-wrap{padding:16px 20px 0;}
+.progress-dots{display:flex;gap:6px;margin-bottom:20px;}
+.dot{height:4px;border-radius:2px;background:var(--border);transition:all 0.3s;flex:1;}
+.dot.done{background:var(--lav-dark);}
+.dot.active{background:var(--lav-mid);}
+
+/* STEP CONTENT */
+.step-body{padding:0 24px 24px;flex:1;display:flex;flex-direction:column;}
+.step-icon{font-size:40px;margin-bottom:16px;text-align:center;}
+.step-title{font-size:22px;font-weight:800;color:var(--black);letter-spacing:-0.5px;margin-bottom:6px;}
+.step-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+
+.form-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px;display:block;}
+.form-input{width:100%;background:var(--bg);border:1.5px solid transparent;border-radius:12px;padding:12px 14px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--black);outline:none;transition:border-color 0.15s;margin-bottom:14px;}
+.form-input:focus{border-color:var(--lav-dark);background:var(--white);}
+.form-input::placeholder{color:#bbb;}
+
+.phone-row{display:flex;gap:8px;margin-bottom:14px;}
+.country-code{background:var(--bg);border:1.5px solid transparent;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600;color:var(--black);width:72px;text-align:center;flex-shrink:0;}
+
+.otp-row{display:flex;gap:8px;margin-bottom:14px;}
+.otp-input{flex:1;background:var(--bg);border:1.5px solid transparent;border-radius:12px;padding:12px;font-size:22px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--black);outline:none;text-align:center;transition:border-color 0.15s;}
+.otp-input:focus{border-color:var(--lav-dark);background:var(--white);}
+
+.btn-primary{background:var(--black);color:var(--white);border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;width:100%;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.15s;margin-top:auto;}
+.btn-primary:hover{opacity:0.85;}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;}
+
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);border-radius:12px;padding:11px;font-size:13px;font-weight:600;width:100%;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px;}
+
+.alert{border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px;}
+.alert-danger{background:#FEE2E2;color:var(--danger);}
+.alert-success{background:#DCFCE7;color:var(--success);}
+.alert-info{background:var(--lav);color:var(--lav-dark);}
+
+.timer{font-size:12px;color:var(--muted);text-align:center;margin-top:8px;}
+.timer span{color:var(--lav-dark);font-weight:600;cursor:pointer;}
+
+.guardian-box{background:var(--lav);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--lav-dark);font-weight:500;display:flex;gap:8px;align-items:flex-start;line-height:1.5;margin-bottom:16px;}
+
+/* SUCCESS SCREEN */
+.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:540px;padding:32px 24px;text-align:center;}
+.success-screen.show{display:flex;}
+.success-ring{width:80px;height:80px;border-radius:50%;background:var(--lav);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px;}
+
+/* BRAND */
+.brand{font-size:28px;font-weight:800;color:var(--white);letter-spacing:-0.5px;margin-bottom:24px;}
+.brand span{color:var(--lav-mid);}
+.tagline{font-size:13px;color:rgba(255,255,255,0.4);margin-top:-16px;margin-bottom:24px;}
+</style>
+</head>
+<body>
+
+<div class="brand">Yungly<span>.</span></div>
+<p class="tagline">The teen creator payment app</p>
+
+<div class="phone">
+  <div class="status-bar">
+    <span style="font-weight:700">9:41</span>
+    <span>●●● 5G</span>
+  </div>
+
+  <!-- STEP 1: PHONE -->
+  <div class="step active" id="step1">
+    <div class="progress-wrap">
+      <div class="progress-dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-icon">📱</div>
+      <div class="step-title">What's your number?</div>
+      <div class="step-sub">We'll send a one-time password to verify it's you.</div>
+      <div id="alert1"></div>
+      <label class="form-label">Mobile Number</label>
+      <div class="phone-row">
+        <div class="country-code">🇮🇳 +91</div>
+        <input class="form-input" id="phoneInput" type="tel" maxlength="10" placeholder="98765 43210" style="margin-bottom:0;" onkeydown="if(event.key==='Enter')sendOtp()"/>
+      </div>
+      <div class="guardian-box">
+        <span>🛡</span>
+        Your number is only used for verification. We never share it.
+      </div>
+      <button class="btn-primary" id="sendOtpBtn" onclick="sendOtp()">Send OTP →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: OTP -->
+  <div class="step" id="step2">
+    <div class="progress-wrap">
+      <div class="progress-dots">
+        <div class="dot done"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-icon">🔐</div>
+      <div class="step-title">Enter OTP</div>
+      <div class="step-sub" id="otpSubtext">We sent a 6-digit code to your number.</div>
+      <div id="alert2"></div>
+      <label class="form-label">6-Digit OTP</label>
+      <div class="otp-row">
+        <input class="otp-input" id="otp1" maxlength="1" type="tel" oninput="otpNext(this,'otp2')" onkeydown="otpBack(event,this,'')"/>
+        <input class="otp-input" id="otp2" maxlength="1" type="tel" oninput="otpNext(this,'otp3')" onkeydown="otpBack(event,this,'otp1')"/>
+        <input class="otp-input" id="otp3" maxlength="1" type="tel" oninput="otpNext(this,'otp4')" onkeydown="otpBack(event,this,'otp2')"/>
+        <input class="otp-input" id="otp4" maxlength="1" type="tel" oninput="otpNext(this,'otp5')" onkeydown="otpBack(event,this,'otp3')"/>
+        <input class="otp-input" id="otp5" maxlength="1" type="tel" oninput="otpNext(this,'otp6')" onkeydown="otpBack(event,this,'otp4')"/>
+        <input class="otp-input" id="otp6" maxlength="1" type="tel" oninput="otpNext(this,'')" onkeydown="otpBack(event,this,'otp5')"/>
+      </div>
+      <div class="timer" id="timerText">Resend OTP in <span id="timerCount">60</span>s</div>
+      <button class="btn-primary" id="verifyBtn" onclick="verifyOtp()" style="margin-top:20px;">Verify →</button>
+      <button class="btn-ghost" onclick="goStep(1)">← Change number</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: NAME -->
+  <div class="step" id="step3">
+    <div class="progress-wrap">
+      <div class="progress-dots">
+        <div class="dot done"></div>
+        <div class="dot done"></div>
+        <div class="dot active"></div>
+        <div class="dot"></div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-icon">✍️</div>
+      <div class="step-title">What's your name?</div>
+      <div class="step-sub">This is how you'll appear in the app and on your PayLinks.</div>
+      <div id="alert3"></div>
+      <label class="form-label">Your Full Name</label>
+      <input class="form-input" id="nameInput" placeholder="e.g. Adhil Rahman" onkeydown="if(event.key==='Enter')goToDisplay()"/>
+      <label class="form-label">Creator / Store Display Name</label>
+      <input class="form-input" id="displayInput" placeholder="e.g. Adhil Designs" onkeydown="if(event.key==='Enter')goToParent()"/>
+      <div class="guardian-box">
+        <span>🔗</span>
+        Your display name appears on your PayLinks — customers will see this.
+      </div>
+      <button class="btn-primary" onclick="goToParent()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: PARENT -->
+  <div class="step" id="step4">
+    <div class="progress-wrap">
+      <div class="progress-dots">
+        <div class="dot done"></div>
+        <div class="dot done"></div>
+        <div class="dot done"></div>
+        <div class="dot active"></div>
+      </div>
+    </div>
+    <div class="step-body">
+      <div class="step-icon">🛡</div>
+      <div class="step-title">Add a guardian</div>
+      <div class="step-sub">Your parent or guardian will get notified for every payment you receive.</div>
+      <div id="alert4"></div>
+      <label class="form-label">Guardian's Phone Number</label>
+      <div class="phone-row">
+        <div class="country-code">🇮🇳 +91</div>
+        <input class="form-input" id="parentInput" type="tel" maxlength="10" placeholder="Parent's number" style="margin-bottom:0;" onkeydown="if(event.key==='Enter')completeOnboard()"/>
+      </div>
+      <div class="guardian-box" style="margin-top:14px;">
+        <span>🔒</span>
+        Required for teens under 18. Guardian can set limits and view all transactions.
+      </div>
+      <button class="btn-primary" onclick="completeOnboard()">Create my account →</button>
+      <button class="btn-ghost" onclick="completeOnboard(true)">Skip for now</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-ring">🎉</div>
+    <div style="font-size:24px;font-weight:800;letter-spacing:-0.5px;" id="welcomeName">Welcome, Adhil!</div>
+    <div style="font-size:13px;color:var(--muted);margin-top:8px;margin-bottom:24px;line-height:1.6;">Your Yungly Pay account is ready.<br>Start creating PayLinks and getting paid.</div>
+    <div style="background:var(--bg);border-radius:16px;padding:16px;width:100%;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Display name</span><span style="font-weight:700;" id="confirmDisplay">Adhil Designs</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);"><span style="color:var(--muted);">Starting balance</span><span style="font-weight:700;color:var(--muted);">₹0</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;"><span style="color:var(--muted);">Guardian</span><span style="font-weight:700;color:var(--success);" id="confirmParent">✓ Added</span></div>
+    </div>
+    <button class="btn-primary" onclick="enterDemo()" style="margin-top:0;">Enter Yungly Pay →</button>
+  </div>
+</div>
+
+<script>
+const API = 'https://yungly-paylink-production.up.railway.app/api';
+let userPhone = '';
+let sessionId = '';
+let timerInterval;
+
+// ── OTP HELPERS ──
+function otpNext(el, nextId) {
+  if (el.value && nextId) document.getElementById(nextId)?.focus();
+  if (!nextId) verifyOtp();
+}
+function otpBack(e, el, prevId) {
+  if (e.key === 'Backspace' && !el.value && prevId) document.getElementById(prevId)?.focus();
+}
+function getOtp() {
+  return ['otp1','otp2','otp3','otp4','otp5','otp6'].map(id => document.getElementById(id).value).join('');
+}
+function clearOtp() {
+  ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach(id => document.getElementById(id).value = '');
+}
+
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step'+n)?.classList.add('active');
+}
+
+function showAlert(stepN, msg, type='danger') {
+  document.getElementById('alert'+stepN).innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+}
+function clearAlert(stepN) {
+  document.getElementById('alert'+stepN).innerHTML = '';
+}
+
+// ── STEP 1: SEND OTP ──
+async function sendOtp() {
+  const phone = document.getElementById('phoneInput').value.trim();
+  if (phone.length !== 10 || isNaN(phone)) { showAlert(1, 'Enter a valid 10-digit number'); return; }
+  userPhone = phone;
+  const btn = document.getElementById('sendOtpBtn');
+  btn.textContent = 'Sending...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/otp/send`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ phone })
+    });
+    const data = await res.json();
+    if (!res.ok) { showAlert(1, data.error || 'Failed to send OTP'); btn.textContent='Send OTP →'; btn.disabled=false; return; }
+    // Dev mode — autofill OTP
+    if (data.devOtp) {
+      showAlert(1, `Demo mode: OTP is <strong>${data.devOtp}</strong>`, 'info');
+      setTimeout(() => {
+        goStep(2);
+        const digits = data.devOtp.split('');
+        ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach((id,i) => {
+          if(digits[i]) document.getElementById(id).value = digits[i];
+        });
+      }, 1000);
+    } else {
+      document.getElementById('otpSubtext').textContent = `We sent a 6-digit code to +91 ${phone}`;
+      goStep(2);
+    }
+    startTimer();
+  } catch(e) {
+    // Full fallback if backend down
+    const fallbackOtp = '123456';
+    showAlert(1, `Demo mode: OTP is <strong>${fallbackOtp}</strong>`, 'info');
+    setTimeout(() => {
+      goStep(2);
+      ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach((id,i) => {
+        document.getElementById(id).value = fallbackOtp[i];
+      });
+    }, 1000);
+    startTimer();
+  }
+  btn.textContent = 'Send OTP →'; btn.disabled = false;
+}
+
+function startTimer() {
+  let secs = 60;
+  clearInterval(timerInterval);
+  document.getElementById('timerText').innerHTML = `Resend OTP in <span id="timerCount">${secs}</span>s`;
+  timerInterval = setInterval(() => {
+    secs--;
+    const el = document.getElementById('timerCount');
+    if (el) el.textContent = secs;
+    if (secs <= 0) {
+      clearInterval(timerInterval);
+      document.getElementById('timerText').innerHTML = `<span onclick="resendOtp()">Resend OTP</span>`;
+    }
+  }, 1000);
+}
+
+async function resendOtp() {
+  clearOtp();
+  clearAlert(2);
+  await sendOtp();
+}
+
+// ── STEP 2: VERIFY OTP ──
+async function verifyOtp() {
+  const otp = getOtp();
+  if (otp.length < 6) { showAlert(2, 'Enter the complete 6-digit OTP'); return; }
+  const btn = document.getElementById('verifyBtn');
+  btn.textContent = 'Verifying...'; btn.disabled = true;
+  try {
+    const res = await fetch(`${API}/otp/verify`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ phone: userPhone, otp })
+    });
+    const data = await res.json();
+    if (!res.ok) { showAlert(2, data.error || 'Invalid OTP'); btn.textContent='Verify →'; btn.disabled=false; return; }
+    clearInterval(timerInterval);
+    goStep(3);
+    document.getElementById('nameInput').focus();
+  } catch(e) {
+    // Fallback — accept 123456
+    if (otp === '123456') { clearInterval(timerInterval); goStep(3); document.getElementById('nameInput').focus(); }
+    else { showAlert(2, 'Invalid OTP. Try 123456 in demo mode.'); }
+  }
+  btn.textContent = 'Verify →'; btn.disabled = false;
+}
+
+// ── STEP 3: NAME ──
+function goToDisplay() { document.getElementById('displayInput').focus(); }
+function goToParent() {
+  const name = document.getElementById('nameInput').value.trim();
+  const display = document.getElementById('displayInput').value.trim();
+  if (!name) { showAlert(3, 'Please enter your name'); return; }
+  if (!display) { document.getElementById('displayInput').value = name.split(' ')[0] + ' Creations'; }
+  clearAlert(3);
+  goStep(4);
+  document.getElementById('parentInput').focus();
+}
+
+// ── STEP 4: PARENT + COMPLETE ──
+async function completeOnboard(skip=false) {
+  const name = document.getElementById('nameInput').value.trim();
+  const displayName = document.getElementById('displayInput').value.trim() || name.split(' ')[0] + ' Creations';
+  const parentPhone = skip ? '' : document.getElementById('parentInput').value.trim();
+  if (!skip && parentPhone && parentPhone.length !== 10) { showAlert(4, 'Enter a valid 10-digit guardian number'); return; }
+
+  try {
+    const res = await fetch(`${API}/onboard`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ phone: userPhone, name, displayName, parentPhone })
+    });
+    const data = await res.json();
+    if (data.sessionId) sessionId = data.sessionId;
+  } catch(e) {
+    sessionId = 'demo_' + Date.now();
+  }
+
+  // Save to sessionStorage for demo.html
+  const userData = {
+    sessionId, name, displayName,
+    phone: userPhone, parentPhone,
+    balance: 0, monthlyReceived: 0, monthlyLimit: 5000,
+    links: [], txns: []
+  };
+  sessionStorage.setItem('yp_user', JSON.stringify(userData));
+  sessionStorage.setItem('yp_admin', 'granted');
+
+  // Show success screen
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('successScreen').classList.add('show');
+  document.getElementById('welcomeName').textContent = `Welcome, ${name.split(' ')[0]}! 🎉`;
+  document.getElementById('confirmDisplay').textContent = displayName;
+  document.getElementById('confirmParent').textContent = parentPhone ? '✓ Added' : 'Skipped';
+}
+
+function enterDemo() {
+  window.location.href = 'demo.html';
+}
+</script>
+</body>
+</html>

@@ -110,7 +110,7 @@ body{font-family:'DM Sans',sans-serif;background:#0A0A0A;min-height:100vh;displa
     const pass = document.getElementById('adminPass').value;
     if (id === ADMIN_ID && pass === ADMIN_PASS) {
       sessionStorage.setItem('yp_admin', 'granted');
-      window.location.replace('demo.html');
+      window.location.replace('onboard.html');
     } else {
       document.getElementById('errorMsg').classList.add('show');
       document.getElementById('adminPass').value = '';
