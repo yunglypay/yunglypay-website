@@ -44,9 +44,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;d
 .phone-row{display:flex;gap:8px;margin-bottom:14px;}
 .country-code{background:var(--bg);border:1.5px solid transparent;border-radius:12px;padding:12px 14px;font-size:15px;font-weight:600;color:var(--black);width:72px;text-align:center;flex-shrink:0;}
 
-.otp-row{display:flex;gap:8px;margin-bottom:14px;}
-.otp-input{flex:1;background:var(--bg);border:1.5px solid transparent;border-radius:12px;padding:12px;font-size:22px;font-weight:700;font-family:'DM Sans',sans-serif;color:var(--black);outline:none;text-align:center;transition:border-color 0.15s;}
-.otp-input:focus{border-color:var(--lav-dark);background:var(--white);}
+/* Password field with eye toggle */
+.pass-wrap{position:relative;margin-bottom:14px;}
+.pass-wrap .form-input{margin-bottom:0;padding-right:44px;}
+.pass-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:var(--muted);padding:4px;line-height:1;}
 
 .btn-primary{background:var(--black);color:var(--white);border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:700;width:100%;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity 0.15s;margin-top:auto;}
 .btn-primary:hover{opacity:0.85;}
@@ -58,9 +59,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;d
 .alert-danger{background:#FEE2E2;color:var(--danger);}
 .alert-success{background:#DCFCE7;color:var(--success);}
 .alert-info{background:var(--lav);color:var(--lav-dark);}
-
-.timer{font-size:12px;color:var(--muted);text-align:center;margin-top:8px;}
-.timer span{color:var(--lav-dark);font-weight:600;cursor:pointer;}
 
 .guardian-box{background:var(--lav);border-radius:12px;padding:12px 14px;font-size:12px;color:var(--lav-dark);font-weight:500;display:flex;gap:8px;align-items:flex-start;line-height:1.5;margin-bottom:16px;}
 
@@ -86,69 +84,42 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;d
     <span>●●● 5G</span>
   </div>
 
-  <!-- STEP 1: PHONE -->
+  <!-- STEP 1: PHONE + PASSWORD -->
   <div class="step active" id="step1">
     <div class="progress-wrap">
       <div class="progress-dots">
         <div class="dot active"></div>
         <div class="dot"></div>
         <div class="dot"></div>
-        <div class="dot"></div>
       </div>
     </div>
     <div class="step-body">
       <div class="step-icon">📱</div>
-      <div class="step-title">What's your number?</div>
-      <div class="step-sub">We'll send a one-time password to verify it's you.</div>
+      <div class="step-title">Create your account</div>
+      <div class="step-sub">Enter your mobile number and choose a password.</div>
       <div id="alert1"></div>
       <label class="form-label">Mobile Number</label>
       <div class="phone-row">
         <div class="country-code">🇮🇳 +91</div>
-        <input class="form-input" id="phoneInput" type="tel" maxlength="10" placeholder="98765 43210" style="margin-bottom:0;" onkeydown="if(event.key==='Enter')sendOtp()"/>
+        <input class="form-input" id="phoneInput" type="tel" maxlength="10" placeholder="98765 43210" style="margin-bottom:0;" onkeydown="if(event.key==='Enter')document.getElementById('passInput').focus()"/>
+      </div>
+      <label class="form-label">Password</label>
+      <div class="pass-wrap">
+        <input class="form-input" id="passInput" type="password" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')goToName()"/>
+        <button class="pass-toggle" type="button" onclick="togglePass('passInput',this)" tabindex="-1">👁</button>
       </div>
       <div class="guardian-box">
         <span>🛡</span>
-        Your number is only used for verification. We never share it.
+        Your phone number is used for your account only. We never share it.
       </div>
-      <button class="btn-primary" id="sendOtpBtn" onclick="sendOtp()">Send OTP →</button>
+      <button class="btn-primary" onclick="goToName()">Continue →</button>
     </div>
   </div>
 
-  <!-- STEP 2: OTP -->
+  <!-- STEP 2: NAME -->
   <div class="step" id="step2">
     <div class="progress-wrap">
       <div class="progress-dots">
-        <div class="dot done"></div>
-        <div class="dot active"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </div>
-    </div>
-    <div class="step-body">
-      <div class="step-icon">🔐</div>
-      <div class="step-title">Enter OTP</div>
-      <div class="step-sub" id="otpSubtext">We sent a 6-digit code to your number.</div>
-      <div id="alert2"></div>
-      <label class="form-label">6-Digit OTP</label>
-      <div class="otp-row">
-        <input class="otp-input" id="otp1" maxlength="1" type="tel" oninput="otpNext(this,'otp2')" onkeydown="otpBack(event,this,'')"/>
-        <input class="otp-input" id="otp2" maxlength="1" type="tel" oninput="otpNext(this,'otp3')" onkeydown="otpBack(event,this,'otp1')"/>
-        <input class="otp-input" id="otp3" maxlength="1" type="tel" oninput="otpNext(this,'otp4')" onkeydown="otpBack(event,this,'otp2')"/>
-        <input class="otp-input" id="otp4" maxlength="1" type="tel" oninput="otpNext(this,'otp5')" onkeydown="otpBack(event,this,'otp3')"/>
-        <input class="otp-input" id="otp5" maxlength="1" type="tel" oninput="otpNext(this,'otp6')" onkeydown="otpBack(event,this,'otp4')"/>
-        <input class="otp-input" id="otp6" maxlength="1" type="tel" oninput="otpNext(this,'')" onkeydown="otpBack(event,this,'otp5')"/>
-      </div>
-      <div class="timer" id="timerText">Resend OTP in <span id="timerCount">60</span>s</div>
-      <button class="btn-primary" id="verifyBtn" onclick="verifyOtp()" style="margin-top:20px;">Verify →</button>
-      <button class="btn-ghost" onclick="goStep(1)">← Change number</button>
-    </div>
-  </div>
-
-  <!-- STEP 3: NAME -->
-  <div class="step" id="step3">
-    <div class="progress-wrap">
-      <div class="progress-dots">
-        <div class="dot done"></div>
         <div class="dot done"></div>
         <div class="dot active"></div>
         <div class="dot"></div>
@@ -158,9 +129,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;d
       <div class="step-icon">✍️</div>
       <div class="step-title">What's your name?</div>
       <div class="step-sub">This is how you'll appear in the app and on your PayLinks.</div>
-      <div id="alert3"></div>
+      <div id="alert2"></div>
       <label class="form-label">Your Full Name</label>
-      <input class="form-input" id="nameInput" placeholder="e.g. Adhil Rahman" onkeydown="if(event.key==='Enter')goToDisplay()"/>
+      <input class="form-input" id="nameInput" placeholder="e.g. Adhil Rahman" onkeydown="if(event.key==='Enter')document.getElementById('displayInput').focus()"/>
       <label class="form-label">Creator / Store Display Name</label>
       <input class="form-input" id="displayInput" placeholder="e.g. Adhil Designs" onkeydown="if(event.key==='Enter')goToParent()"/>
       <div class="guardian-box">
@@ -171,11 +142,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;d
     </div>
   </div>
 
-  <!-- STEP 4: PARENT -->
-  <div class="step" id="step4">
+  <!-- STEP 3: GUARDIAN -->
+  <div class="step" id="step3">
     <div class="progress-wrap">
       <div class="progress-dots">
-        <div class="dot done"></div>
         <div class="dot done"></div>
         <div class="dot done"></div>
         <div class="dot active"></div>
@@ -185,7 +155,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;d
       <div class="step-icon">🛡</div>
       <div class="step-title">Add a guardian</div>
       <div class="step-sub">Your parent or guardian will get notified for every payment you receive.</div>
-      <div id="alert4"></div>
+      <div id="alert3"></div>
       <label class="form-label">Guardian's Phone Number</label>
       <div class="phone-row">
         <div class="country-code">🇮🇳 +91</div>
@@ -217,148 +187,65 @@ body{font-family:'DM Sans',sans-serif;background:var(--black);min-height:100vh;d
 <script>
 const API = 'https://yungly-paylink-production.up.railway.app/api';
 let userPhone = '';
+let userPass  = '';
 let sessionId = '';
-let timerInterval;
 
-// ── OTP HELPERS ──
-function otpNext(el, nextId) {
-  if (el.value && nextId) document.getElementById(nextId)?.focus();
-  if (!nextId) verifyOtp();
-}
-function otpBack(e, el, prevId) {
-  if (e.key === 'Backspace' && !el.value && prevId) document.getElementById(prevId)?.focus();
-}
-function getOtp() {
-  return ['otp1','otp2','otp3','otp4','otp5','otp6'].map(id => document.getElementById(id).value).join('');
-}
-function clearOtp() {
-  ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach(id => document.getElementById(id).value = '');
+function togglePass(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
 }
 
 function goStep(n) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  document.getElementById('step'+n)?.classList.add('active');
+  const el = document.getElementById('step' + n);
+  if (el) el.classList.add('active');
 }
 
 function showAlert(stepN, msg, type='danger') {
-  document.getElementById('alert'+stepN).innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  const el = document.getElementById('alert' + stepN);
+  if (el) el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
 }
 function clearAlert(stepN) {
-  document.getElementById('alert'+stepN).innerHTML = '';
+  const el = document.getElementById('alert' + stepN);
+  if (el) el.innerHTML = '';
 }
 
-// ── STEP 1: SEND OTP ──
-async function sendOtp() {
+// ── STEP 1: VALIDATE PHONE + PASSWORD ──
+function goToName() {
   const phone = document.getElementById('phoneInput').value.trim();
-  if (phone.length !== 10 || isNaN(phone)) { showAlert(1, 'Enter a valid 10-digit number'); return; }
+  const pass  = document.getElementById('passInput').value;
+  if (phone.length !== 10 || isNaN(phone)) { showAlert(1, 'Enter a valid 10-digit mobile number'); return; }
+  if (pass.length < 6) { showAlert(1, 'Password must be at least 6 characters'); return; }
   userPhone = phone;
-  const btn = document.getElementById('sendOtpBtn');
-  btn.textContent = 'Sending...'; btn.disabled = true;
-  try {
-    const res = await fetch(`${API}/otp/send`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ phone })
-    });
-    const data = await res.json();
-    if (!res.ok) { showAlert(1, data.error || 'Failed to send OTP'); btn.textContent='Send OTP →'; btn.disabled=false; return; }
-    // Dev mode — autofill OTP
-    if (data.devOtp) {
-      showAlert(1, `Demo mode: OTP is <strong>${data.devOtp}</strong>`, 'info');
-      setTimeout(() => {
-        goStep(2);
-        const digits = data.devOtp.split('');
-        ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach((id,i) => {
-          if(digits[i]) document.getElementById(id).value = digits[i];
-        });
-      }, 1000);
-    } else {
-      document.getElementById('otpSubtext').textContent = `We sent a 6-digit code to +91 ${phone}`;
-      goStep(2);
-    }
-    startTimer();
-  } catch(e) {
-    // Full fallback if backend down
-    const fallbackOtp = '123456';
-    showAlert(1, `Demo mode: OTP is <strong>${fallbackOtp}</strong>`, 'info');
-    setTimeout(() => {
-      goStep(2);
-      ['otp1','otp2','otp3','otp4','otp5','otp6'].forEach((id,i) => {
-        document.getElementById(id).value = fallbackOtp[i];
-      });
-    }, 1000);
-    startTimer();
-  }
-  btn.textContent = 'Send OTP →'; btn.disabled = false;
+  userPass  = pass;
+  clearAlert(1);
+  goStep(2);
+  document.getElementById('nameInput').focus();
 }
 
-function startTimer() {
-  let secs = 60;
-  clearInterval(timerInterval);
-  document.getElementById('timerText').innerHTML = `Resend OTP in <span id="timerCount">${secs}</span>s`;
-  timerInterval = setInterval(() => {
-    secs--;
-    const el = document.getElementById('timerCount');
-    if (el) el.textContent = secs;
-    if (secs <= 0) {
-      clearInterval(timerInterval);
-      document.getElementById('timerText').innerHTML = `<span onclick="resendOtp()">Resend OTP</span>`;
-    }
-  }, 1000);
-}
-
-async function resendOtp() {
-  clearOtp();
-  clearAlert(2);
-  await sendOtp();
-}
-
-// ── STEP 2: VERIFY OTP ──
-async function verifyOtp() {
-  const otp = getOtp();
-  if (otp.length < 6) { showAlert(2, 'Enter the complete 6-digit OTP'); return; }
-  const btn = document.getElementById('verifyBtn');
-  btn.textContent = 'Verifying...'; btn.disabled = true;
-  try {
-    const res = await fetch(`${API}/otp/verify`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ phone: userPhone, otp })
-    });
-    const data = await res.json();
-    if (!res.ok) { showAlert(2, data.error || 'Invalid OTP'); btn.textContent='Verify →'; btn.disabled=false; return; }
-    clearInterval(timerInterval);
-    goStep(3);
-    document.getElementById('nameInput').focus();
-  } catch(e) {
-    // Fallback — accept 123456
-    if (otp === '123456') { clearInterval(timerInterval); goStep(3); document.getElementById('nameInput').focus(); }
-    else { showAlert(2, 'Invalid OTP. Try 123456 in demo mode.'); }
-  }
-  btn.textContent = 'Verify →'; btn.disabled = false;
-}
-
-// ── STEP 3: NAME ──
-function goToDisplay() { document.getElementById('displayInput').focus(); }
+// ── STEP 2: VALIDATE NAME ──
 function goToParent() {
-  const name = document.getElementById('nameInput').value.trim();
+  const name    = document.getElementById('nameInput').value.trim();
   const display = document.getElementById('displayInput').value.trim();
-  if (!name) { showAlert(3, 'Please enter your name'); return; }
+  if (!name) { showAlert(2, 'Please enter your name'); return; }
   if (!display) { document.getElementById('displayInput').value = name.split(' ')[0] + ' Creations'; }
-  clearAlert(3);
-  goStep(4);
+  clearAlert(2);
+  goStep(3);
   document.getElementById('parentInput').focus();
 }
 
-// ── STEP 4: PARENT + COMPLETE ──
+// ── STEP 3: COMPLETE ONBOARDING ──
 async function completeOnboard(skip=false) {
-  const name = document.getElementById('nameInput').value.trim();
+  const name        = document.getElementById('nameInput').value.trim();
   const displayName = document.getElementById('displayInput').value.trim() || name.split(' ')[0] + ' Creations';
   const parentPhone = skip ? '' : document.getElementById('parentInput').value.trim();
-  if (!skip && parentPhone && parentPhone.length !== 10) { showAlert(4, 'Enter a valid 10-digit guardian number'); return; }
+  if (!skip && parentPhone && parentPhone.length !== 10) { showAlert(3, 'Enter a valid 10-digit guardian number'); return; }
 
   try {
     const res = await fetch(`${API}/onboard`, {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ phone: userPhone, name, displayName, parentPhone })
+      body: JSON.stringify({ phone: userPhone, password: userPass, name, displayName, parentPhone })
     });
     const data = await res.json();
     if (data.sessionId) sessionId = data.sessionId;
